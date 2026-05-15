@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glyph Catalog — JR / R—Net Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Urbanist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Loads the local staged font so this catalog works offline / before cdn.rossie.net is live.
+     Once the CDN is deployed you may switch the src to https://cdn.rossie.net/fonts/... */
+  @font-face {
+    font-family:'JBM';
+    src:url('../fonts/jetbrains-mono-nerd-regular.woff2') format('woff2');
+    font-display:block;
+  }
+
+  /* Tokens lifted from style-guide.html — light is the default mode. */
+  :root {
+    --bg:#FAF6EC; --card:#FCF4DF; --rule:#D4CEBC; --rule-soft:#E4DECC;
+    --ink:#1F1D18; --ink-2:#3A3730; --graphite:#6B675C; --soft:#989486;
+    --sky-deep:#4A7A96; --sky:#6B9BB8; --amber:#D49826; --amber-deep:#8C6018;
+    --ok-glow:#8DB072; --alert-glow:#D4604E;
+  }
+  body.dark {
+    --bg:#1C1E1C; --card:#252824; --rule:#3D403A; --rule-soft:#2A2D28;
+    --ink:#EDE8D8; --ink-2:#CFCABA; --graphite:#8A8470; --soft:#5E5B50;
+    --sky-deep:#A8C5D8; --sky:#6B9BB8; --amber:#F0B84A; --amber-deep:#D49826;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Urbanist',sans-serif; font-weight:400; font-size:15px; line-height:1.65;
+  }
+  .mono { font-family:'JBM','JetBrainsMono Nerd Font',monospace; }
+
+  /* ---- masthead — mirrors the style guide cover heading ---- */
+  .masthead {
+    max-width:1240px; margin:0 auto; padding:40px 36px 26px;
+    border-top:2px solid var(--ink);
+  }
+  .mast-top {
+    display:grid; grid-template-columns:1fr auto; align-items:flex-start; gap:24px;
+  }
+  .eyebrow {
+    font-family:'JBM',monospace; font-size:11px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--graphite);
+  }
+  .mast-meta {
+    font-family:'JBM',monospace; font-size:10px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--graphite); text-align:right; line-height:1.9;
+  }
+  .mast-meta .acc { color:var(--sky-deep); }
+  .mast-title {
+    font-family:'Outfit',sans-serif; font-size:52px; font-weight:600;
+    letter-spacing:-2px; line-height:1; color:var(--ink); margin:30px 0 14px;
+  }
+  .mast-sub {
+    font-family:'JBM',monospace; font-size:12px; letter-spacing:4px;
+    text-transform:uppercase; color:var(--sky-deep);
+  }
+
+  /* ---- sticky toolbar ---- */
+  .toolbar {
+    position:sticky; top:0; z-index:10; background:var(--bg);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    margin-top:24px;
+  }
+  .toolbar-in {
+    max-width:1240px; margin:0 auto; padding:12px 36px;
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+  }
+  #q {
+    font:inherit; font-size:13px; padding:7px 12px; min-width:240px;
+    border:1px solid var(--rule); border-radius:6px; background:var(--card); color:var(--ink);
+  }
+  #q:focus { outline:1px solid var(--sky-deep); border-color:var(--sky-deep); }
+  .nav { display:flex; gap:5px; flex-wrap:wrap; }
+  .nav a {
+    font-family:'JBM',monospace; font-size:11px; text-decoration:none;
+    color:var(--graphite); border:1px solid var(--rule); border-radius:5px; padding:3px 8px;
+  }
+  .nav a:hover { color:var(--sky-deep); border-color:var(--sky-deep); }
+  button {
+    font-family:'JBM',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+    padding:6px 12px; border:1px solid var(--rule); border-radius:6px;
+    background:var(--card); color:var(--graphite); cursor:pointer;
+  }
+  button:hover { color:var(--sky-deep); border-color:var(--sky-deep); }
+
+  .wrap { max-width:1240px; margin:0 auto; padding:36px 36px 90px; }
+  section { scroll-margin-top:92px; margin-bottom:48px; }
+
+  /* ---- category head — mirrors .section-head ---- */
+  .section-head {
+    display:grid; grid-template-columns:auto auto 1fr auto; align-items:center;
+    gap:18px; margin-bottom:6px; padding-bottom:12px;
+  }
+  .section-num {
+    font-family:'JBM',monospace; font-size:11px; letter-spacing:1px; color:var(--sky-deep);
+  }
+  .section-title {
+    font-family:'Outfit',sans-serif; font-size:26px; font-weight:500;
+    letter-spacing:-0.5px; color:var(--ink); line-height:1.15;
+  }
+  .section-rule { height:1px; background:var(--rule); }
+  .section-meta {
+    font-family:'JBM',monospace; font-size:10px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--graphite);
+  }
+  .blurb {
+    font-family:'Urbanist',sans-serif; font-size:14px; color:var(--ink-2);
+    margin:0 0 18px; max-width:760px;
+  }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(296px,1fr)); gap:10px; }
+  .card {
+    background:var(--card); border:1px solid var(--rule); border-radius:7px;
+    padding:12px 14px; display:flex; gap:13px; align-items:center;
+  }
+  .glyph {
+    font-family:'JBM',monospace; font-size:27px; line-height:1;
+    width:40px; text-align:center; flex:none; color:var(--ink);
+  }
+  .body { flex:1; min-width:0; }
+  .role {
+    font-family:'JBM',monospace; font-size:13px; font-weight:500;
+    color:var(--sky-deep); cursor:pointer;
+  }
+  .role:hover { color:var(--amber-deep); }
+  .src {
+    font-family:'JBM',monospace; font-size:9px; letter-spacing:.5px;
+    padding:1px 5px; border-radius:3px; background:var(--rule-soft);
+    color:var(--graphite); margin-left:6px;
+  }
+  .meaning { font-size:13px; color:var(--ink); margin:1px 0; }
+  .meta { font-family:'JBM',monospace; font-size:10.5px; color:var(--graphite); }
+
+  .empty {
+    display:none; font-family:'JBM',monospace; font-size:13px;
+    color:var(--graphite); padding:48px 0;
+  }
+  #toast {
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%);
+    font-family:'JBM',monospace; font-size:12px; background:var(--sky-deep);
+    color:var(--bg); padding:8px 16px; border-radius:6px;
+    opacity:0; transition:opacity .2s; pointer-events:none;
+  }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="mast-top">
+    <div class="eyebrow">JR / R—Net Design System</div>
+    <div class="mast-meta">
+      Companion to <span class="acc">GLYPHS.md v2.2</span><br>
+      JetBrainsMono Nerd Font v3.4.0
+    </div>
+  </div>
+  <h1 class="mast-title">Glyph Catalog</h1>
+  <div class="mast-sub">Complete Sanctioned Vocabulary · <span id="count"></span></div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-in">
+    <input id="q" type="search" placeholder="Filter by role or meaning…" autocomplete="off">
+    <nav class="nav" id="nav"></nav>
+    <button id="mode" onclick="toggleMode()">Dark mode</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="cats"></div>
+  <div class="empty" id="empty">No glyph matches that filter.</div>
+</div>
+<div id="toast">copied</div>
+
+<script>
+const CATS = [
+ {n:1,t:"Status & Indicators",b:"Dashboards, logs, status lines, callout labels.",items:[
+  ["status-ok",0xF00C,"Success / passing","FA"],
+  ["status-fail",0xF00D,"Failure / error","FA"],
+  ["status-warn",0xF071,"Warning","FA"],
+  ["status-info",0xF129,"Informational note","FA"],
+  ["status-online",0xF111,"Online / up","FA"],
+  ["status-offline",0xF10C,"Offline / down","FA"],
+  ["status-syncing",0xF021,"Syncing / in progress","FA"],
+  ["status-time",0xF017,"Time / timestamp","FA"],
+ ]},
+ {n:2,t:"Infrastructure & Network",b:"Home-lab and network — servers, compute, storage, connectivity.",items:[
+  ["infra-server",0xF233,"Server / host","FA"],
+  ["infra-database",0xF1C0,"Database","FA"],
+  ["infra-cloud",0xF0C2,"Cloud service","FA"],
+  ["infra-network",0xF0E8,"Network topology / sitemap","FA"],
+  ["infra-router",0xF1087,"Router","MDI"],
+  ["infra-wifi",0xF1EB,"Wi-Fi network","FA"],
+  ["infra-throughput",0xF0E7,"Throughput / bandwidth","FA"],
+  ["infra-device-mobile",0xF10B,"Mobile device","FA"],
+  ["infra-switch",0xF0317,"Network switch / LAN","MDI"],
+  ["infra-ups",0xF0079,"UPS / battery backup","MDI"],
+  ["infra-vm",0xEA7A,"Virtual machine","Codicons"],
+  ["infra-container",0xF4B7,"Container (generic)","Octicons"],
+  ["infra-cluster",0xF06E1,"Node cluster","MDI"],
+  ["infra-cpu",0xF0EE0,"Processor / CPU","MDI"],
+  ["infra-memory",0xF035B,"RAM / memory","MDI"],
+  ["infra-storage",0xF02CA,"Disk / local storage","MDI"],
+  ["infra-firewall",0xF1A11,"Firewall","MDI"],
+  ["infra-vpn",0xF0582,"VPN tunnel","MDI"],
+  ["infra-temperature",0xF050F,"Temperature sensor","MDI"],
+  ["infra-fan",0xF0210,"Cooling fan","MDI"],
+  ["infra-load",0xF029A,"System load / utilization","MDI"],
+  ["infra-monitor",0xF0A07,"Observability dashboard","MDI"],
+  ["infra-backup",0xF006F,"Backup / restore","MDI"],
+  ["infra-camera",0xF07AE,"CCTV camera","MDI"],
+ ]},
+ {n:3,t:"Location & Geography",b:"Ceremonial and instrumented context — where something happens.",items:[
+  ["loc-home-primary",0xF015,"Primary residence","FA"],
+  ["loc-home-secondary",0xF1AD,"Secondary building","FA"],
+  ["loc-pin",0xF041,"Map location pin","FA"],
+  ["loc-compass",0xF14E,"Orientation / compass","FA"],
+  ["loc-aviation",0xF072,"Aviation signature glyph","FA"],
+ ]},
+ {n:4,t:"Security & System Health",b:"Locks, protection, credentials.",items:[
+  ["sec-lock",0xF023,"Locked / secured","FA"],
+  ["sec-shield",0xF132,"Protection / shield","FA"],
+  ["sec-key",0xF084,"Credentials / access","FA"],
+ ]},
+ {n:5,t:"Document, Comms, Contact",b:"Headers, metadata blocks, contact information.",items:[
+  ["doc-file",0xF15B,"File / document","FA"],
+  ["doc-folder",0xF07B,"Folder / directory","FA"],
+  ["comms-mail",0xF0E0,"Email","FA"],
+  ["comms-phone",0xF095,"Phone / voice","FA"],
+  ["comms-calendar",0xF073,"Calendar / date","FA"],
+ ]},
+ {n:6,t:"Development & Code",b:"Repos, terminals, code references.",items:[
+  ["dev-git",0xF1D3,"Git","FA"],
+  ["dev-branch",0xF126,"Branch / fork","FA"],
+  ["dev-terminal",0xF120,"Terminal / shell","FA"],
+  ["dev-code",0xF121,"Source code","FA"],
+  ["dev-github",0xF09B,"GitHub","FA"],
+  ["dev-linux",0xF17C,"Linux","FA"],
+ ]},
+ {n:7,t:"Drafting & Navigation",b:"Signature category — the most aviation-coded glyphs.",items:[
+  ["nav-arrow-up-right",0xF08E,"External link","FA"],
+  ["nav-crosshair",0xF05B,"Crosshair / precision","FA"],
+  ["nav-target",0xF140,"Target / objective","FA"],
+  ["nav-direction",0xF124,"Heading / direction","FA"],
+  ["nav-grid",0xF00A,"Grid / layout","FA"],
+ ]},
+ {n:8,t:"Platform & Stack",b:"Brand and technology logos — technical metadata only.",items:[
+  ["stack-docker",0xF21F,"Docker","FA"],
+  ["stack-kubernetes",0xF10FE,"Kubernetes","MDI"],
+  ["stack-ubuntu",0xF31B,"Ubuntu","Font Logos"],
+  ["stack-debian",0xF306,"Debian","Font Logos"],
+  ["stack-nixos",0xF313,"NixOS","Font Logos"],
+  ["stack-cloudflare",0xE792,"Cloudflare","Devicons"],
+ ]},
+ {n:9,t:"Home Automation",b:"Apple Home, Home Assistant, and the device / sensor vocabulary.",items:[
+  ["home-assistant",0xF07D0,"Home Assistant","MDI"],
+  ["home-apple",0xF0035,"Apple Home / HomeKit","MDI"],
+  ["home-zigbee",0xF0D41,"Zigbee","MDI"],
+  ["home-zwave",0xF0AEA,"Z-Wave","MDI"],
+  ["home-bluetooth",0xF00AF,"Bluetooth","MDI"],
+  ["home-matter",0xF0563,"Matter protocol (stand-in glyph)","MDI"],
+  ["home-light",0xF0335,"Lighting / smart bulb","MDI"],
+  ["home-thermostat",0xF0393,"Thermostat / climate","MDI"],
+  ["home-lock",0xF08B2,"Smart lock","MDI"],
+  ["home-door",0xF081A,"Door / entry sensor","MDI"],
+  ["home-window",0xF05AE,"Window / contact sensor","MDI"],
+  ["home-motion",0xF0D91,"Motion / occupancy sensor","MDI"],
+  ["home-presence",0xF0826,"Presence — someone home","MDI"],
+  ["home-blinds",0xF00AC,"Blinds / shades","MDI"],
+  ["home-garage",0xF06D9,"Garage door","MDI"],
+  ["home-doorbell",0xF12E6,"Smart doorbell","MDI"],
+  ["home-smoke",0xF0392,"Smoke detector","MDI"],
+  ["home-speaker",0xF04C3,"Smart speaker / HomePod","MDI"],
+  ["home-tv",0xF0502,"TV / Apple TV","MDI"],
+  ["home-energy",0xF1903,"Home energy monitoring","MDI"],
+  ["home-automation",0xF07D1,"Automation / scene","MDI"],
+ ]},
+];
+
+const cats=document.getElementById('cats'), nav=document.getElementById('nav');
+let total=0;
+CATS.forEach(c=>{
+  total+=c.items.length;
+  const a=document.createElement('a'); a.href='#cat'+c.n; a.textContent='§'+c.n; nav.appendChild(a);
+  const sec=document.createElement('section'); sec.id='cat'+c.n;
+  const rc=c.items.length+' role'+(c.items.length>1?'s':'');
+  sec.innerHTML=`<div class="section-head">
+      <div class="section-num">§${c.n} ▸</div>
+      <div class="section-title">${c.t}</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">${rc}</div>
+    </div>
+    <p class="blurb">${c.b}</p>`;
+  const g=document.createElement('div'); g.className='grid';
+  c.items.forEach(([role,cp,m,src])=>{
+    const card=document.createElement('div'); card.className='card';
+    card.dataset.k=(role+' '+m).toLowerCase();
+    card.innerHTML=`<div class="glyph">${String.fromCodePoint(cp)}</div>
+      <div class="body">
+        <span class="role" title="click to copy">${role}</span><span class="src">${src}</span>
+        <div class="meaning">${m}</div>
+        <div class="meta">U+${cp.toString(16).toUpperCase()}</div>
+      </div>`;
+    card.querySelector('.role').addEventListener('click',()=>copy(role));
+    g.appendChild(card);
+  });
+  sec.appendChild(g); cats.appendChild(sec);
+});
+document.getElementById('count').textContent=total+' Roles · 9 Categories';
+
+const q=document.getElementById('q'), empty=document.getElementById('empty');
+q.addEventListener('input',()=>{
+  const t=q.value.trim().toLowerCase(); let shown=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const ok=!t||c.dataset.k.includes(t);
+    c.style.display=ok?'':'none'; if(ok)shown++;
+  });
+  document.querySelectorAll('section').forEach(s=>{
+    s.style.display=[...s.querySelectorAll('.card')].some(c=>c.style.display!=='none')?'':'none';
+  });
+  empty.style.display=shown?'none':'block';
+});
+function copy(role){
+  navigator.clipboard.writeText(role).then(()=>{
+    const t=document.getElementById('toast');
+    t.textContent=role+' copied'; t.style.opacity='1';
+    setTimeout(()=>t.style.opacity='0',1100);
+  });
+}
+function toggleMode(){
+  const dark=document.body.classList.toggle('dark');
+  document.getElementById('mode').textContent=dark?'Light mode':'Dark mode';
+}
+</script>
+</body>
+</html>

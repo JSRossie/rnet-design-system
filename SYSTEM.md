@@ -1,0 +1,500 @@
+# JR / R—Net Design System
+
+**Version:** 1.2
+**Codename:** Charts & Vectors
+**Owner:** James Rossie
+**Status:** Stable
+**Last updated:** 2026.05.14
+
+---
+
+## 0. How to Use This Document
+
+This is the canonical specification for the JR / R—Net design system. It exists in three layers of detail (`SHORT.md`, `STANDARD.md`, and this file) so you can paste the right amount of context into any AI tool.
+
+**For humans:** read it like a manual. The "why" is in §1 and §2; the "what" is in §3 onward; the "how to extend" is in §15.
+
+**For AI systems:** treat every rule in §3–§10 as a constraint. When in doubt, prefer restraint over elaboration. The system favors negative space, single-accent discipline, and aviation-instrument precedent. Never invent colors, fonts, or elements outside this spec without explicit permission. When asked to extend the system, consult §15 first. When using glyphs from `GLYPHS.md`, respect the confidence tags — entries marked `[MDI-v3.x-claim]` or `[unfilled]` should be surfaced as uncertain rather than used silently.
+
+---
+
+## 1. Premise
+
+A single visual language that reads **ceremonial** at one density (personal stationery, monograms, gifts) and **instrumented** at another (R—Net dashboards, system documentation, network diagrams). The vocabulary stays constant: Swiss-grid negative space, drafting and aviation construction marks, geometric sans typography, monospace as a primary voice, and a palette sourced from aircraft cockpit instrumentation.
+
+Only the information density and the surface temperature change between contexts.
+
+## 2. Source & Philosophy
+
+Every color in this system is pulled from aviation instrumentation or VFR sectional charts. Every typographic and structural choice is pulled from technical communication design — Swiss modernism, drafting tradition, and the corporate-engineering modernism of companies like Vertiv, IBM, and Siemens. The system inherits decades of visual harmony designed for legibility under stress.
+
+Three disciplines hold the system together:
+
+1. **Single-source palette.** Brand colors come from the cockpit. Semantic colors come from the universal status vocabulary (red/yellow/green). The two layers never compete because they do different jobs.
+2. **Single accent per context.** Sky for personal/ceremonial. Amber for R—Net/instrumented. The accent appears in at most three places per page and always signals something specific.
+3. **Negative space carries weight.** Industrial elements (corner brackets, registration marks, accent stripes, calipers) work because there's air around them. They reveal clutter rather than hide it.
+
+---
+
+## 3. Type System
+
+### Faces
+
+| Role | Face | Weight | Source |
+|------|------|--------|--------|
+| Display (bold) | Outfit | 600 | Google Fonts (OFL) |
+| Heading | Outfit | 500 | Google Fonts (OFL) |
+| Body | Urbanist | 400 | Google Fonts (OFL) |
+| Body emphasis | Urbanist | 600 | Google Fonts (OFL) |
+| Label / Eyebrow | JetBrainsMono Nerd Font | 500 | nerdfonts.com |
+| Metadata / Data | JetBrainsMono Nerd Font | 400 | nerdfonts.com |
+
+**Why three faces:** Outfit's geometric construction (single-story `a`) gives it a drawn-with-compass feel that fits the instrumentation aesthetic but lacks reading rhythm at length. Urbanist is its sibling — same geometric DNA, easier on the eye for body text. JetBrains Mono carries every technical voice: labels, eyebrows, metadata, status, inline code. The Nerd Font variant adds 9,000+ glyphs without breaking the monospace grid.
+
+### Type Roles (with specifications)
+
+| Role | Face | Size | Weight | Tracking | Line height | Case |
+|------|------|------|--------|----------|-------------|------|
+| Display | Outfit | 36–56px | 600 | -1.5px | 1.05 | Title |
+| H1 | Outfit | 28–36px | 500 | -0.5px | 1.15 | Title |
+| H2 (eyebrow / label) | JetBrainsMono Nerd | 11–12px | 500 | 2.5px | 1 | UPPERCASE |
+| Body | Urbanist | 14–16px | 400 | 0 | 1.65–1.75 | Sentence |
+| Body emphasis | Urbanist | 14–16px | 600 | 0 | 1.65 | Sentence |
+| Metadata | JetBrainsMono Nerd | 9–11px | 400 | 1–1.5px | 1.6 | UPPERCASE |
+| Inline accent | JetBrainsMono Nerd | inherit | 400 | 0.5px | inherit | Code |
+
+### Rules
+
+- **No italics on the name "James Rossie" or any primary headlines.** Accent comes from color and label, never slanting.
+- **Mono is a primary voice, not a fallback.** It carries section labels, eyebrows, metadata, status, coordinates. Used inline within prose for technical terms, file paths, IDs.
+- **Generous line height for body** (1.65 minimum). The system never feels crowded.
+- **Tracking matters on uppercase labels** — at least 2px on all-caps mono labels. They read as drafting callouts, not screaming.
+
+---
+
+## 4. Color System
+
+The palette is organized in **four conceptual layers**. They never mix roles. All values below have been verified for WCAG 2.1 contrast compliance — see §4.5 for the contrast matrix.
+
+### 4.1 Layer 1: Surfaces
+
+| Token | Hex | Role |
+|-------|-----|------|
+| `paper-true` | `#FAF6EC` | Ceremonial surface — personal letters, formal docs, fine stationery |
+| `paper-chart` | `#FCF4DF` | Technical default — R—Net light docs, field notes, status reports |
+| `urban` | `#F8E4AE` | Callout tint **only** — never a full-page background |
+| `night` | `#1C1E1C` | Dark mode base — warm charcoal, not pure black |
+| `night-2` | `#252824` | Dark elevated panel |
+| `night-3` | `#2F322D` | Dark secondary elevated (note callouts) |
+| `night-4` | `#3A3D37` | Dark tertiary (inline code, chips) |
+| `cream` | `#EDE8D8` | Dark mode primary ink — instrument paint color |
+
+### 4.2 Layer 2: Structure
+
+| Token | Hex | Role |
+|-------|-----|------|
+| `ink` | `#1F1D18` | Primary text on light surfaces |
+| `ink-2` | `#3A3730` | Secondary deep ink |
+| `graphite` | `#6B675C` | Labels, metadata, secondary text |
+| `soft` | `#989486` | Tertiary text, faded labels (decorative only — fails WCAG body) |
+| `panel-light` | `#D4CEBC` | Borders, rules, dividers (light) |
+| `panel` | `#8E8B80` | Strong rules, panel mid-tone |
+| `panel-deep` | `#5A5750` | Strong borders, shadows |
+| `night-rule` | `#3D403A` | Borders in dark mode |
+| `night-rule-soft` | `#2A2D28` | Soft dividers in dark mode |
+| `night-graphite` | `#8A8470` | Secondary text in dark mode (AA Large only) |
+| `night-soft` | `#5E5B50` | Tertiary text in dark mode (decorative only) |
+
+### 4.3 Layer 3: Brand (Cockpit-sourced)
+
+| Token | Hex | Source | Role |
+|-------|-----|--------|------|
+| `sky` | `#6B9BB8` | Attitude indicator sky | Personal accent — light-mode highlights |
+| `sky-deep` | `#4A7A96` | AI sky, darker band | Eyebrow labels, light-mode accent stripe |
+| `sky-light` | `#A8C5D8` | AI sky, higher band | Dark-mode notes, sky borders |
+| `ground` | `#8B5A3C` | AI ground, terracotta | Secondary warm accent, warm callout borders |
+| `ground-deep` | `#6B4226` | AI ground, mahogany | Borders, document classification stripes, anchored use |
+| `ground-light` | `#B08362` | AI ground, lighter | Dark-mode location tags |
+| `amber` | `#D49826` | NVIS night cockpit lighting | R—Net accent — dark mode only |
+| `amber-glow` | `#F0B84A` | NVIS amber, brighter | Dark-mode glow on amber elements |
+| `amber-deep` | `#8C6018` | NVIS amber, muted | Light-mode amber when needed (rare) |
+
+**Important contrast note:** `amber` (#D49826) fails WCAG contrast on light surfaces (2.34:1). It is **a dark-mode color**. For amber-coded elements on light surfaces, use `amber-deep` (#8C6018) which passes AA at 5.12:1.
+
+### 4.4 Layer 4: Semantic (Universal R/Y/G)
+
+These never overlap with brand colors. They only appear when literal status is being signaled. A green panel means "this is OK," never "decorative green panel."
+
+| Token | Hex | Role |
+|-------|-----|------|
+| `ok-fg` | `#4A7A3A` | Foreground for OK / nominal status |
+| `ok-bg` | `#D8E0C8` | Background tint for OK callout panels |
+| `ok-glow` | `#8DB072` | Dark-mode glow for OK indicators |
+| `warn-fg` | `#7A5A10` | Foreground for warning / caution status |
+| `warn-bg` | `#F5E4A8` | Background tint for warning callout panels |
+| `warn-glow` | `#E6B84A` | Dark-mode glow for warning indicators |
+| `alert-fg` | `#A8362A` | Foreground for alert / critical status |
+| `alert-bg` | `#ECC8C0` | Background tint for alert callout panels |
+| `alert-glow` | `#D4604E` | Dark-mode glow for alert indicators |
+
+### 4.5 Verified Contrast Matrix
+
+All ratios computed per WCAG 2.1. AA Body requires 4.5:1; AA Large (18pt+ or 14pt bold) requires 3.0:1; AAA requires 7.0:1.
+
+**Light mode — primary text:**
+
+| Pairing | Ratio | AA Body | AAA |
+|---------|------:|:-------:|:---:|
+| `ink` on `paper-true` | 15.60 | ✓ | ✓ |
+| `ink` on `paper-chart` | 15.35 | ✓ | ✓ |
+| `ink` on `urban` | 13.39 | ✓ | ✓ |
+| `graphite` on `paper-true` | 5.23 | ✓ | — |
+| `graphite` on `paper-chart` | 5.15 | ✓ | — |
+
+**Light mode — brand accents:**
+
+| Pairing | Ratio | AA Body | AA Large |
+|---------|------:|:-------:|:--------:|
+| `ground-deep` on `paper-true` | 8.00 | ✓ | ✓ |
+| `ground-deep` on `paper-chart` | 7.87 | ✓ | ✓ |
+| `ground` on `paper-true` | 5.37 | ✓ | ✓ |
+| `amber-deep` on `paper-true` | 5.12 | ✓ | ✓ |
+| `sky-deep` on `paper-true` | 4.31 | — | ✓ |
+| `sky-deep` on `paper-chart` | 4.24 | — | ✓ |
+| ⚠ `amber` on `paper-true` | 2.34 | ✗ | ✗ |
+
+**Light mode — semantic:**
+
+| Pairing | Ratio | AA Body | AA Large |
+|---------|------:|:-------:|:--------:|
+| `ok-fg` on `paper-true` | 4.70 | ✓ | ✓ |
+| `ok-fg` on `ok-bg` | 3.73 | — | ✓ |
+| `warn-fg` on `paper-true` | 5.90 | ✓ | ✓ |
+| `warn-fg` on `warn-bg` | 5.02 | ✓ | ✓ |
+| `alert-fg` on `paper-true` | 6.03 | ✓ | ✓ |
+| `alert-fg` on `alert-bg` | 4.21 | — | ✓ |
+
+**Dark mode — primary text:**
+
+| Pairing | Ratio | AA Body | AAA |
+|---------|------:|:-------:|:---:|
+| `cream` on `night` | 13.69 | ✓ | ✓ |
+| `cream` on `night-2` | 12.17 | ✓ | ✓ |
+| `cream` on `night-3` | 10.61 | ✓ | ✓ |
+
+**Dark mode — brand accents:**
+
+| Pairing | Ratio | AA Body | AAA |
+|---------|------:|:-------:|:---:|
+| `amber-glow` on `night` | 9.31 | ✓ | ✓ |
+| `amber-glow` on `night-2` | 8.28 | ✓ | ✓ |
+| `sky-light` on `night` | 9.30 | ✓ | ✓ |
+| `sky-light` on `night-3` | 7.21 | ✓ | ✓ |
+| `amber` on `night` | 6.65 | ✓ | — |
+| `ground-light` on `night` | 5.01 | ✓ | — |
+
+**Dark mode — semantic glows:**
+
+| Pairing | Ratio | AA Body | AA Large |
+|---------|------:|:-------:|:--------:|
+| `warn-glow` on `night` | 9.04 | ✓ | ✓ |
+| `ok-glow` on `night` | 6.86 | ✓ | ✓ |
+| `alert-glow` on `night` | 4.46 | — | ✓ |
+
+**Body text rule:** any character glyph used at body size must achieve AA Body (4.5:1) on its actual surface. Labels, eyebrows, and decorative metadata may use AA Large pairings (3.0:1).
+
+### 4.6 Palette Discipline (the rules that keep it tasteful)
+
+**DO:**
+- Use the brand accent in at most three places per page: top stripe, one or two meaningful highlights, inline within mono callouts.
+- Keep semantic colors completely separate from brand colors. They appear only in status contexts.
+- Let negative space carry weight. Industrial elements work because there's air around them.
+
+**DON'T:**
+- Color body text with the brand accent. Color whole headlines. Use the accent for decoration that carries no meaning.
+- Use semantic colors decoratively. If the meaning isn't literally "this is healthy" or "this is broken," don't reach for them.
+- Pile every industrial element into one document. Pick 2–3 per document maximum.
+- Use `amber` on light surfaces. It fails contrast. Use `amber-deep` instead, or reserve amber for dark mode.
+
+---
+
+## 5. The Monogram
+
+The JR mark is a **heraldic seal**, not a wordmark. Its construction, letterforms, and arrow vector are defined by the SVG assets shipped with this system (`/components/monogram-*.svg`). The wordmark that appears below the mark uses **Outfit 600** with 4–5px tracking — that's the bridge from the heraldic monogram into the rest of the type system.
+
+### Placement & sizing
+
+- **Primary placement:** top-left of the document, vertically aligned with the eyebrow label or accent stripe.
+- **Minimum width:** 32px (mark only) or 80px (mark + wordmark lockup).
+- **Clear space:** at least 0.5× the mark's height on all sides; no other element may intrude.
+- **Maximum density:** the mark appears once per document by default. Repeated use (footer, watermark) is permitted only if each instance serves a distinct function.
+
+### Variants (provided as SVGs)
+
+| Variant | Surface context | Filename |
+|---------|-----------------|----------|
+| Primary · light | `paper-true` or `paper-chart` | `monogram-light.svg` |
+| Primary · dark | `night` and elevations | `monogram-dark.svg` |
+| Monochrome | Fax, emboss, single-color print | `monogram-mono.svg` |
+
+The light and dark variants use brand-palette colors appropriate to their context. The monochrome version uses ink only. **The SVG is the spec** — visual choices like color-per-letter, arrow color, and construction-line treatment are defined by the asset, not this document.
+
+### Wordmark accompaniment
+
+When the mark appears with the wordmark below:
+
+- **Personal:** `JAMES ROSSIE` in Outfit 600, 4–5px tracking, color = `ink` (light) or `cream` (dark).
+- **R—Net:** `R—NET INFRASTRUCTURE` in Outfit 600, 4–5px tracking, color = `cream` (dark) with `amber` for `R—NET`.
+
+The em-dash in `R—Net` is intentional. It visually echoes the horizon line of the attitude indicator — the artifact from which the rest of the palette is sourced. Always an em-dash (`—`), never a hyphen (`-`).
+
+---
+
+## 6. Industrial Elements (System Grammar)
+
+A small set of recurring marks that give documents a consistent feel without veering into pastiche. Each has a clear job. Use them when the job applies, not for decoration.
+
+### Core Six
+
+1. **Accent stripe** — 3–4px bar of accent color across the top of a page, panel, or section. The system's most visible single mark. Use once per document.
+2. **Corner brackets** — Thin L-shaped registration marks at the corners of specimens, cards, or framed content. Reads as drafting / photographic crop marks. Use on cards and quote blocks.
+3. **Numbered section header** — Section number + title (in mono uppercase) + flexible rule + meta. The structural workhorse of every document. Use for every major section.
+4. **Registration mark** — A small crosshair-in-circle from the printing tradition. Use as a section divider or logo companion. Rare.
+5. **Dotted rule** — Finely dotted line for secondary dividers, TOC leaders, field separators. Use sparingly.
+6. **Data caliper** — Engineering-drawing measurement span used to label dimensions, ranges, or scopes. Use for total-count statements ("4 SITES · 12 SVCS").
+
+### Recommended default kit per document
+
+Most documents need only: **accent stripe + numbered section headers + occasional data caliper**. Add corners and registration marks for special documents (covers, formal correspondence). Use dotted rule only in tables of contents or field-style separators.
+
+---
+
+## 7. Iconography
+
+The system uses **JetBrainsMono Nerd Font** as its icon vocabulary, providing access to ~9,000 glyphs while preserving monospace alignment.
+
+This document does not enumerate approved glyphs — that vocabulary lives in **`GLYPHS.md`**, which is structured as a **role-based registry** (e.g., `status-ok`, `infra-server`, `loc-aviation`). Roles are stable; the specific glyphs assigned to them may evolve as Nerd Fonts versions shift codepoints. Every entry carries a confidence tag indicating reliability of the assignment.
+
+That separation lets the icon set grow without revising the core spec.
+
+### Discipline (applies regardless of which specific glyphs are sanctioned)
+
+- **Ceremonial documents** use glyphs sparingly — typically only in metadata blocks (location, contact, date). Never in body prose.
+- **Instrumented documents** use glyphs to carry meaning, never decoration. If a glyph can be removed without losing information, remove it.
+- **Color follows function.** Status glyphs use semantic R/Y/G. Brand-context glyphs use the appropriate accent. Section glyphs use the dominant accent for that mode (sky in light, amber in dark).
+- **Sanctioned set only.** Restrict to roles defined in `GLYPHS.md`. New roles are added through the process in `GLYPHS.md §10` — not invented ad hoc.
+- **Respect confidence tags.** `[FA-stable]` entries can be used directly. `[MDI-v3.x-claim]` and `[unfilled]` entries should be verified against the live `glyphnames.json` before relying on them.
+
+### Where to find glyph codepoints
+
+- The system's curated role-based set with usage notes: `GLYPHS.md`
+- Full searchable reference for extensions: [nerdfonts.com/cheat-sheet](https://www.nerdfonts.com/cheat-sheet)
+- Authoritative codepoint registry: [glyphnames.json](https://github.com/ryanoasis/nerd-fonts/blob/master/glyphnames.json)
+
+---
+
+## 8. Layout & Composition
+
+### Grid
+
+- **Page padding:** 32–48px on desktop surfaces
+- **Section spacing:** 56–80px between major sections
+- **Element spacing:** 14–28px within sections
+- **Content max-width:** 1280px for technical documents, 720px for body prose
+
+### Section header pattern
+
+Every section uses this pattern:
+
+```
+[NUM ▸]   [TITLE IN MONO UPPERCASE]   ──────────────────   [META]
+```
+
+Where:
+- `NUM` is the section number in mono (e.g., "04.2 ▸")
+- `TITLE` is in mono, uppercase, 2.5px tracking
+- The rule fills remaining space
+- `META` is right-aligned mono metadata (e.g., "4 ACTIVE")
+
+### Hierarchy via type, not decoration
+
+The system establishes hierarchy through type weight, case, and color — not through boxes, gradients, or shadows. A heading is a heading because it's bigger and bolder, not because it's in a colored box.
+
+---
+
+## 9. The Two Modes
+
+### Light · Ceremonial / Daylight
+
+**Default surface:** `paper-true` (ceremonial) or `paper-chart` (technical).
+**Primary accent:** `sky-deep` for stripes and labels.
+**Secondary accent:** `ground` or `ground-deep` for monogram J and warm callout borders.
+**Ink:** `ink` for body, `graphite` for secondary, `soft` for tertiary (decorative only).
+**Callout panels:** `urban` for highlighted notes; semantic backgrounds (`ok-bg`, `warn-bg`, `alert-bg`) for status callouts.
+
+Use light mode for: personal correspondence, formal documents, field notes, technical documents during daylight workflow, anything that will be printed.
+
+### Dark · Instrumented / Night Cockpit
+
+**Default surface:** `night` (warm charcoal, not pure black).
+**Elevation:** `night-2` for panels, `night-3` for note callouts, `night-4` for inline chips.
+**Primary accent:** `amber` for stripes, glyphs, unit suffixes; `amber-glow` for inline emphasis.
+**Secondary accent:** `sky-light` for observation notes and info callouts; `ground-light` for location tags.
+**Ink:** `cream` for primary text, `night-graphite` for secondary (AA Large only), `night-soft` for tertiary (decorative only).
+
+Use dark mode for: R—Net dashboards, system documentation, infrastructure status reports, terminal-adjacent contexts, anything viewed primarily on screen at night.
+
+---
+
+## 10. Content Patterns
+
+### Personal correspondence (ceremonial)
+
+- Surface: `paper-true`
+- Accent stripe: `sky-deep`
+- Monogram: top-left, light primary lockup
+- Sender meta: top-right, mono, with sky-accent location glyph
+- Body: Urbanist 16px, line-height 1.75, max-width 540px
+- Sign-off: mono uppercase with sky-accent date highlight
+- Contact block (if present): bottom, mono, 4 fields with sky-accent glyphs
+
+### R—Net status document (instrumented)
+
+- Surface: `night`
+- Accent stripe: `amber`
+- Header: monogram + R—NET wordmark left; status pill + revision right
+- Tag chips: amber/sky/ground/ok variants for scannable metadata
+- Stats grid: 2 or 4 columns on `night-2` panels, Outfit 500 values with amber units
+- Note callout: `night-3` panel, `sky` border, `sky-light` label
+- Sites table: full-width on `night`, amber-glyph node labels, semantic-colored status
+- Activity log: `night-2` panel with timestamps in amber, status entries in semantic glows
+- Footer: muted graphite with ground-light location tag
+
+### Technical field notes (light, instrumented density)
+
+- Surface: `paper-chart`
+- Accent stripe: `sky-deep`
+- Header: sectional-style with site identifier and date in mono
+- Body: Urbanist 14px, normal density
+- Callouts: `urban` for notes, `ok-bg` for nominal observations
+- Footer: mono with location, time, and JR initial
+
+### Document cover / formal
+
+- Surface: `paper-true` or `paper-chart`
+- Classification stripe at top: `ground-deep`
+- Corner brackets at all four corners
+- Centered monogram + title in Outfit
+- Mono metadata block: REV, COPY, AUTHOR
+
+---
+
+## 11. Voice & Naming
+
+The system is named **"Charts & Vectors."** Personal contexts sign with **"JR"** or **"James Rossie"** in full. Technical contexts sign as **"R—Net"** (with em-dash, not hyphen). The em-dash is intentional — it visually echoes the AI horizon line.
+
+Document revision numbers use semantic versioning (0.1, 0.2, 1.0). Dates in metadata use `YYYY.MM.DD` for technical contexts (`2026.05.14`) and "14 · MAY · 2026" for ceremonial contexts.
+
+---
+
+## 12. What This System Is Not
+
+To stay disciplined, name what it isn't:
+
+- **It is not a corporate brand system.** No tagline, no value proposition, no mission statement appears in design output.
+- **It is not maximalist.** If a choice between adding and removing is even, remove.
+- **It is not skeuomorphic.** No textures simulating leather, paper grain, brushed metal, or instrument bezels in actual UI. The system references those traditions; it doesn't imitate them.
+- **It is not a startup deck aesthetic.** No gradients, no glass effects, no large emoji, no rounded fully-bubble buttons.
+- **It is not a single-purpose system.** It must serve both a thank-you note and a 50-page infrastructure review without either feeling awkward.
+
+---
+
+## 13. Versioning
+
+| Version | Date | Notes |
+|---------|------|-------|
+| 0.1–0.7 | 2026.05.14 | Iterative exploration (typography, palette, surfaces, dark mode refinement) |
+| 0.8 | 2026.05.14 | Locked palette: 3 surfaces, R/Y/G semantics, magenta excluded |
+| 1.0 | 2026.05.14 | First stable spec |
+| 1.1 | 2026.05.14 | Verified contrast ratios; corrected `warn-fg` to #7A5A10; clarified monogram as SVG-defined; separated `GLYPHS.md` as living reference; added §15 extending guidance |
+| **1.2** | 2026.05.14 | **Current.** Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
+
+Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
+
+---
+
+## 14. Files in This System
+
+```
+jr-design-system/
+├── README.md                     The story. Read first.
+├── SYSTEM.md                     This document. The complete spec.
+├── SHORT.md                      Concise version (one paragraph).
+├── STANDARD.md                   Page-or-two version for system prompts.
+├── GLYPHS.md                     Curated Nerd Font glyph reference (role-based, versioned).
+├── tokens.json                   Machine-readable design tokens.
+├── tokens.css                    CSS custom properties (drop-in).
+├── tailwind.config.js            Tailwind preset (drop-in).
+├── prompts/
+│   ├── for-claude.md             Optimized for Claude.
+│   ├── for-chatgpt.md            Optimized for ChatGPT.
+│   ├── for-v0.md                 Optimized for v0 / Cursor / UI generation.
+│   └── for-design-tools.md       Figma / Adobe Firefly prompts.
+├── components/
+│   ├── monogram-light.svg        Primary mark, light mode.
+│   ├── monogram-dark.svg         Primary mark, dark mode.
+│   ├── monogram-mono.svg         Monochrome mark.
+│   └── templates/                Stationery, document covers, dashboards.
+└── reference/
+    ├── style-guide.html          Interactive visual reference.
+    └── style-guide.pdf           Print-ready style guide.
+```
+
+---
+
+## 15. Extending the System
+
+The system is designed to grow. When you (or an AI) needs something the spec doesn't cover, follow this procedure rather than improvising:
+
+### When extending the palette
+
+1. **Verify the need.** Is the new color genuinely required, or is an existing token close enough? Default to existing.
+2. **Source it.** New colors should derive from the same sources (aviation instrumentation, sectional charts, panel grays). Don't invent from nowhere.
+3. **Verify contrast.** Compute WCAG ratios against every surface it will touch. Add to the §4.5 matrix.
+4. **Name it.** Follow the existing scheme: `category-modifier` (e.g., `sky-deep`, `night-3`, `ok-glow`).
+5. **Document the role.** What job does it do? What job does it NOT do? Add to the appropriate layer in §4.
+6. **Bump the version.** Minor version (1.1 → 1.2) for additions; major version (1.x → 2.0) for breaking changes.
+
+### When extending UI components
+
+UI controls (buttons, forms, inputs, modals, tables, navigation) are **deferred to point of need**. This is intentional. The system ships with foundational primitives (color, type, surfaces, grammar) and waits to spec components until they're being built for an actual purpose.
+
+When the time comes:
+
+1. **Build for a specific use case first.** Don't design generic buttons; design buttons for the specific tool/app you're working on.
+2. **Derive from primitives.** Every component must compose from existing tokens. No new colors, no new spacing values, no new type sizes unless §15.palette procedure is followed.
+3. **Document the component in a new section** (`§16 Components` and onward) only after it has been used in two distinct contexts. One-off uses don't earn spec inclusion.
+4. **Honor the discipline.** The same rules in §12 ("what this is not") apply to components. No gradients, no glass, no decorative-only styling.
+
+### When extending the glyph vocabulary
+
+The glyph registry in `GLYPHS.md` is **role-based**: each role (e.g., `status-ok`, `infra-server`) gets one assigned glyph. When you need a glyph the registry doesn't cover, you're adding a new role, not just a new glyph.
+
+Follow `GLYPHS.md §10` ("How to Extend") for the full procedure. The short version:
+
+1. Verify the role doesn't already exist — default to reusing.
+2. Name the role following `category-purpose` convention.
+3. Find a glyph at [nerdfonts.com/cheat-sheet](https://www.nerdfonts.com/cheat-sheet); prefer Font Awesome (stable codepoints) over Material Design Icons (shifts between versions).
+4. Tag appropriately: `[FA-stable]` for Font Awesome, `[MDI-v3.x-claim]` for MDI pending verification, `[unfilled]` for placeholders.
+5. Run through the test harness (`GLYPHS.md §8`) on your machine to verify rendering.
+6. Log in `GLYPHS.md §11` audit log.
+
+Codepoint changes between Nerd Font versions are tracked in the audit log, not the spec — so the spec stays stable while the registry evolves.
+
+### When in doubt
+
+Re-read §1 (premise) and §12 (what it's not). Most extension decisions resolve themselves against those two sections.
+
+---
+
+*End of SYSTEM.md · v1.2 · 2026.05.14*
