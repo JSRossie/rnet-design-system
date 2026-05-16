@@ -5,3 +5,6 @@ fonts/.venv/
 
 # Wrangler build cache
 .wrangler/
+
+# macOS
+.DS_Store
