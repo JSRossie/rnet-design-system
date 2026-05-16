@@ -1,0 +1,7 @@
+# Font build toolchain — recreate with fonts/build-fonts.sh setup line
+fonts/.venv/
+# Env
+.env
+
+# Wrangler build cache
+.wrangler/
