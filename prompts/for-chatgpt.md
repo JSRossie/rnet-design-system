@@ -59,7 +59,7 @@ This is the binding specification for all design work in this project. Follow it
 
 If using ChatGPT with file upload (GPT-4 with file analysis):
 
-1. Upload `SYSTEM.md`, `GLYPHS.md`, and `tokens.json` to the conversation
+1. Upload `SYSTEM.md`, `GLYPHS.md`, and `tokens.json` to the conversation — and `VOICE.md` if the deliverable is prose (a briefing, report, memo, status doc)
 2. Use this opening prompt:
 
 ```
@@ -86,6 +86,12 @@ These produce worse output than the same prompts in Claude:
 
 ---
 
+## Prose deliverables — apply the written voice
+
+When the task is a document rather than a UI, the visual spec is only half the job. Attach `VOICE.md` and instruct ChatGPT to write to it. ChatGPT defaults hard into the patterns the voice standard bans — self-narration of the document's honesty, AI-vocabulary (delve, pivotal, crucial, underscore, robust), negative parallelism, bold claim-sentences, and reflexive em-dashes — so the negative constraints matter more here, the same way the "what this is NOT" section matters more for visuals. A useful counter-instruction: "Revise against the `VOICE.md` §6 checklist before returning the document."
+
+---
+
 ## ChatGPT-specific strengths
 
 ChatGPT is genuinely better than Claude at:
@@ -97,4 +103,4 @@ ChatGPT is genuinely better than Claude at:
 
 ---
 
-*for-chatgpt.md · v1.0 · 2026.05.14*
+*for-chatgpt.md · v1.1 · 2026.05.17*

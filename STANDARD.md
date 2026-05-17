@@ -91,9 +91,13 @@ Glyph rules: ceremonial docs use glyphs sparingly (metadata only, never body pro
 - Not a startup deck aesthetic (no gradients, no glass effects, no large emoji, no rounded fully-bubble buttons)
 - Not a single-purpose system (must serve both a thank-you note and a 50-page infrastructure report)
 
-## Voice & Naming
+## Naming & Signing
 
 System name: **"Charts & Vectors."** Personal contexts sign as "JR" or "James Rossie." Technical contexts sign as **"R—Net"** with em-dash (never hyphen). Dates: `YYYY.MM.DD` for technical, "14 · MAY · 2026" for ceremonial.
+
+## Written Voice
+
+Prose deliverables — briefings, reports, memos, status docs — carry a specified voice: a researcher briefing a reader who is making a hard decision. Its governing sentence is **disciplined restraint, with rationed and meaningful flourish** — the single-accent rule applied to the sentence. It removes the recognizable default-LLM voice: no self-narration of the document's honesty or importance, no AI-vocabulary (delve, pivotal, crucial, underscore, robust, seamless), no negative parallelism ("not X, but Y"), no bold claim-sentences, no reflexive em-dashes in prose. The em-dash stays only as a fixed mark in the wordmark "R—Net," never as a prose habit. Full standard: `VOICE.md` (SYSTEM.md §18); invokable as the `rnet-voice` skill.
 
 ## When generating output in this system
 
@@ -105,4 +109,4 @@ System name: **"Charts & Vectors."** Personal contexts sign as "JR" or "James Ro
 
 ---
 
-*Standard spec v1.0 · 2026.05.14 · derived from SYSTEM.md v1.2*
+*Standard spec v1.1 · 2026.05.17 · derived from SYSTEM.md v1.5*
