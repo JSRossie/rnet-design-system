@@ -192,6 +192,13 @@
   --type-body-sm:    13px;
   --type-code:       13px;
 
+  /* Prose heading ramp — rendered markdown (v1.4, see SYSTEM.md §17).
+     Sized for a 720px prose measure, not UI panels; consumed by
+     `markdown.css`. Distinct from the UI ramp above by design. */
+  --type-md-h1:      38px;
+  --type-md-h2:      26px;
+  --type-md-h3:      18px;
+
   /* ─── Tracking aliases ───────────────────────────────────── */
   --track-display:   var(--tracking-display-tight);  /* -1.5px */
   --track-h1:        var(--tracking-h1-tight);       /* -0.5px */
