@@ -8,3 +8,6 @@ fonts/.venv/
 
 # macOS
 .DS_Store
+
+# Scratch / exploratory samples — not part of the system
+.temp/
