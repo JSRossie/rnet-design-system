@@ -70,7 +70,7 @@ Three disciplines hold the system together:
 - **Generous line height for body** (1.65 minimum). The system never feels crowded.
 - **Tracking matters on uppercase labels** — at least 2px on all-caps mono labels. They read as drafting callouts, not screaming.
 
-### Web-control type additions (v1.1, see §16)
+### Web-control type additions (v1.3, see §16)
 
 The seven roles above are the system's canonical type vocabulary. UI components in §16 introduce four additional sizes — `subhead` (20px), `h3` (16px), `body-sm` (13px), `code` (13px) — exposed by `colors_and_type.css` as `--type-h2 / --type-h3 / --type-body-sm / --type-code` and in `tokens.json` under `font.size.{subhead,h3,bodySmall,code}`. These are web-control affordances, not new editorial roles; documents still draw from the seven canonical roles only. Rendered markdown (§17) adds a further prose-scoped heading ramp (`--type-md-h1/h2/h3`); it too is scoped to its context and leaves the seven canonical roles unchanged.
 
@@ -220,7 +220,7 @@ All ratios computed per WCAG 2.1. AA Body requires 4.5:1; AA Large (18pt+ or 14p
 - Pile every industrial element into one document. Pick 2–3 per document maximum.
 - Use `amber` on light surfaces. It fails contrast. Use `amber-deep` instead, or reserve amber for dark mode.
 
-### 4.7 Semantic Web-Control Roles (v1.1)
+### 4.7 Semantic Web-Control Roles (v1.3)
 
 The primitives in §4.1–§4.4 are the **palette**. UI controls cannot encode "use amber on dark, sky-deep on light" in every component — they need to read from a mode-aware role like "accent." The semantic layer in `colors_and_type.css` provides that, exposing the following named roles. Each one is an alias (`var(--token)`) — no new colors are introduced.
 
@@ -393,7 +393,7 @@ The chrome is the frame, not the content. It carries identification, status, and
 
 The regions, from the top edge inward:
 
-- **Classification stripe.** The topmost edge, drawn in `ground-deep` (§4.4). It appears only when the document is classified — its presence *is* the signal, and its absence means unclassified or public. Anchored weight, not decoration. Formal and controlled documents raise it; most documents have no stripe at all.
+- **Classification stripe.** The topmost edge, drawn in `ground-deep` (§4.3). It appears only when the document is classified — its presence *is* the signal, and its absence means unclassified or public. Anchored weight, not decoration. Formal and controlled documents raise it; most documents have no stripe at all.
 
 - **Accent stripe.** The single mode-accent edge: `sky-deep` on light surfaces, `amber` on night (§9). It is the one place the brand accent touches the page frame, and it honors §4.6 — one stripe, one accent, never two. Nearly every template carries it; it is the system's quietest signature.
 
@@ -573,7 +573,7 @@ Re-read §1 (premise) and §12 (what it's not). Most extension decisions resolve
 
 ---
 
-## 16. Components (v1.1)
+## 16. Components (v1.3)
 
 The system's first UI-control cohort, implemented in `controls.css`. Every component reads from `colors_and_type.css` (§4.7's semantic role layer) and switches automatically when `<html data-mode="day | night">` flips.
 

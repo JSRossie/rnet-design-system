@@ -109,4 +109,4 @@ The rest is just paper, ink, and air.
 
 ---
 
-*Version 1.1 · 2026.05.17*
+*Last updated 2026.05.17. The README tracks the system rather than carrying its own version — see `SHIPPING.md` for the release log.*

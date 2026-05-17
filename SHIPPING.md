@@ -3,7 +3,7 @@
 **For:** James Rossie
 **Codename:** Charts & Vectors
 
-This is the running shipping log. Each entry below corresponds to a released version of the system. New work appends to the top; previous entries stay intact.
+This is the running shipping log. Each entry below is a numbered release on the manifest's own counter (v1.0, v1.1, …) — a scale distinct from the internal document version of any single file. `SYSTEM.md`, `GLYPHS.md`, and `VOICE.md` each version independently; an entry records which file versions a release shipped (e.g. release v1.4 shipped `SYSTEM.md` v1.6). New work appends to the top; previous entries stay intact.
 
 ---
 

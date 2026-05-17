@@ -1,9 +1,9 @@
 # Proposal · Markdown Preview Styling & Template Chrome
 
-**Status:** Proposal — open decisions resolved 2026.05.17 (§4); ready to graduate into `SYSTEM.md` §17
+**Status:** Graduated 2026.05.17 into `SYSTEM.md` §17 and `markdown.css`. Retained for design-rationale history; not a live proposal.
 **Owner:** James Rossie
 **Opened:** 2026.05.17
-**Targets:** SYSTEM.md (a future minor version)
+**Shipped in:** SYSTEM.md v1.4
 
 ---
 

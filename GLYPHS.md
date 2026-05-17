@@ -1,6 +1,6 @@
 # GLYPHS.md — Curated Glyph Reference
 
-**Companion to:** `SYSTEM.md` v1.1
+**Companion to:** `SYSTEM.md` v1.6
 **Document version:** 2.2
 **Last updated:** 2026.05.15
 **Authored against Nerd Fonts:** v3.4.0 (cmap-verified 2026.05.15)
