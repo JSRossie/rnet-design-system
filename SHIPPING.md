@@ -7,6 +7,31 @@ This is the running shipping log. Each entry below corresponds to a released ver
 
 ---
 
+## v1.3 — 2026.05.17 · Editorial voice
+
+A writing-voice standard for prose deliverables — the editorial voice graduates from `proposals/rnet-voice.md` into the spec. The system's first extension that is editorial rather than visual.
+
+### Added
+
+- **`VOICE.md`** — the editorial-voice standard, a new top-level living reference parallel to `GLYPHS.md` and versioned independently (v1.0). Specifies the written voice across eight dimensions (persona, address, diction, syntax, rhythm, modality, architecture, mechanics), plus structural choices, a banned-pattern reference, before/after examples, and a ten-step revision checklist. Documented as `SYSTEM.md §18`. Originates as a skill authored in a separate project; its examples were genericized to an R—Net infrastructure briefing so the standard carries no outside-project reference.
+- **`.claude/skills/rnet-voice/SKILL.md`** — the invokable form of the standard, sibling to the `font-subset` skill. Defers to `VOICE.md` as canonical.
+
+### Changed
+
+- **`SYSTEM.md`** → v1.5. Added `§18 Editorial Voice` (the written voice as the prose sibling of the visual system, the em-dash distinction against §11, a pointer to `VOICE.md`). Retitled `§11` "Voice & Naming" → "Naming & Signing" — the section number is unchanged, so every existing §11 cross-reference stays valid. Added the v1.5 row to §13 and the `VOICE.md` entry to the §14 file tree. Corrected the stale `Version:` header (was 1.3; §13 and the footer were already 1.4).
+- **`STANDARD.md`** → v1.1. Added a "Written Voice" section, retitled its "Voice & Naming" heading to "Naming & Signing" to match SYSTEM.md, and refreshed the footer (`derived from SYSTEM.md v1.5`).
+- **`prompts/for-claude.md`** → v1.1, **`prompts/for-chatgpt.md`** → v1.1 — added a voice pointer: when the deliverable is prose, attach `VOICE.md`. The two visual-generation prompt files (`for-v0`, `for-design-tools`) are unchanged.
+- **`README.md`** — added a `VOICE.md` bullet under "What's in this repository."
+- **`proposals/rnet-voice.md`** — opened and decisions resolved this branch; status "ready to graduate."
+
+### Discipline check
+
+- ✓ Editorial only. No colors, tokens, primitives, components, or CSS were touched — the change is entirely in prose documentation.
+- ✓ `VOICE.md` is self-contained. Examples genericized off the source project; no outside-project reference remains.
+- ✓ §11 was retitled, not renumbered. Cross-references from §17.4 and the date-format rules stay valid.
+
+---
+
 ## v1.2 — 2026.05.17 · Rendered markdown
 
 Styling for rendered markdown and markdown previews — the markdown content pattern graduates from `proposals/markdown-preview.md` into the spec.

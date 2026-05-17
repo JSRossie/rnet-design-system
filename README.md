@@ -70,6 +70,7 @@ Naming what the system isn't turns out to be as important as naming what it is. 
 
 - **`SYSTEM.md`** — the complete specification. Read this when you need the rules: type roles, color tokens with verified contrast ratios, content patterns, the discipline rules, the procedure for extending the system.
 - **`GLYPHS.md`** — the curated icon vocabulary. Role-based registry of 83 sanctioned glyphs across 9 categories from JetBrainsMono Nerd Font, with confidence tags and an audit procedure for keeping codepoints accurate across font versions.
+- **`VOICE.md`** — the editorial-voice standard. How prose deliverables read: a researcher-briefer voice across eight dimensions, a banned-pattern reference for the default-LLM tells, and a revision checklist. The written counterpart to the visual spec. See `SYSTEM.md §18`.
 - **`SHORT.md`** and **`STANDARD.md`** — concise versions of the spec at different fidelity, sized to drop into AI system prompts.
 - **`tokens.json`, `tokens.css`, `tailwind.config.js`** — machine-readable design tokens for use in any modern tool.
 - **`colors_and_type.css`, `controls.css`** — drop-in web layer: semantic role aliases, `@font-face` declarations, and the first cohort of UI controls (buttons, fields, navigation, feedback, tables, modal). Switch modes with `<html data-mode="day | night">`. See `SYSTEM.md §4.7` and `§16`.
