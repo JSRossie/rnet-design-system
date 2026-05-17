@@ -1,6 +1,6 @@
 # JR / R—Net Design System
 
-**Version:** 1.3
+**Version:** 1.5
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
@@ -426,9 +426,11 @@ Use dark mode for: R—Net dashboards, system documentation, infrastructure stat
 
 ---
 
-## 11. Voice & Naming
+## 11. Naming & Signing
 
 The system is named **"Charts & Vectors."** Personal contexts sign with **"JR"** or **"James Rossie"** in full. Technical contexts sign as **"R—Net"** (with em-dash, not hyphen). The em-dash is intentional — it visually echoes the AI horizon line.
+
+This section governs *names and signatures*. The system's **written voice** — how prose deliverables read — is a separate concern, specified in §18 and `VOICE.md`.
 
 Document revision numbers use semantic versioning (0.1, 0.2, 1.0). Dates in metadata use `YYYY.MM.DD` for technical contexts (`2026.05.14`) and "14 · MAY · 2026" for ceremonial contexts.
 
@@ -456,7 +458,8 @@ To stay disciplined, name what it isn't:
 | 1.1 | 2026.05.14 | Verified contrast ratios; corrected `warn-fg` to #7A5A10; clarified monogram as SVG-defined; separated `GLYPHS.md` as living reference; added §15 extending guidance |
 | 1.2 | 2026.05.14 | Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
 | 1.3 | 2026.05.17 | First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
-| **1.4** | 2026.05.17 | **Current.** Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
+| 1.4 | 2026.05.17 | Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
+| **1.5** | 2026.05.17 | **Current.** Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -471,6 +474,7 @@ jr-design-system/
 ├── SHORT.md                      Concise version (one paragraph).
 ├── STANDARD.md                   Page-or-two version for system prompts.
 ├── GLYPHS.md                     Curated Nerd Font glyph reference (role-based, versioned).
+├── VOICE.md                      Editorial-voice standard for prose (versioned). See §18.
 ├── SHIPPING.md                   Versioned shipping manifest.
 ├── tokens.json                   Machine-readable design tokens.
 ├── tokens.css                    CSS custom properties — primitives (drop-in).
@@ -698,4 +702,18 @@ Front matter is markdown's mechanism for feeding the chrome regions. It drives c
 
 ---
 
-*End of SYSTEM.md · v1.4 · 2026.05.17*
+## 18. Editorial Voice (v1.5)
+
+The system has always been a visual language, but it ships prose: this spec, the README, runbooks, status docs, the documents the §17 markdown pattern exists to render. That prose has a specified voice.
+
+The written voice is the prose sibling of the visual system. Both rest on the §1 premise and the §12 discipline: prefer restraint over elaboration; when a choice between adding and removing is even, remove. Its governing sentence is **disciplined restraint, with rationed and meaningful flourish** — the §2 single-accent rule applied to the sentence rather than the page.
+
+The voice is a writer's standard, not a styling layer. It removes the recognizable default-LLM voice (self-narration of virtue, AI-vocabulary, negative parallelism, reflexive em-dashes, bold claim-sentences) and replaces it with a deliberate one: a researcher briefing a reader who is making a hard decision. It governs prose deliverables — briefings, reports, research documents, memos, status docs — and does not change the analysis, the argument, or the facts, only how the prose carries them.
+
+**Em-dash, two rules that do not conflict.** §11 keeps the em-dash as a fixed visual mark in the wordmark "R—Net." The voice standard effectively eliminates the em-dash in *running prose*, where it has become a recognized AI tell. One is a name; the other is a sentence-level habit. Removing the habit leaves the name untouched.
+
+**See:** `VOICE.md` — the full standard. Eight voice dimensions (persona, address, diction, syntax, rhythm, modality, architecture, mechanics), structural choices, a banned-pattern reference, before/after examples, and a ten-step revision checklist. `VOICE.md` is a living reference versioned independently of this spec, the way `GLYPHS.md` is. The invokable form is the `rnet-voice` skill, which defers to `VOICE.md` as canonical.
+
+---
+
+*End of SYSTEM.md · v1.5 · 2026.05.17*

@@ -47,6 +47,7 @@ For sessions where you need Claude to extend the system, design new components, 
 1. **`SYSTEM.md`** — the complete specification (the rulebook)
 2. **`GLYPHS.md`** — the role-based glyph registry with confidence tags
 3. **`tokens.json`** — machine-readable design tokens (if Claude is generating code)
+4. **`VOICE.md`** — the editorial-voice standard (if Claude is authoring prose: briefings, reports, memos, status docs)
 
 Or, if your tool can fetch URLs:
 
@@ -68,6 +69,8 @@ The complete design system is at https://github.com/[your-username]/jr-design-sy
 
 **Verify before printing/shipping.** Even with a full prompt, ask Claude to "list the design system elements used in your output, and confirm each one against the spec." Catches drift before it gets baked in.
 
+**For prose, apply the written voice.** When the deliverable is a document rather than a UI — a briefing, report, memo, status doc — attach `VOICE.md` (or invoke the `rnet-voice` skill) and tell Claude to write to it. The visual spec governs how a page looks; the voice standard governs how its prose reads. They are separate, and a document needs both.
+
 ---
 
 ## Anti-patterns
@@ -81,4 +84,4 @@ Things that produce worse output:
 
 ---
 
-*for-claude.md · v1.0 · 2026.05.14*
+*for-claude.md · v1.1 · 2026.05.17*
