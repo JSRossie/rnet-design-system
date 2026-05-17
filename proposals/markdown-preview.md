@@ -1,6 +1,6 @@
 # Proposal · Markdown Preview Styling & Template Chrome
 
-**Status:** Proposal — not yet part of the spec
+**Status:** Proposal — open decisions resolved 2026.05.17 (§4); ready to graduate into `SYSTEM.md` §17
 **Owner:** James Rossie
 **Opened:** 2026.05.17
 **Targets:** SYSTEM.md (a future minor version)
@@ -21,8 +21,9 @@ Nothing here is binding until it is designed, resolved, and folded into
 is the staging area for that work — extensions live here while they are
 being figured out, and only graduate into the spec once stable.
 
-A non-tracked, exploratory HTML sample backs this proposal. It is kept in
-`.temp/` (gitignored) because it is a scratch artifact, not a deliverable.
+A non-tracked, exploratory HTML sample backs this proposal. It lives in
+`.staging/markdown treatment/` (gitignored) because it is a scratch
+artifact, not a deliverable.
 
 ---
 
@@ -131,7 +132,7 @@ slot), not reject them.
 
 | Field | Notes |
 |-------|-------|
-| `doc-id` | Document identifier number, e.g. `RNET-RB-0042`. Numbering scheme TBD. |
+| `doc-id` | Document identifier, e.g. `RNET-RB-0042`. Optional. Numbering scheme: §4.2. |
 | `title` | Drives the `h1`. |
 | `context` | `rnet` or `personal` — selects accent + surface (§9). |
 | `mode` | Optional override of the context's default day/night. |
@@ -154,26 +155,97 @@ Metadata selects from system primitives; it does not add new ones.
 
 ---
 
-## 4. Open decisions
+## 4. Resolved decisions
 
-Resolve these before any of this graduates into `SYSTEM.md`:
+Resolved 2026.05.17 on branch `02-markdown-treatment`. These supersede the
+open questions this section previously held and are the basis for the
+markdown pattern's graduation into `SYSTEM.md`.
 
-1. **Heading ramp** — confirm the §2 ramp, especially whether `h4` keeps the
-   mono-uppercase eyebrow treatment or all headings stay in Outfit.
-2. **`doc-id` numbering scheme** — format and allocation method.
-3. **Sequencing** — the chrome guidance (general) should likely land before
-   or alongside the markdown pattern, since markdown's front matter feeds it.
-4. **Spec placement** — which new section numbers, and the version bump.
+### 4.1 Heading ramp — prose-scoped ramp, `h4` reuses the eyebrow
+
+The type system (§3) has only Display, H1, and an "H2" that is a 12px
+mono-uppercase *eyebrow label*, not a section title. Markdown needs a genuine
+title hierarchy. The v1.3 tokens `--type-h2: 20px` / `--type-h3: 16px` exist
+but were sized for UI panels, not a 720px prose measure — reusing them would
+apply UI-tuned sizes to a long-form context they were not tuned for.
+
+**Resolution:** add a *prose-scoped* heading ramp — heading sizes namespaced
+to the document context, not new global UI rungs. This is a §15 type
+extension done honestly: the tokens do not pretend to be universal.
+
+| Markdown | Face | Token | Size | Weight | Tracking |
+|----------|------|-------|------|--------|----------|
+| `h1` | Outfit | `--type-md-h1` | 38px | 600 | -1.2px |
+| `h2` | Outfit | `--type-md-h2` | 26px | 500 | -0.4px, hairline underline |
+| `h3` | Outfit | `--type-md-h3` | 18px | 500 | -0.2px |
+| `h4` | JetBrainsMono | `--type-label` (reused) | 12px | 500 | 2.5px, uppercase, accent |
+| `h5`/`h6` | — | — | — | bold inline fallback, no new rung |
+
+`h4` is not a new invention: the system's existing "H2" *is* a
+mono-uppercase eyebrow label, so markdown `h4` simply reuses that rung. New
+`--type-md-*` tokens land in `colors_and_type.css` per the §15 procedure.
+
+### 4.2 `doc-id` — optional, `CONTEXT-TYPE-SEQ`
+
+`doc-id` stays an **optional** front-matter field. When present it uses:
+
+```
+<CONTEXT>-<TYPE>-<SEQ>      e.g.  RNET-RB-0042
+```
+
+- `CONTEXT` — `RNET`, or `JR` for personal documents.
+- `TYPE` — two-letter document-type code: `RB` runbook, `SD` status doc,
+  `FN` field note, `CV` cover/formal, `LT` letter, `MD` general memo.
+- `SEQ` — four-digit zero-padded, allocated per `CONTEXT`+`TYPE`.
+
+A central allocation ledger is **out of scope for this branch** — numbers
+are assigned by hand for now. The format is fixed; a registry can follow
+later without changing it.
+
+### 4.3 Sequencing — chrome guidance splits to its own branch
+
+This proposal originally wanted the general chrome guidance (§2) to land
+first. Since it was written, the v1.3 controls cohort shipped component-level
+chrome — `.card--stripe`, `.card--brackets`, `.topbar`, `.section-rule` — so
+the chrome guidance must now reconcile §10 *and* §16, a materially larger
+task than first scoped.
+
+**Resolution:** the chrome guidance moves to its own later branch, re-scoped
+to reconcile both. The markdown pattern proceeds independently on
+`02-markdown-treatment`; its previewer builds chrome provisionally against
+the regions as they exist today. The dependency runs one way and does not
+block markdown — when the chrome guidance lands it will describe what
+markdown already does, not contradict it.
+
+### 4.4 Spec placement — new §17, version → 1.4
+
+The markdown pattern graduates as a single new section **§17 Rendered
+Markdown**, appended after §16 (no renumbering). It carries the content
+pattern, the §4.1 heading ramp, the element→primitive mapping, and the
+front-matter vocabulary (§3) as a subsection — front matter is
+markdown-specific and belongs with it. `SYSTEM.md` bumps **1.3 → 1.4**
+(minor; additions only, including the §15-compliant prose-ramp tokens).
+
+### 4.5 Implementation reuses the §4.7 semantic layer
+
+Surfaced by review, not an original open question. The exploratory sample
+forks its own role variables (`--surface`, `--ink-body`, `--code-bg`, …) and
+re-styles code blocks and callouts that already exist as v1.3 controls. The
+shipped `markdown.css` instead **imports `colors_and_type.css`** and
+re-derives the codeblock/callout treatment from the §4.7 role layer, so a
+rendered bare `<pre>` / `<blockquote>` matches `.codeblock` / `.alert--note`
+without needing the class. No forked variables.
 
 ---
 
 ## 5. Sequencing
 
-The §2 chrome guidance is the durable, all-template piece. The markdown
-preview styling (§1) and its front-matter vocabulary (§3) depend on it but
-are narrower. Recommended order: resolve chrome guidance → resolve heading
-ramp → ship the markdown pattern + front-matter superset together.
+Superseded by §4.3. The markdown pattern ships first, on its own branch
+(`02-markdown-treatment`), independent of the chrome guidance. Order within
+this branch: resolve decisions (§4 — done) → `markdown.css` → reference
+showcase + previewer → graduate into `SYSTEM.md §17` (v1.4). The chrome
+guidance follows on a later branch, re-scoped to reconcile §10 and §16.
 
 ---
 
-*Proposal · markdown-preview · opened 2026.05.17 · not yet spec*
+*Proposal · markdown-preview · opened 2026.05.17 · decisions resolved 2026.05.17 · branch 02-markdown-treatment*

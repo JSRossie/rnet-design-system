@@ -17,3 +17,9 @@ Companion to `controls.css` and `SYSTEM.md §16`.
 - `controls-preview/` — 40 focused single-component cards (one HTML file per component cluster). Useful when you want to lift a specific component into a design or screenshot it in isolation.
 
 Each file `<link>`s `../controls.css` and loads `@font-face` declarations from `cdn.rossie.net`.
+
+## Markdown reference (v1.4)
+
+Companion to `markdown.css` and `SYSTEM.md §17`.
+
+- `markdown-showcase.html` — Rendered markdown in both modes. Carries a live YAML front-matter editor: edit the front matter and the preview chrome (eyebrow, classification stripe, footer) re-renders. Includes a manual day/night toggle. `<link>`s `../markdown.css`.

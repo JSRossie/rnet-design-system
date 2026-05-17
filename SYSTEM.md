@@ -72,7 +72,7 @@ Three disciplines hold the system together:
 
 ### Web-control type additions (v1.1, see §16)
 
-The seven roles above are the system's canonical type vocabulary. UI components in §16 introduce four additional sizes — `subhead` (20px), `h3` (16px), `body-sm` (13px), `code` (13px) — exposed by `colors_and_type.css` as `--type-h2 / --type-h3 / --type-body-sm / --type-code` and in `tokens.json` under `font.size.{subhead,h3,bodySmall,code}`. These are web-control affordances, not new editorial roles; documents still draw from the seven canonical roles only.
+The seven roles above are the system's canonical type vocabulary. UI components in §16 introduce four additional sizes — `subhead` (20px), `h3` (16px), `body-sm` (13px), `code` (13px) — exposed by `colors_and_type.css` as `--type-h2 / --type-h3 / --type-body-sm / --type-code` and in `tokens.json` under `font.size.{subhead,h3,bodySmall,code}`. These are web-control affordances, not new editorial roles; documents still draw from the seven canonical roles only. Rendered markdown (§17) adds a further prose-scoped heading ramp (`--type-md-h1/h2/h3`); it too is scoped to its context and leaves the seven canonical roles unchanged.
 
 ---
 
@@ -455,7 +455,8 @@ To stay disciplined, name what it isn't:
 | 1.0 | 2026.05.14 | First stable spec |
 | 1.1 | 2026.05.14 | Verified contrast ratios; corrected `warn-fg` to #7A5A10; clarified monogram as SVG-defined; separated `GLYPHS.md` as living reference; added §15 extending guidance |
 | 1.2 | 2026.05.14 | Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
-| **1.3** | 2026.05.17 | **Current.** First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
+| 1.3 | 2026.05.17 | First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
+| **1.4** | 2026.05.17 | **Current.** Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -475,6 +476,7 @@ jr-design-system/
 ├── tokens.css                    CSS custom properties — primitives (drop-in).
 ├── colors_and_type.css           CSS semantic layer + @font-face. Imports tokens.css. (v1.1)
 ├── controls.css                  Web-control implementation. Imports colors_and_type.css. (v1.1)
+├── markdown.css                  Rendered-markdown styling. Imports colors_and_type.css. (v1.4)
 ├── tailwind.config.js            Tailwind preset (drop-in).
 ├── prompts/
 │   ├── for-claude.md             Optimized for Claude.
@@ -492,7 +494,8 @@ jr-design-system/
     ├── glyph-catalog.html        Browsable glyph catalog (companion to GLYPHS.md).
     ├── controls-showcase.html    Interactive controls showcase. (v1.1)
     ├── controls-compare.html     Day-vs-night side-by-side reference. (v1.1)
-    └── controls-preview/         Focused single-control preview cards. (v1.1)
+    ├── controls-preview/         Focused single-control preview cards. (v1.1)
+    └── markdown-showcase.html    Rendered markdown + front-matter previewer. (v1.4)
 ```
 
 ---
@@ -628,4 +631,71 @@ The `data-mode` attribute is the only switch: every variable in §4.7 tracks it.
 
 ---
 
-*End of SYSTEM.md · v1.3 · 2026.05.17*
+## 17. Rendered Markdown (v1.4)
+
+Markdown's constrained vocabulary suits a system whose first instinct is restraint. `markdown.css` styles the bare elements a markdown renderer emits — no class hooks on the rendered output — and reads from the §4.7 semantic layer, so it switches with `<html data-mode>` like everything else.
+
+**See:** `reference/markdown-showcase.html` (rendered markdown in both modes, with a live front-matter previewer).
+
+### 17.1 Content vs. chrome
+
+The system's industrial grammar (§6) — monograms, accent stripes, corner brackets, numbered section headers — has no markdown syntax. It therefore belongs to the **preview wrapper**, never the rendered body:
+
+- **`.md`** — the rendered markdown. Disciplined plain prose at the 720px prose measure. Form comes from the system; the author writes only markdown.
+- **`.doc`** — the chrome around it: accent stripe, eyebrow, classification stripe, footer. Its *content* comes from front matter (§17.4); its *form* is fixed by the system. No styling escape hatches.
+
+### 17.2 Heading ramp
+
+Markdown uses `#`–`####` as a genuine title hierarchy. The §3 type table defines only Display, H1, and an "H2" that is a mono-uppercase label — no mid-document title rung. The markdown ramp is **prose-scoped**: sized for a 720px measure, distinct from the §3 web-control ramp by design.
+
+| Markdown | Face | Token | Size | Treatment |
+|----------|------|-------|------|-----------|
+| `h1` | Outfit 600 | `--type-md-h1` | 38px | Display-adjacent |
+| `h2` | Outfit 500 | `--type-md-h2` | 26px | Heading + hairline underline |
+| `h3` | Outfit 500 | `--type-md-h3` | 18px | Sub-heading |
+| `h4` | JetBrainsMono 500 | `--type-label` | 12px | Mono-uppercase eyebrow (reused rung) |
+| `h5`/`h6` | Urbanist 600 | `--type-body` | 15px | Bold inline fallback — no new rung |
+
+`h4` reuses the system's existing eyebrow label rather than inventing a rung; `h5`/`h6` fall back to bold body text. Per §8, hierarchy comes from type weight and case, not decoration.
+
+### 17.3 Element mapping
+
+Every markdown element maps onto an existing primitive — no new ones:
+
+| Element | Maps to |
+|---------|---------|
+| Body paragraphs | Body role, 720px `--content-max-prose` measure |
+| `> blockquote` | The note callout — `bg-callout` + `accent-warm` border; matches `.alert--note` |
+| `> ` with `.ok`/`.warn`/`.alert` | The §4.4 semantic layer; status only, separate from the brand accent |
+| `` `inline code` `` | Inline-accent role on a subtle `bg-elev-2` chip |
+| Fenced code block | The `.codeblock` surface — `bg-elev-2`, hairline border, `--radius-3` |
+| Tables | The R—Net sites-table pattern — mono uppercase headers, hairline rules |
+| `---` | Hair rule (`--bw-hair`) |
+
+Links carry meaning, so a link-dense document is exempt from §4.6's "accent in at most three places" — resolved as §7 exempts functional glyphs.
+
+### 17.4 Front-matter vocabulary
+
+Front matter is markdown's mechanism for feeding the chrome regions. It drives chrome **content only** — never styling. It is an open *superset*, not a closed set: a previewer handles unknown keys gracefully, and an author may add a field when a document genuinely needs one (reuse before inventing, §15).
+
+| Field | Role |
+|-------|------|
+| `doc-id` | Document identifier, `CONTEXT-TYPE-SEQ` (e.g. `RNET-RB-0042`). Optional. |
+| `title` | Drives the `h1`. |
+| `context` | `rnet` or `personal` — selects accent + surface (§9). |
+| `mode` | Optional override of the context's default day/night. |
+| `eyebrow` | Mono-uppercase label beside the wordmark. |
+| `node` / `site` | Infrastructure identifier (rnet). |
+| `owner` / `author` | Responsible person. |
+| `rev` / `version` | Semantic version (§11). |
+| `created`, `reviewed`, `next-review`, `effective` | Dates; formatted per §11. |
+| `class` | Classification — draws the `ground-deep` classification stripe. |
+| `status` | Draft / Stable / Active / Deprecated. |
+| `supersedes` / `superseded-by` | Cross-document references. |
+| `copy`, `recipient`, contact-block fields | Controlled / ceremonial documents. |
+
+`doc-id` uses `CONTEXT` (`RNET` or `JR`), a two-letter `TYPE` (`RB` runbook, `SD` status doc, `FN` field note, `CV` cover, `LT` letter, `MD` memo), and a four-digit `SEQ`. Allocation is manual; a registry can follow without changing the format.
+
+---
+
+*End of SYSTEM.md · v1.4 · 2026.05.17*
