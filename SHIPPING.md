@@ -7,6 +7,24 @@ This is the running shipping log. Each entry below corresponds to a released ver
 
 ---
 
+## v1.4 — 2026.05.17 · Page chrome guidance
+
+A general account of the chrome regions every template shares — the frame the §10 content patterns were already filling without a documented vocabulary for it. No new file: the work is a restructure of two existing SYSTEM.md sections.
+
+### Changed
+
+- **`SYSTEM.md`** → v1.6. Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns". Added **§10.1 Chrome regions** — a non-prescriptive, all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, framed as orientation rather than a checklist. Gathered the four existing patterns under **§10.2**, aligning their `Header` / `Sender meta` / `Contact block` bullet labels to the §10.1 region names so the patterns read as instances of one frame. §17.4 front-matter table gained a **Feeds** column mapping each field to the §10.1 region it reaches; §17.1 now points to §10.1. Added the v1.6 row to §13.
+
+### Discipline check
+
+- ✓ Editorial only. No colors, tokens, primitives, components, or CSS were touched.
+- ✓ §10 was restructured, not renumbered — the section keeps its number, so every existing §10 cross-reference stays valid.
+- ✓ §10.1 is orientation, not a checklist: it describes what each region is *for* and leaves placement to the author. The closing rule holds the §15 line — chrome metadata drives content only, never styling.
+- ✓ Facet 2 of the open task (the markdown front-matter vocabulary) needed no new work — it already shipped as §17.4 in v1.2 of this manifest; v1.4 only cross-links it to the new region names.
+- ✓ `STANDARD.md` and `SHORT.md` unchanged — both carry the industrial-grammar primitives but no content-pattern section, so the chrome account stays a SYSTEM.md-level concern.
+
+---
+
 ## v1.3 — 2026.05.17 · Editorial voice
 
 A writing-voice standard for prose deliverables — the editorial voice graduates from `proposals/rnet-voice.md` into the spec. The system's first extension that is editorial rather than visual.
