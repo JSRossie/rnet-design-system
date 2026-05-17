@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" data-mode="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rendered markdown · Charts & Vectors</title>
+<link rel="preconnect" href="https://cdn.rossie.net" crossorigin>
+<link rel="stylesheet" href="../markdown.css">
+<style>
+  /* ────────────────────────────────────────────────────────
+     Showcase-only chrome. The markdown body (.md) and the
+     preview chrome (.doc, .doc-stripe, .doc-eyebrow, .doc-foot)
+     are styled by ../markdown.css — see SYSTEM.md §17.
+     Only the demo affordances below live here.
+     ──────────────────────────────────────────────────────── */
+  html, body { scroll-behavior: smooth; }
+
+  /* Gap between the eyebrow and the rendered body. */
+  .doc .md { padding-top: 34px; }
+
+  /* Toolbar — viewer controls, not part of the system. */
+  .toolbar {
+    position: fixed; top: 0; right: 0; padding: 14px 18px; z-index: 10;
+    display: flex; gap: 8px;
+  }
+  .toolbar button {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    background: var(--bg); color: var(--fg-3);
+    border: 1px solid var(--rule); padding: 6px 12px; cursor: pointer;
+  }
+  .toolbar button:hover { color: var(--accent); border-color: var(--accent); }
+  .toolbar button:focus-visible {
+    outline: var(--focus-ring-w) solid var(--focus-ring); outline-offset: 2px;
+  }
+
+  /* Front-matter editor — demo affordance: edit the YAML and the
+     chrome re-renders live. In a real previewer this block is the
+     head of the .md file. */
+  .fm-panel {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9;
+    background: var(--bg); border-bottom: 1px solid var(--rule-strong);
+    padding: 42px 30px 18px;
+  }
+  .fm-panel[hidden] { display: none; }
+  .fm-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3);
+    margin-bottom: 8px;
+  }
+  .fm-label b { color: var(--accent); font-weight: 500; }
+  .fm-panel textarea {
+    width: 100%; max-width: 780px; height: 210px; resize: vertical;
+    font-family: var(--font-mono); font-size: 12.5px; line-height: 1.65;
+    background: var(--bg-elev-2); color: var(--fg-1);
+    border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+  }
+  .fm-panel textarea:focus-visible {
+    outline: var(--focus-ring-w) solid var(--focus-ring); outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="fm-toggle">⌗ Front matter</button>
+  <button id="toggle">◐ Toggle mode</button>
+</div>
+
+<!-- DEMO AFFORDANCE: edit this YAML and the chrome re-renders live.
+     In a real previewer this block is the head of the .md file. -->
+<div class="fm-panel" id="fm-panel" hidden>
+  <div class="fm-label">FRONT MATTER — head of <b>runbook.md</b> · edit and the chrome responds</div>
+  <textarea id="fm-text" spellcheck="false">doc-id:   RNET-RB-0042
+title:    Backup Job Runbook
+context:  rnet            # rnet -> amber/night · personal -> sky/paper
+mode:     night           # optional; omit to use the context default
+eyebrow:  Rendered Markdown
+node:     NODE-04
+owner:    JR
+rev:      0.1
+reviewed: 2026.05.14
+class:    Internal         # omit to drop the ground-deep classification stripe</textarea>
+</div>
+
+<div class="doc">
+  <!-- Chrome: form from the system, content from front matter. -->
+  <div class="doc-classstripe" id="classstripe"></div>
+  <div class="doc-stripe"></div>
+  <div class="doc-eyebrow">
+    <span id="eyebrow-left"></span>
+    <span id="eyebrow-right"></span>
+  </div>
+
+  <!-- Everything inside .md is what plain markdown renders to. -->
+  <article class="md">
+
+    <h1 id="md-title"></h1>
+    <p class="doc-title-meta"><small id="md-meta"></small></p>
+
+    <p>This document describes the nightly backup job for the R—Net file
+    store, how to verify it ran, and what to do when it didn't. It is the
+    canonical reference — if a procedure here disagrees with memory,
+    the document wins. The title, the metadata line above, and the header
+    and footer chrome are all driven by the <em>front matter</em> — open
+    the <code>⌗ Front matter</code> panel and edit it to see.</p>
+
+    <h2>Overview</h2>
+
+    <p>The job runs at <code>03:15</code> local time and writes an
+    incremental snapshot to the offsite target. A full snapshot is taken
+    every Sunday. Average runtime is twelve minutes; anything past
+    <strong>thirty minutes</strong> should be treated as a stall. See the
+    <a href="#">escalation path</a> below before paging anyone.</p>
+
+    <blockquote>
+      <p>Note — the job holds a read lock on the file store for its first
+      ~90 seconds. Schedule no other writes against <code>NODE-04</code>
+      in that window. A plain blockquote re-derives the system's note
+      callout: <code>bg-callout</code> tint with an <code>accent-warm</code>
+      border, matching <code>.alert--note</code> without the class.</p>
+    </blockquote>
+
+    <h3>What the job touches</h3>
+
+    <ul>
+      <li>The primary file store at <code>/srv/store</code></li>
+      <li>The metadata index (rebuilt, not copied)</li>
+      <li>The offsite target — credentials in the vault, never on disk</li>
+    </ul>
+
+    <h2>Running a verification</h2>
+
+    <p>After any snapshot you can confirm integrity in three steps. Run
+    them in order; step two depends on step one having written the
+    manifest.</p>
+
+    <ol>
+      <li>Pull the latest manifest from the offsite target.</li>
+      <li>Compare the manifest checksum against the local ledger.</li>
+      <li>Restore one sentinel file and diff it against source.</li>
+    </ol>
+
+    <p>The whole check is scripted. From the node:</p>
+
+    <pre><code>$ rnet-backup verify --node NODE-04 --since last
+  ✓ manifest pulled        (offsite, 1.2 MB)
+  ✓ checksum matches ledger
+  ✓ sentinel restore       (delta: 0 bytes)
+verification passed — snapshot 2026.05.14-0315 is sound</code></pre>
+
+    <blockquote class="ok">
+      <p>OK — a passing verification means the snapshot is restorable.
+      Semantic callouts (ok / warn / alert) reuse the R/Y/G layer and
+      stay separate from the brand accent.</p>
+    </blockquote>
+
+    <blockquote class="warn">
+      <p>Caution — if the sentinel restore reports a non-zero delta, the
+      snapshot is intact but the source changed mid-run. Re-run after the
+      write window closes.</p>
+    </blockquote>
+
+    <blockquote class="alert">
+      <p>Alert — a failed checksum means the offsite copy is corrupt. Do
+      not delete the previous snapshot. Escalate immediately.</p>
+    </blockquote>
+
+    <h2>Status reference</h2>
+
+    <p>The verifier exits with one of the codes below. Tables derive from
+    the R—Net sites-table pattern — mono uppercase headers, hairline
+    row rules.</p>
+
+    <table>
+      <thead>
+        <tr><th>Exit</th><th>State</th><th>Meaning</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>0</code></td><td>NOMINAL</td><td>Snapshot sound</td><td>None</td></tr>
+        <tr><td><code>12</code></td><td>DELTA</td><td>Source moved mid-run</td><td>Re-run</td></tr>
+        <tr><td><code>30</code></td><td>STALL</td><td>Exceeded 30 min</td><td>Inspect lock</td></tr>
+        <tr><td><code>64</code></td><td>CORRUPT</td><td>Checksum mismatch</td><td>Escalate</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Edge cases</h4>
+
+    <p>A fourth-level heading takes the mono-uppercase eyebrow treatment —
+    it reuses the system's existing label rung rather than inventing a new
+    one. Markdown rarely needs <code>h5</code>/<code>h6</code>; they fall
+    back to bold inline text rather than a new ramp step.</p>
+
+    <h5>A fifth-level heading</h5>
+
+    <p>Bold inline-weight text at body size — the deepest fallback. If a
+    document needs more structure than this, it should be split.</p>
+
+    <hr>
+
+    <p>For escalation, contact the on-call channel or, after hours, the
+    number in the vault. Detail on the offsite target lives in the
+    <a href="#">infrastructure overview</a>; this runbook intentionally
+    stays scoped to <em>verification</em>.</p>
+
+    <div class="doc-foot">
+      <span id="foot-left"></span>
+      <span id="foot-right"></span>
+    </div>
+
+  </article>
+</div>
+
+<script>
+  const html = document.documentElement;
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  /* Minimal flat YAML reader — enough for front-matter key: value pairs. */
+  function parseFrontMatter(text) {
+    const fm = {};
+    text.split('\n').forEach(line => {
+      const stripped = line.replace(/\s+#.*$/, '').trimEnd();   // drop inline comments
+      const m = stripped.match(/^([A-Za-z_-]+):\s*(.*)$/);
+      if (m && m[2] !== '') fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
+    });
+    return fm;
+  }
+
+  /* Date format follows context — §11: YYYY.MM.DD technical,
+     D · MON · YYYY ceremonial. */
+  function fmtDate(iso, context) {
+    const p = (iso || '').split('.').map(Number);
+    if (p.length !== 3 || p.some(isNaN)) return iso || '';
+    if (context === 'personal')
+      return `${String(p[2]).padStart(2,'0')} · ${MONTHS[p[1]-1]} · ${p[0]}`;
+    return iso;
+  }
+
+  /* Map front matter -> chrome. Form is fixed by the system; only
+     content is variable. No styling escape hatches are honored. */
+  function render(fm) {
+    const context = (fm.context || 'rnet').toLowerCase();
+    const mode    = (fm.mode || (context === 'personal' ? 'day' : 'night')).toLowerCase();
+    html.dataset.mode = mode;
+
+    const wordmark = context === 'personal' ? 'JAMES ROSSIE' : 'R—NET';
+    const footMark = context === 'personal' ? 'JAMES ROSSIE' : 'R—NET INFRASTRUCTURE';
+
+    // Eyebrow — left: wordmark ◇ eyebrow label
+    document.getElementById('eyebrow-left').innerHTML =
+      `${wordmark} <span class="accent">◇</span> ${(fm.eyebrow || '').toUpperCase()}`;
+
+    // Eyebrow — right: classification tag + revision
+    const right = [];
+    if (fm.class) right.push(`<span class="classtag">${fm.class.toUpperCase()}</span>`);
+    if (fm.rev)   right.push(`REV ${fm.rev}`);
+    document.getElementById('eyebrow-right').innerHTML = right.join(' · ');
+
+    // §10 classification stripe — present only when class is set
+    document.getElementById('classstripe').hidden = !fm.class;
+
+    // Title -> h1 (so the markdown body need not repeat it)
+    document.getElementById('md-title').textContent = fm.title || 'Untitled';
+
+    // Metadata line under the title
+    const meta = [];
+    if (fm['doc-id'])  meta.push(fm['doc-id']);
+    if (fm.node)       meta.push(fm.node);
+    if (fm.reviewed)   meta.push('REVIEWED ' + fmtDate(fm.reviewed, context));
+    if (fm.owner)      meta.push('OWNER ' + fm.owner);
+    document.getElementById('md-meta').textContent = meta.join(' · ');
+
+    // Footer — left: wordmark · right: node + date
+    document.getElementById('foot-left').textContent = footMark;
+    const footR = [];
+    if (fm.node)     footR.push(fm.node);
+    if (fm.reviewed) footR.push(fmtDate(fm.reviewed, context));
+    document.getElementById('foot-right').textContent = footR.join(' · ');
+  }
+
+  const fmText = document.getElementById('fm-text');
+  fmText.addEventListener('input', () => render(parseFrontMatter(fmText.value)));
+
+  document.getElementById('fm-toggle').addEventListener('click', () => {
+    const panel = document.getElementById('fm-panel');
+    panel.hidden = !panel.hidden;
+  });
+
+  // Manual viewer override — flips mode without touching front matter.
+  document.getElementById('toggle').addEventListener('click', () => {
+    html.dataset.mode = html.dataset.mode === 'day' ? 'night' : 'day';
+  });
+
+  // Initial paint
+  render(parseFrontMatter(fmText.value));
+</script>
+</body>
+</html>
