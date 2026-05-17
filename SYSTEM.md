@@ -1,6 +1,6 @@
 # JR / R—Net Design System
 
-**Version:** 1.5
+**Version:** 1.6
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
@@ -383,23 +383,48 @@ Use dark mode for: R—Net dashboards, system documentation, infrastructure stat
 
 ---
 
-## 10. Content Patterns
+## 10. Page Chrome & Content Patterns
 
-### Personal correspondence (ceremonial)
+Every template the system produces — stationery, a document cover, a dashboard, a status doc, field notes, a rendered-markdown page — frames its content the same way. The frame is a small, fixed set of **chrome regions**: the stripes and metadata bands that surround the content without being the content. §10.1 describes those regions and what each is for. The patterns in §10.2 are not separate inventions; each is one document type's way of filling the same regions.
+
+### 10.1 Chrome regions
+
+The chrome is the frame, not the content. It carries identification, status, and provenance — what the document *is*, not what it *says*. Read this section as orientation, not a checklist: each region has a natural gravity, a kind of information that settles there on its own. Place metadata by that gravity rather than by rule, and leave a region empty when the document has nothing for it. An empty region is normal; filler to occupy one is not.
+
+The regions, from the top edge inward:
+
+- **Classification stripe.** The topmost edge, drawn in `ground-deep` (§4.4). It appears only when the document is classified — its presence *is* the signal, and its absence means unclassified or public. Anchored weight, not decoration. Formal and controlled documents raise it; most documents have no stripe at all.
+
+- **Accent stripe.** The single mode-accent edge: `sky-deep` on light surfaces, `amber` on night (§9). It is the one place the brand accent touches the page frame, and it honors §4.6 — one stripe, one accent, never two. Nearly every template carries it; it is the system's quietest signature.
+
+- **Eyebrow.** The identification band below the stripes. Its left holds the monogram or the R—Net wordmark plus a short mono-uppercase label naming the document or its section. Its right holds the meta cluster — the few facts that identify the document at a glance: node or site, revision, status, date. The eyebrow answers *what am I looking at, and is it current* before the reader reaches the title.
+
+- **Title + metadata block.** The document's own name, set in Outfit, with a metadata block carrying the fuller provenance the eyebrow abbreviates — author or owner, the dates (§11), the document identifier, a copy number. On a formal cover this block is centered beneath the monogram and reads `REV · COPY · AUTHOR`; elsewhere it sits left, under the eyebrow.
+
+- **Footer.** The closing band, and the document's record of where and when it was made. Its left tends toward place and provenance — a location tag, a site, a contact block, a signing initial. Its right tends toward time and state — a timestamp, a revision echo, a page mark. A ceremonial letter puts a contact block here; an instrumented dashboard puts a location tag and timestamp; a formal cover often omits the footer entirely.
+
+- **Corner brackets.** Registration marks at the four corners (§6). Not a metadata region but a framing device, reserved for documents that present themselves formally — covers and formal correspondence. Most templates omit them.
+
+One discipline runs through all of it: chrome metadata drives chrome *content* only — what a region says, never how it looks. There is no chrome field for color, font, or spacing; form is fixed by the system (§15).
+
+### 10.2 Content patterns
+
+Each pattern below fills the §10.1 regions in the manner its document type calls for. They are reference points, not the full range — a document type the system has not yet met fills the same regions by the same logic.
+
+#### Personal correspondence (ceremonial)
 
 - Surface: `paper-true`
 - Accent stripe: `sky-deep`
-- Monogram: top-left, light primary lockup
-- Sender meta: top-right, mono, with sky-accent location glyph
+- Eyebrow: monogram top-left (light primary lockup); sender meta top-right, mono, with sky-accent location glyph
 - Body: Urbanist 16px, line-height 1.75, max-width 540px
 - Sign-off: mono uppercase with sky-accent date highlight
-- Contact block (if present): bottom, mono, 4 fields with sky-accent glyphs
+- Footer: contact block (if present), mono, 4 fields with sky-accent glyphs
 
-### R—Net status document (instrumented)
+#### R—Net status document (instrumented)
 
 - Surface: `night`
 - Accent stripe: `amber`
-- Header: monogram + R—NET wordmark left; status pill + revision right
+- Eyebrow: monogram + R—NET wordmark left; status pill + revision right
 - Tag chips: amber/sky/ground/ok variants for scannable metadata
 - Stats grid: 2 or 4 columns on `night-2` panels, Outfit 500 values with amber units
 - Note callout: `night-3` panel, `sky` border, `sky-light` label
@@ -407,22 +432,21 @@ Use dark mode for: R—Net dashboards, system documentation, infrastructure stat
 - Activity log: `night-2` panel with timestamps in amber, status entries in semantic glows
 - Footer: muted graphite with ground-light location tag
 
-### Technical field notes (light, instrumented density)
+#### Technical field notes (light, instrumented density)
 
 - Surface: `paper-chart`
 - Accent stripe: `sky-deep`
-- Header: sectional-style with site identifier and date in mono
+- Eyebrow: site identifier and date in mono, sectional style
 - Body: Urbanist 14px, normal density
 - Callouts: `urban` for notes, `ok-bg` for nominal observations
 - Footer: mono with location, time, and JR initial
 
-### Document cover / formal
+#### Document cover / formal
 
 - Surface: `paper-true` or `paper-chart`
 - Classification stripe at top: `ground-deep`
 - Corner brackets at all four corners
-- Centered monogram + title in Outfit
-- Mono metadata block: REV, COPY, AUTHOR
+- Title + metadata block: centered monogram + title in Outfit; mono metadata block reads `REV · COPY · AUTHOR`
 
 ---
 
@@ -459,7 +483,8 @@ To stay disciplined, name what it isn't:
 | 1.2 | 2026.05.14 | Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
 | 1.3 | 2026.05.17 | First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
 | 1.4 | 2026.05.17 | Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
-| **1.5** | 2026.05.17 | **Current.** Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
+| 1.5 | 2026.05.17 | Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
+| **1.6** | 2026.05.17 | **Current.** Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns": added §10.1 (Chrome regions), a non-prescriptive all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, and gathered the four existing patterns under §10.2 with their header/footer terminology aligned to the §10.1 region names. §17.4 front-matter fields now map to the §10.1 region each feeds (new **Feeds** column). §10 keeps its section number; cross-references intact. Editorial only — no primitive, color, token, component, or CSS changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -646,7 +671,7 @@ Markdown's constrained vocabulary suits a system whose first instinct is restrai
 The system's industrial grammar (§6) — monograms, accent stripes, corner brackets, numbered section headers — has no markdown syntax. It therefore belongs to the **preview wrapper**, never the rendered body:
 
 - **`.md`** — the rendered markdown. Disciplined plain prose at the 720px prose measure. Form comes from the system; the author writes only markdown.
-- **`.doc`** — the chrome around it: accent stripe, eyebrow, classification stripe, footer. Its *content* comes from front matter (§17.4); its *form* is fixed by the system. No styling escape hatches.
+- **`.doc`** — the chrome around it: the §10.1 regions — accent stripe, eyebrow, classification stripe, footer. Its *content* comes from front matter (§17.4); its *form* is fixed by the system. No styling escape hatches.
 
 ### 17.2 Heading ramp
 
@@ -680,23 +705,24 @@ Links carry meaning, so a link-dense document is exempt from §4.6's "accent in 
 
 ### 17.4 Front-matter vocabulary
 
-Front matter is markdown's mechanism for feeding the chrome regions. It drives chrome **content only** — never styling. It is an open *superset*, not a closed set: a previewer handles unknown keys gracefully, and an author may add a field when a document genuinely needs one (reuse before inventing, §15).
+Front matter is markdown's mechanism for feeding the §10.1 chrome regions — the channel by which a markdown author supplies what other template types supply through template params or direct authoring. It drives chrome **content only** — never styling. It is an open *superset*, not a closed set: a previewer handles unknown keys gracefully, and an author may add a field when a document genuinely needs one (reuse before inventing, §15). The **Feeds** column names the §10.1 region each field reaches.
 
-| Field | Role |
-|-------|------|
-| `doc-id` | Document identifier, `CONTEXT-TYPE-SEQ` (e.g. `RNET-RB-0042`). Optional. |
-| `title` | Drives the `h1`. |
-| `context` | `rnet` or `personal` — selects accent + surface (§9). |
-| `mode` | Optional override of the context's default day/night. |
-| `eyebrow` | Mono-uppercase label beside the wordmark. |
-| `node` / `site` | Infrastructure identifier (rnet). |
-| `owner` / `author` | Responsible person. |
-| `rev` / `version` | Semantic version (§11). |
-| `created`, `reviewed`, `next-review`, `effective` | Dates; formatted per §11. |
-| `class` | Classification — draws the `ground-deep` classification stripe. |
-| `status` | Draft / Stable / Active / Deprecated. |
-| `supersedes` / `superseded-by` | Cross-document references. |
-| `copy`, `recipient`, contact-block fields | Controlled / ceremonial documents. |
+| Field | Feeds | Role |
+|-------|-------|------|
+| `doc-id` | Title + metadata block | Document identifier, `CONTEXT-TYPE-SEQ` (e.g. `RNET-RB-0042`). Optional. |
+| `title` | Title + metadata block | Drives the `h1`. |
+| `context` | — | `rnet` or `personal` — selects accent + surface (§9); not chrome content. |
+| `mode` | — | Optional override of the context's default day/night; not chrome content. |
+| `eyebrow` | Eyebrow | Mono-uppercase label beside the wordmark. |
+| `node` / `site` | Eyebrow | Infrastructure identifier (rnet). |
+| `owner` / `author` | Title + metadata block | Responsible person. |
+| `rev` / `version` | Eyebrow + metadata block | Semantic version (§11). |
+| `created`, `reviewed`, `next-review`, `effective` | Title + metadata block | Dates; formatted per §11. |
+| `class` | Classification stripe | Classification — draws the `ground-deep` stripe. |
+| `status` | Eyebrow | Draft / Stable / Active / Deprecated. |
+| `supersedes` / `superseded-by` | Title + metadata block | Cross-document references. |
+| `copy` | Title + metadata block | Copy number for controlled distribution. |
+| `recipient`, contact-block fields | Footer | Ceremonial documents. |
 
 `doc-id` uses `CONTEXT` (`RNET` or `JR`), a two-letter `TYPE` (`RB` runbook, `SD` status doc, `FN` field note, `CV` cover, `LT` letter, `MD` memo), and a four-digit `SEQ`. Allocation is manual; a registry can follow without changing the format.
 
@@ -716,4 +742,4 @@ The voice is a writer's standard, not a styling layer. It removes the recognizab
 
 ---
 
-*End of SYSTEM.md · v1.5 · 2026.05.17*
+*End of SYSTEM.md · v1.6 · 2026.05.17*
