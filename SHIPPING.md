@@ -7,6 +7,31 @@ This is the running shipping log. Each entry below corresponds to a released ver
 
 ---
 
+## v1.2 — 2026.05.17 · Rendered markdown
+
+Styling for rendered markdown and markdown previews — the markdown content pattern graduates from `proposals/markdown-preview.md` into the spec.
+
+### Added
+
+- **`markdown.css`** — rendered-markdown stylesheet, a new top-level file parallel to `controls.css`. Imports `colors_and_type.css` and styles the bare elements a markdown renderer emits (`h1`–`h6`, `p`, lists, `pre`, `code`, `blockquote`, `hr`, `table`) with no class hooks on the rendered output. Code blocks and callouts re-derive the `.codeblock` / `.alert--note` treatment from the §4.7 layer — no forked role variables. Includes the `.doc` preview-chrome classes. Documented as `SYSTEM.md §17`.
+- **`reference/markdown-showcase.html`** — rendered markdown in both modes, with a live YAML front-matter previewer and a manual day/night toggle.
+
+### Changed
+
+- **`colors_and_type.css`** — added the prose-scoped heading-ramp tokens `--type-md-h1` (38px), `--type-md-h2` (26px), `--type-md-h3` (18px). A §15 type extension; deliberately distinct from the §16 UI ramp.
+- **`SYSTEM.md`** → v1.4. Added `§17 Rendered Markdown` (content vs. chrome, heading ramp, element mapping, front-matter vocabulary), added the v1.4 row to §13, listed `markdown.css` and `markdown-showcase.html` in §14, and added a §17 pointer to the §3 type-additions note.
+- **`README.md`** — added bullets for `markdown.css` and the markdown showcase under "What's in this repository."
+- **`reference/README.md`** — added a "Markdown reference" section for `markdown-showcase.html`.
+- **`proposals/markdown-preview.md`** — open decisions (§4) resolved; status updated to "ready to graduate."
+
+### Discipline check
+
+- ✓ No new colors. `markdown.css` reads only `--*` aliases from `colors_and_type.css`.
+- ✓ No new primitives. The only new tokens are the three `--type-md-*` sizes, added per the §15 type-extension procedure and scoped to the prose context.
+- ✓ Code blocks and callouts reuse existing component treatments rather than forking them.
+
+---
+
 ## v1.1 — 2026.05.17 · First UI-control cohort
 
 The system's first cohort of UI controls, plus the third monogram variant and a semantic-role layer that decouples components from the raw palette.

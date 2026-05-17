@@ -73,10 +73,12 @@ Naming what the system isn't turns out to be as important as naming what it is. 
 - **`SHORT.md`** and **`STANDARD.md`** — concise versions of the spec at different fidelity, sized to drop into AI system prompts.
 - **`tokens.json`, `tokens.css`, `tailwind.config.js`** — machine-readable design tokens for use in any modern tool.
 - **`colors_and_type.css`, `controls.css`** — drop-in web layer: semantic role aliases, `@font-face` declarations, and the first cohort of UI controls (buttons, fields, navigation, feedback, tables, modal). Switch modes with `<html data-mode="day | night">`. See `SYSTEM.md §4.7` and `§16`.
+- **`markdown.css`** — drop-in styling for rendered markdown: a prose-scoped heading ramp, code, callouts, and tables, plus preview chrome. Styles bare rendered output with no class hooks. See `SYSTEM.md §17`.
 - **`/prompts`** — prompts tuned for Claude, ChatGPT, v0, and design tools. The shortest path to consistent AI output.
 - **`/components`** — the monogram in its three variants (light, dark, monochrome), plus document templates as they're built.
 - **`/reference/style-guide.html`** — an interactive visual reference that shows the system in use. Also available as a print-ready PDF.
 - **`/reference/controls-showcase.html`** — every control in both modes, plus a composed R—Net dashboard example. The fastest way to see the controls in context.
+- **`/reference/markdown-showcase.html`** — rendered markdown in both modes, with a live front-matter previewer that drives the document chrome.
 
 If you're starting from zero: read this file, then SYSTEM.md, then open the style guide. If you're building a web UI, open the controls showcase next. That's enough to use the system competently for almost any task.
 
