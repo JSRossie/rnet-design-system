@@ -1,0 +1,31 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<table class="table">
+  <thead><tr>
+    <th class="is-sortable">Node <span class="table__sort-icon"></span></th>
+    <th class="is-sortable">Site <span class="table__sort-icon"></span></th>
+    <th class="is-sortable is-desc num">Uptime <span class="table__sort-icon"></span></th>
+    <th class="is-sortable is-asc num">Disk <span class="table__sort-icon"></span></th>
+    <th>Status</th>
+  </tr></thead>
+  <tbody>
+    <tr><td class="mono" style="color:var(--accent);">edge-dr-01</td><td>Austin</td><td class="num mono">247d 14h</td><td class="num mono" style="color:var(--ok);">42%</td><td><span class="badge badge--solid badge--ok">nominal</span></td></tr>
+    <tr><td class="mono" style="color:var(--accent);">core-mtl-02</td><td>Montréal</td><td class="num mono">182d 03h</td><td class="num mono" style="color:var(--warn);">78%</td><td><span class="badge badge--solid badge--warn">disk</span></td></tr>
+    <tr><td class="mono" style="color:var(--accent);">nas-arch-tx</td><td>Austin</td><td class="num mono">4d 02h</td><td class="num mono" style="color:var(--alert);">94%</td><td><span class="badge badge--solid badge--alert">auth</span></td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  body{padding:0;}
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:240px 1fr;border:1px solid var(--rule);min-height:340px;">
+  <nav class="sidenav" style="border-right:1px solid var(--rule);min-width:0;">
+    <div class="sidenav__label">CONTEXT</div>
+    <a href="#" class="sidenav__item is-active"><span class="nf"></span> Overview</a>
+    <a href="#" class="sidenav__item"><span class="nf"></span> Sites</a>
+    <a href="#" class="sidenav__item"><span class="nf"></span> Network</a>
+    <div class="sidenav__label">SYSTEM</div>
+    <a href="#" class="sidenav__item"><span class="nf"></span> Activity</a>
+    <a href="#" class="sidenav__item"><span class="nf"></span> Security</a>
+    <a href="#" class="sidenav__item"><span class="nf"></span> Settings</a>
+  </nav>
+  <div style="padding:24px 28px;">
+    <div class="crumbs">
+      <a href="#">R—Net</a>
+      <span class="crumbs__sep">▸</span>
+      <a href="#">Sites</a>
+      <span class="crumbs__sep">▸</span>
+      <span>Austin · TX</span>
+    </div>
+    <div style="font-family:var(--font-display);font-weight:500;font-size:24px;letter-spacing:-0.3px;margin-top:14px;color:var(--fg-1);">Austin · TX</div>
+    <div class="meta" style="color:var(--accent);margin-top:6px;">3 NODES · 8 SERVICES · NOMINAL</div>
+  </div>
+</div>
+
+</body>
+</html>

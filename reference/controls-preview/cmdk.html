@@ -1,0 +1,44 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  body{padding:0;}
+</style>
+</head>
+<body>
+
+<div style="position:relative;height:480px;background:color-mix(in oklab, #000 30%, transparent);">
+  <div class="cmdk" style="position:absolute;top:24px;left:50%;transform:translateX(-50%);">
+    <div class="cmdk__head">
+      <span class="cmdk__icon nf"></span>
+      <input class="cmdk__input" value="back" placeholder="Search nodes, sites, services, actions…">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="cmdk__body">
+      <div class="cmdk__group">
+        <div class="cmdk__label">QUICK ACTIONS</div>
+        <button class="cmdk__item is-active"><span class="nf"></span><span>Trigger backup · all nodes</span><span class="cmdk__item__hint"><kbd>⌘B</kbd></span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>New incident report</span><span class="cmdk__item__hint"><kbd>⌘I</kbd></span></button>
+      </div>
+      <div class="cmdk__group">
+        <div class="cmdk__label">NODES</div>
+        <button class="cmdk__item"><span class="nf"></span><span>edge-dr-01</span><span class="cmdk__item__hint">AUSTIN · OK</span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>core-mtl-02</span><span class="cmdk__item__hint">MONTREAL · DISK 78%</span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>nas-arch-tx</span><span class="cmdk__item__hint">AUSTIN · AUTH FAIL</span></button>
+      </div>
+    </div>
+    <div class="cmdk__foot">
+      <span><kbd>↑↓</kbd> NAVIGATE</span>
+      <span><kbd>↵</kbd> SELECT</span>
+      <span><kbd>ESC</kbd> CLOSE</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

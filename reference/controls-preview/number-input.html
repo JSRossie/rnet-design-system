@@ -1,0 +1,37 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="col" style="max-width:380px;">
+  <div class="field">
+    <label class="field__label">RETRIES</label>
+    <div class="number-input">
+      <button class="number-input__btn number-input__btn--minus" aria-label="decrement">−</button>
+      <input class="input input--mono" type="number" value="3" min="0" max="10">
+      <button class="number-input__btn number-input__btn--plus" aria-label="increment">+</button>
+    </div>
+    <span class="field__help">DEFAULT · 3 · MAX 10</span>
+  </div>
+  <div class="field">
+    <label class="field__label">RETENTION</label>
+    <div class="number-input">
+      <button class="number-input__btn number-input__btn--minus" aria-label="decrement">−</button>
+      <input class="input input--mono" type="number" value="90" min="7" max="365">
+      <button class="number-input__btn number-input__btn--plus" aria-label="increment">+</button>
+    </div>
+    <span class="field__help">DAYS · 7–365</span>
+  </div>
+</div>
+
+</body>
+</html>

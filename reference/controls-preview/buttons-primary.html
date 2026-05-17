@@ -1,0 +1,37 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div class="row" style="margin-bottom:16px;">
+  <button class="btn btn--primary btn--sm">Primary SM</button>
+  <button class="btn btn--primary">Primary</button>
+  <button class="btn btn--primary btn--lg">Primary LG</button>
+  <button class="btn btn--primary" disabled>Disabled</button>
+</div>
+<div class="row" style="margin-bottom:16px;">
+  <button class="btn btn--secondary btn--sm">Secondary SM</button>
+  <button class="btn btn--secondary">Secondary</button>
+  <button class="btn btn--secondary btn--lg">Secondary LG</button>
+  <button class="btn btn--secondary" disabled>Disabled</button>
+</div>
+<div class="row">
+  <button class="btn btn--ghost btn--sm">Ghost SM</button>
+  <button class="btn btn--ghost">Ghost</button>
+  <button class="btn btn--ghost btn--lg">Ghost LG</button>
+  <button class="btn btn--destructive">Destructive</button>
+</div>
+
+</body>
+</html>

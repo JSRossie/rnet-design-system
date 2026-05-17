@@ -1,0 +1,33 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="row" style="gap:22px;">
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--ok dot--pulse"></span> &nbsp; nominal</span>
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--warn"></span> &nbsp; degraded</span>
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--alert dot--pulse"></span> &nbsp; offline</span>
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--info"></span> &nbsp; syncing</span>
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot"></span> &nbsp; unknown</span>
+  </div>
+  <div class="row" style="gap:22px;align-items:center;">
+    <span class="dot dot--sm dot--ok"></span>
+    <span class="dot dot--ok"></span>
+    <span class="dot dot--lg dot--ok"></span>
+    <span class="dot dot--lg dot--ok dot--pulse"></span>
+    <span class="meta">SIZES · 6/8/10PX · ± PULSE</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div class="grp" style="margin-bottom:22px;">
+  <div class="lbl">PAGINATION</div>
+  <div class="pagination">
+    <button class="pagination__link" aria-label="previous">‹</button>
+    <button class="pagination__link">1</button>
+    <button class="pagination__link" aria-current="page">2</button>
+    <button class="pagination__link">3</button>
+    <span class="pagination__ellipsis">…</span>
+    <button class="pagination__link">14</button>
+    <button class="pagination__link" aria-label="next">›</button>
+  </div>
+</div>
+<div class="grp" style="margin-bottom:22px;">
+  <div class="lbl">PROGRESS</div>
+  <div style="display:grid;grid-template-columns:80px 1fr 50px;gap:14px;align-items:center;font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--fg-3);text-transform:uppercase;">
+    <span>BACKUP</span><div class="progress progress--ok"><div class="progress__bar" style="width:88%;"></div></div><span style="color:var(--ok);">88%</span>
+    <span>DISK</span><div class="progress progress--warn"><div class="progress__bar" style="width:78%;"></div></div><span style="color:var(--warn);">78%</span>
+    <span>MEM</span><div class="progress"><div class="progress__bar" style="width:32%;"></div></div><span style="color:var(--accent);">32%</span>
+  </div>
+</div>
+<div class="grp">
+  <div class="lbl">KBD SHORTCUTS</div>
+  <div class="row" style="font-family:var(--font-body);font-size:13px;color:var(--fg-3);">
+    Toggle palette <kbd>⌘</kbd><kbd>K</kbd>
+    <span style="margin-left:18px;">Switch mode <kbd>⇧</kbd><kbd>D</kbd></span>
+  </div>
+</div>
+
+</body>
+</html>

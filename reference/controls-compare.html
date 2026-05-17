@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>compare · day vs night · Charts &amp; Vectors</title>
+<link rel="stylesheet" href="../controls.css">
+<style>
+  /* ────────────────────────────────────────────────────────
+     Neutral page chrome — uses panel-grey, not a mode bg
+     ──────────────────────────────────────────────────────── */
+  body {
+    margin: 0;
+    background: #6B675C;   /* upstream --graphite */
+    color: #FAF6EC;
+    font-family: 'Urbanist', sans-serif;
+  }
+
+  .chrome {
+    background: #1F1D18;
+    color: #EDE8D8;
+    padding: 18px 28px;
+    border-bottom: 4px solid #4A7A96;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .chrome__title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+  }
+  .chrome__title .em { color: #D49826; }
+  .chrome__sub {
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8A8470;
+  }
+  .chrome__legend {
+    display: flex; gap: 14px;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .chrome__legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .chrome__legend .sw { width: 14px; height: 14px; border: 1px solid #3D403A; }
+  .day-sw { background: #FAF6EC; }
+  .night-sw { background: #1C1E1C; }
+
+  /* ────────────────────────────────────────────────────────
+     Compare grid — 1 label column + 2 mode panes per row
+     ──────────────────────────────────────────────────────── */
+  .compare {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr;
+    gap: 1px;
+    background: #5A5750;
+    border-top: 1px solid #5A5750;
+  }
+  .compare__head {
+    background: #2F322D;
+    color: #EDE8D8;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+  }
+  .compare__head--day,
+  .compare__head--night {
+    text-align: center;
+    color: #FAF6EC;
+  }
+  .compare__head--day { background: #4A7A96; color: #FAF6EC; }
+  .compare__head--night { background: #D49826; color: #1C1E1C; }
+
+  .compare__label {
+    padding: 28px 22px;
+    background: #252824;
+    color: #EDE8D8;
+    border-right: 1px solid #5A5750;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .compare__label-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: #EDE8D8;
+  }
+  .compare__label-meta {
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: #8A8470;
+    text-transform: uppercase;
+  }
+  .compare__label-num {
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #D49826;
+  }
+
+  /* Each cell is its own mode root */
+  .compare__cell {
+    padding: 28px 24px;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg-1);
+  }
+  .compare__cell[data-mode="day"]   { background: #FAF6EC; }
+  .compare__cell[data-mode="night"] { background: #1C1E1C; }
+
+  /* Layout helpers within cells */
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Section banner — separates the major groups */
+  .section-banner {
+    grid-column: 1 / -1;
+    padding: 22px 28px 10px;
+    background: #1F1D18;
+    color: #EDE8D8;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+  }
+  .section-banner__num {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #D49826;
+  }
+  .section-banner__title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.3px;
+    color: #FAF6EC;
+  }
+  .section-banner__rule { flex: 1; height: 1px; background: #3D403A; }
+  .section-banner__meta {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8A8470;
+  }
+
+  /* Help the modal/drawer demos behave inside a fixed-height cell */
+  .compare__cell .modal-overlay,
+  .compare__cell .drawer-overlay,
+  .compare__cell .drawer { position: absolute; }
+  .demo-frame {
+    position: relative;
+    background: var(--bg-callout);
+    border: 1px dashed var(--rule);
+    padding: 16px;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 200px;
+  }
+</style>
+</head>
+<body>
+
+<header class="chrome">
+  <div>
+    <div class="chrome__sub">COMPARE · v1.3-CONTROLS</div>
+    <div class="chrome__title">Charts <span class="em">&amp;</span> Vectors</div>
+  </div>
+  <div></div>
+  <div class="chrome__legend">
+    <span><span class="sw day-sw"></span> DAY · CEREMONIAL</span>
+    <span><span class="sw night-sw"></span> NIGHT · INSTRUMENTED</span>
+  </div>
+</header>
+
+<div class="compare">
+
+  <!-- Header row -->
+  <div class="compare__head">CONTROL</div>
+  <div class="compare__head compare__head--day">DAY — SKY on PAPER</div>
+  <div class="compare__head compare__head--night">NIGHT — AMBER on CHARCOAL</div>
+
+  <!-- ============================================================
+       01 · BUTTONS
+       ============================================================ -->
+  <div class="section-banner">
+    <span class="section-banner__num">01 ▸</span>
+    <span class="section-banner__title">Buttons</span>
+    <span class="section-banner__rule"></span>
+    <span class="section-banner__meta">PRIMARY · SECONDARY · GHOST · DESTRUCTIVE</span>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">01.1</span>
+    <span class="compare__label-title">Primary · Secondary · Ghost</span>
+    <span class="compare__label-meta">3 SIZES · 4 VARIANTS</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="row">
+        <button class="btn btn--primary">Save changes</button>
+        <button class="btn btn--secondary">Review</button>
+        <button class="btn btn--ghost">Cancel</button>
+        <button class="btn btn--destructive">Delete</button>
+      </div>
+      <div class="row">
+        <button class="btn btn--primary btn--sm">Save</button>
+        <button class="btn btn--secondary btn--sm">Review</button>
+        <button class="btn btn--primary" disabled>Disabled</button>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="row">
+        <button class="btn btn--primary">Save changes</button>
+        <button class="btn btn--secondary">Review</button>
+        <button class="btn btn--ghost">Cancel</button>
+        <button class="btn btn--destructive">Delete</button>
+      </div>
+      <div class="row">
+        <button class="btn btn--primary btn--sm">Save</button>
+        <button class="btn btn--secondary btn--sm">Review</button>
+        <button class="btn btn--primary" disabled>Disabled</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">01.2</span>
+    <span class="compare__label-title">Icon &amp; grouped</span>
+    <span class="compare__label-meta">ICON-ONLY · BTN-GROUP</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="row">
+      <button class="btn btn--secondary btn--icon" aria-label="settings"><span class="nf"></span></button>
+      <button class="btn btn--secondary btn--icon" aria-label="refresh"><span class="nf"></span></button>
+      <button class="btn btn--primary btn--icon" aria-label="confirm"><span class="nf"></span></button>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--sm">All</button>
+        <button class="btn btn--secondary btn--sm">Active</button>
+        <button class="btn btn--secondary btn--sm">Archived</button>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="row">
+      <button class="btn btn--secondary btn--icon" aria-label="settings"><span class="nf"></span></button>
+      <button class="btn btn--secondary btn--icon" aria-label="refresh"><span class="nf"></span></button>
+      <button class="btn btn--primary btn--icon" aria-label="confirm"><span class="nf"></span></button>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--sm">All</button>
+        <button class="btn btn--secondary btn--sm">Active</button>
+        <button class="btn btn--secondary btn--sm">Archived</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       02 · FORMS
+       ============================================================ -->
+  <div class="section-banner">
+    <span class="section-banner__num">02 ▸</span>
+    <span class="section-banner__title">Forms &amp; inputs</span>
+    <span class="section-banner__rule"></span>
+    <span class="section-banner__meta">FIELDS · SELECTION · RANGE</span>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">02.1</span>
+    <span class="compare__label-title">Text inputs</span>
+    <span class="compare__label-meta">DEFAULT · MONO · INVALID</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="field"><label class="field__label">EMAIL</label><input class="input" type="email" value="jr@rossie.net"></div>
+      <div class="field"><label class="field__label">NODE ID</label><div class="input-wrap"><span class="input-wrap__icon nf"></span><input class="input input--mono" value="edge-dr-01"></div></div>
+      <div class="field"><label class="field__label">KEY</label><input class="input" value="bad-format" aria-invalid="true"><span class="field__error">CHECKSUM MISMATCH</span></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="field"><label class="field__label">EMAIL</label><input class="input" type="email" value="jr@rossie.net"></div>
+      <div class="field"><label class="field__label">NODE ID</label><div class="input-wrap"><span class="input-wrap__icon nf"></span><input class="input input--mono" value="edge-dr-01"></div></div>
+      <div class="field"><label class="field__label">KEY</label><input class="input" value="bad-format" aria-invalid="true"><span class="field__error">CHECKSUM MISMATCH</span></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">02.2</span>
+    <span class="compare__label-title">Select &amp; textarea</span>
+    <span class="compare__label-meta">NATIVE SELECT · MULTILINE</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="field"><label class="field__label">REGION</label><select class="select"><option>Austin · TX</option><option>Boulder · CO</option><option>Montréal · QC</option></select></div>
+      <div class="field"><label class="field__label">NOTE</label><textarea class="textarea" style="min-height:60px;">Disk trending up. Schedule sweep.</textarea></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="field"><label class="field__label">REGION</label><select class="select"><option>Austin · TX</option><option>Boulder · CO</option><option>Montréal · QC</option></select></div>
+      <div class="field"><label class="field__label">NOTE</label><textarea class="textarea" style="min-height:60px;">Disk trending up. Schedule sweep.</textarea></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">02.3</span>
+    <span class="compare__label-title">Selection controls</span>
+    <span class="compare__label-meta">CHECK · RADIO · SWITCH</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <label class="check"><input type="checkbox" checked><span class="check__box"></span>Enable Zigbee</label>
+      <label class="radio"><input type="radio" name="d1" checked><span class="radio__dot"></span>Instrumented</label>
+      <label class="switch"><input type="checkbox" checked><span class="switch__track"></span>Auto-sync</label>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <label class="check"><input type="checkbox" checked><span class="check__box"></span>Enable Zigbee</label>
+      <label class="radio"><input type="radio" name="n1" checked><span class="radio__dot"></span>Instrumented</label>
+      <label class="switch"><input type="checkbox" checked><span class="switch__track"></span>Auto-sync</label>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">02.4</span>
+    <span class="compare__label-title">Range slider</span>
+    <span class="compare__label-meta">VALUE READOUT</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="range-field">
+      <label class="field__label">DISK THRESHOLD</label>
+      <span class="range-field__value">78%</span>
+      <input class="range" type="range" min="0" max="100" value="78">
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="range-field">
+      <label class="field__label">DISK THRESHOLD</label>
+      <span class="range-field__value">78%</span>
+      <input class="range" type="range" min="0" max="100" value="78">
+    </div>
+  </div>
+
+  <!-- ============================================================
+       03 · FEEDBACK
+       ============================================================ -->
+  <div class="section-banner">
+    <span class="section-banner__num">03 ▸</span>
+    <span class="section-banner__title">Feedback</span>
+    <span class="section-banner__rule"></span>
+    <span class="section-banner__meta">ALERTS · BADGES · PROGRESS</span>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">03.1</span>
+    <span class="compare__label-title">Alerts · callouts</span>
+    <span class="compare__label-meta">NOTE · OK · WARN · ALERT</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="alert alert--note"><span class="alert__icon nf"></span><div class="alert__body"><div class="alert__title">NOTE</div><div class="alert__text">Suggested next meeting · third week of May.</div></div></div>
+      <div class="alert alert--warn"><span class="alert__icon nf"></span><div class="alert__body"><div class="alert__title">CAUTION</div><div class="alert__text">Disk on edge-dr trending up — 78%.</div></div></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="alert alert--note"><span class="alert__icon nf"></span><div class="alert__body"><div class="alert__title">NOTE</div><div class="alert__text">Suggested next meeting · third week of May.</div></div></div>
+      <div class="alert alert--warn"><span class="alert__icon nf"></span><div class="alert__body"><div class="alert__title">CAUTION</div><div class="alert__text">Disk on edge-dr trending up — 78%.</div></div></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">03.2</span>
+    <span class="compare__label-title">Banner</span>
+    <span class="compare__label-meta">PAGE-TOP STATUS</span>
+  </div>
+  <div class="compare__cell" data-mode="day" style="padding:0;">
+    <div class="banner banner--warn"><span class="banner__icon nf"></span><span class="banner__title">SCHEDULED MAINTENANCE</span><span class="banner__text">2026.05.21 · 02:00–04:00 UTC · austin-tx region</span><button class="banner__close nf" aria-label="close"></button></div>
+  </div>
+  <div class="compare__cell" data-mode="night" style="padding:0;">
+    <div class="banner banner--warn"><span class="banner__icon nf"></span><span class="banner__title">SCHEDULED MAINTENANCE</span><span class="banner__text">2026.05.21 · 02:00–04:00 UTC · austin-tx region</span><button class="banner__close nf" aria-label="close"></button></div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">03.3</span>
+    <span class="compare__label-title">Toast</span>
+    <span class="compare__label-meta">TRANSIENT · DISMISSIBLE</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="toast toast--ok"><span class="toast__icon nf"></span><div><div class="toast__title">BACKUP COMPLETE</div><div>edge-dr-01 · 12.4 GB · 09:42</div></div><button class="toast__close nf" aria-label="close"></button></div>
+      <div class="toast toast--alert"><span class="toast__icon nf"></span><div><div class="toast__title">AUTH FAILURE</div><div>nas-arch-tx · 3 retries · escalated</div></div><button class="toast__close nf" aria-label="close"></button></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="toast toast--ok"><span class="toast__icon nf"></span><div><div class="toast__title">BACKUP COMPLETE</div><div>edge-dr-01 · 12.4 GB · 09:42</div></div><button class="toast__close nf" aria-label="close"></button></div>
+      <div class="toast toast--alert"><span class="toast__icon nf"></span><div><div class="toast__title">AUTH FAILURE</div><div>nas-arch-tx · 3 retries · escalated</div></div><button class="toast__close nf" aria-label="close"></button></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">03.4</span>
+    <span class="compare__label-title">Badges &amp; progress</span>
+    <span class="compare__label-meta">STATUS PILLS · METERS</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="row">
+        <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span>
+        <span class="badge badge--solid badge--warn"><span class="nf"></span> disk 78%</span>
+        <span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span>
+        <span class="badge badge--solid badge--accent">live</span>
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr 40px;gap:10px;align-items:center;">
+        <span class="meta">BACKUP</span><div class="progress progress--ok"><div class="progress__bar" style="width:88%;"></div></div><span class="meta" style="color:var(--ok);">88%</span>
+        <span class="meta">DISK</span><div class="progress progress--warn"><div class="progress__bar" style="width:78%;"></div></div><span class="meta" style="color:var(--warn);">78%</span>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="row">
+        <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span>
+        <span class="badge badge--solid badge--warn"><span class="nf"></span> disk 78%</span>
+        <span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span>
+        <span class="badge badge--solid badge--accent">live</span>
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr 40px;gap:10px;align-items:center;">
+        <span class="meta">BACKUP</span><div class="progress progress--ok"><div class="progress__bar" style="width:88%;"></div></div><span class="meta" style="color:var(--ok);">88%</span>
+        <span class="meta">DISK</span><div class="progress progress--warn"><div class="progress__bar" style="width:78%;"></div></div><span class="meta" style="color:var(--warn);">78%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">03.5</span>
+    <span class="compare__label-title">Spinner &amp; skeleton</span>
+    <span class="compare__label-meta">ASYNC INDICATORS</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="row" style="gap:18px;">
+        <span class="spinner spinner--sm"></span>
+        <span class="spinner"></span>
+        <span class="spinner spinner--lg"></span>
+        <span class="meta">SYNCING…</span>
+      </div>
+      <div class="col" style="gap:8px;">
+        <span class="skel skel--title"></span>
+        <span class="skel skel--line" style="width:90%;"></span>
+        <span class="skel skel--line" style="width:60%;"></span>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="row" style="gap:18px;">
+        <span class="spinner spinner--sm"></span>
+        <span class="spinner"></span>
+        <span class="spinner spinner--lg"></span>
+        <span class="meta">SYNCING…</span>
+      </div>
+      <div class="col" style="gap:8px;">
+        <span class="skel skel--title"></span>
+        <span class="skel skel--line" style="width:90%;"></span>
+        <span class="skel skel--line" style="width:60%;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       04 · NAV
+       ============================================================ -->
+  <div class="section-banner">
+    <span class="section-banner__num">04 ▸</span>
+    <span class="section-banner__title">Navigation</span>
+    <span class="section-banner__rule"></span>
+    <span class="section-banner__meta">TABS · CRUMBS · STEPPER</span>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">04.1</span>
+    <span class="compare__label-title">Tabs &amp; segmented</span>
+    <span class="compare__label-meta">UNDERLINED · PILL</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="tabs">
+        <button class="tabs__tab is-active">Overview</button>
+        <button class="tabs__tab">Sites</button>
+        <button class="tabs__tab">Activity</button>
+      </div>
+      <div class="row">
+        <div class="segmented">
+          <button class="segmented__item is-active">Day</button>
+          <button class="segmented__item">Week</button>
+          <button class="segmented__item">Month</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="tabs">
+        <button class="tabs__tab is-active">Overview</button>
+        <button class="tabs__tab">Sites</button>
+        <button class="tabs__tab">Activity</button>
+      </div>
+      <div class="row">
+        <div class="segmented">
+          <button class="segmented__item is-active">Day</button>
+          <button class="segmented__item">Week</button>
+          <button class="segmented__item">Month</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">04.2</span>
+    <span class="compare__label-title">Breadcrumbs &amp; pagination</span>
+    <span class="compare__label-meta">PATH · PAGES</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="col">
+      <div class="crumbs">
+        <a href="#">R—Net</a><span class="crumbs__sep">▸</span>
+        <a href="#">Sites</a><span class="crumbs__sep">▸</span>
+        <span>Austin · TX</span>
+      </div>
+      <div class="pagination">
+        <button class="pagination__link">‹</button>
+        <button class="pagination__link">1</button>
+        <button class="pagination__link" aria-current="page">2</button>
+        <button class="pagination__link">3</button>
+        <span class="pagination__ellipsis">…</span>
+        <button class="pagination__link">14</button>
+        <button class="pagination__link">›</button>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="col">
+      <div class="crumbs">
+        <a href="#">R—Net</a><span class="crumbs__sep">▸</span>
+        <a href="#">Sites</a><span class="crumbs__sep">▸</span>
+        <span>Austin · TX</span>
+      </div>
+      <div class="pagination">
+        <button class="pagination__link">‹</button>
+        <button class="pagination__link">1</button>
+        <button class="pagination__link" aria-current="page">2</button>
+        <button class="pagination__link">3</button>
+        <span class="pagination__ellipsis">…</span>
+        <button class="pagination__link">14</button>
+        <button class="pagination__link">›</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">04.3</span>
+    <span class="compare__label-title">Stepper</span>
+    <span class="compare__label-meta">LINEAR PROCESS FLOW</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="stepper">
+      <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Identify</span></div>
+      <div class="stepper__step is-current"><span class="stepper__num">2</span><span class="stepper__label">Configure</span></div>
+      <div class="stepper__step"><span class="stepper__num">3</span><span class="stepper__label">Deploy</span></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="stepper">
+      <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Identify</span></div>
+      <div class="stepper__step is-current"><span class="stepper__num">2</span><span class="stepper__label">Configure</span></div>
+      <div class="stepper__step"><span class="stepper__num">3</span><span class="stepper__label">Deploy</span></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">04.4</span>
+    <span class="compare__label-title">Dropdown menu</span>
+    <span class="compare__label-meta">CLICK-TO-OPEN LIST</span>
+  </div>
+  <div class="compare__cell" data-mode="day" style="position:relative;min-height:260px;">
+    <div class="menu" style="position:relative;top:0;">
+      <div class="menu__label">NODE ACTIONS</div>
+      <button class="menu__item"><span class="nf"></span><span>Restart service</span><kbd>⌘R</kbd></button>
+      <button class="menu__item"><span class="nf"></span><span>Sync now</span><kbd>⌘S</kbd></button>
+      <button class="menu__item"><span class="nf"></span><span>Export logs</span><span></span></button>
+      <hr class="menu__divider">
+      <button class="menu__item menu__item--danger"><span class="nf"></span><span>Decommission</span><span></span></button>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night" style="position:relative;min-height:260px;">
+    <div class="menu" style="position:relative;top:0;">
+      <div class="menu__label">NODE ACTIONS</div>
+      <button class="menu__item"><span class="nf"></span><span>Restart service</span><kbd>⌘R</kbd></button>
+      <button class="menu__item"><span class="nf"></span><span>Sync now</span><kbd>⌘S</kbd></button>
+      <button class="menu__item"><span class="nf"></span><span>Export logs</span><span></span></button>
+      <hr class="menu__divider">
+      <button class="menu__item menu__item--danger"><span class="nf"></span><span>Decommission</span><span></span></button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       05 · LAYOUT
+       ============================================================ -->
+  <div class="section-banner">
+    <span class="section-banner__num">05 ▸</span>
+    <span class="section-banner__title">Layout &amp; data</span>
+    <span class="section-banner__rule"></span>
+    <span class="section-banner__meta">CARDS · STATS · TABLE · CODE · EMPTY</span>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.1</span>
+    <span class="compare__label-title">Card with stripe</span>
+    <span class="compare__label-meta">PROFILE PATTERN</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="card card--stripe">
+      <div class="card__head">
+        <div><div class="card__eyebrow">PROFILE · v1.0</div><div class="card__title">Edge node DR</div></div>
+        <div class="card__meta">REV 1.0<br><span style="color:var(--ok);">NOMINAL</span></div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.55;">Primary DR node for Austin region.</p>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="card card--stripe">
+      <div class="card__head">
+        <div><div class="card__eyebrow">PROFILE · v1.0</div><div class="card__title">Edge node DR</div></div>
+        <div class="card__meta">REV 1.0<br><span style="color:var(--ok);">NOMINAL</span></div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.55;">Primary DR node for Austin region.</p>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.2</span>
+    <span class="compare__label-title">Stat tiles</span>
+    <span class="compare__label-meta">METRIC + ACCENT UNIT</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);">
+      <div class="stat" style="border:0;"><div class="stat__label"><span class="ic nf"></span>UPTIME</div><div class="stat__value">99.997<span class="unit">%</span></div></div>
+      <div class="stat" style="border:0;"><div class="stat__label"><span class="ic nf"></span>NODES</div><div class="stat__value">42<span class="unit">/42</span></div></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);">
+      <div class="stat" style="border:0;"><div class="stat__label"><span class="ic nf"></span>UPTIME</div><div class="stat__value">99.997<span class="unit">%</span></div></div>
+      <div class="stat" style="border:0;"><div class="stat__label"><span class="ic nf"></span>NODES</div><div class="stat__value">42<span class="unit">/42</span></div></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.3</span>
+    <span class="compare__label-title">Table</span>
+    <span class="compare__label-meta">SPEC-SHEET DENSITY</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <table class="table">
+      <thead><tr><th>Node</th><th>Site</th><th class="num">Uptime</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="mono" style="color:var(--accent);">edge-dr-01</td><td>Austin</td><td class="num mono">247d</td><td><span class="badge badge--solid badge--ok">nominal</span></td></tr>
+        <tr><td class="mono" style="color:var(--accent);">core-mtl-02</td><td>Montréal</td><td class="num mono">182d</td><td><span class="badge badge--solid badge--warn">disk</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <table class="table">
+      <thead><tr><th>Node</th><th>Site</th><th class="num">Uptime</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="mono" style="color:var(--accent);">edge-dr-01</td><td>Austin</td><td class="num mono">247d</td><td><span class="badge badge--solid badge--ok">nominal</span></td></tr>
+        <tr><td class="mono" style="color:var(--accent);">core-mtl-02</td><td>Montréal</td><td class="num mono">182d</td><td><span class="badge badge--solid badge--warn">disk</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.4</span>
+    <span class="compare__label-title">Code block</span>
+    <span class="compare__label-meta">FRAMED · LANG LABEL</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="codeblock-frame">
+      <div class="codeblock-frame__head">
+        <span><span class="nf"></span> /etc/rnet/core.toml</span>
+        <span>TOML</span>
+      </div>
+      <pre class="codeblock"><span class="tk-com"># R—Net core</span>
+<span class="tk-key">node_id</span> = <span class="tk-str">"edge-dr-01"</span>
+<span class="tk-key">region</span>  = <span class="tk-str">"austin-tx"</span>
+<span class="tk-key">retries</span> = <span class="tk-num">3</span></pre>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="codeblock-frame">
+      <div class="codeblock-frame__head">
+        <span><span class="nf"></span> /etc/rnet/core.toml</span>
+        <span>TOML</span>
+      </div>
+      <pre class="codeblock"><span class="tk-com"># R—Net core</span>
+<span class="tk-key">node_id</span> = <span class="tk-str">"edge-dr-01"</span>
+<span class="tk-key">region</span>  = <span class="tk-str">"austin-tx"</span>
+<span class="tk-key">retries</span> = <span class="tk-num">3</span></pre>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.5</span>
+    <span class="compare__label-title">Empty state</span>
+    <span class="compare__label-meta">NO-DATA PLACEHOLDER</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="empty">
+      <span class="empty__icon nf"></span>
+      <div class="empty__title">No incidents</div>
+      <div class="empty__text">Everything has been nominal for 14 days. Field reports will appear here when filed.</div>
+      <div class="empty__actions"><button class="btn btn--secondary btn--sm">File a report</button></div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="empty">
+      <span class="empty__icon nf"></span>
+      <div class="empty__title">No incidents</div>
+      <div class="empty__text">Everything has been nominal for 14 days. Field reports will appear here when filed.</div>
+      <div class="empty__actions"><button class="btn btn--secondary btn--sm">File a report</button></div>
+    </div>
+  </div>
+
+  <div class="compare__label">
+    <span class="compare__label-num">05.6</span>
+    <span class="compare__label-title">Avatars</span>
+    <span class="compare__label-meta">SINGLE · GROUP</span>
+  </div>
+  <div class="compare__cell" data-mode="day">
+    <div class="row" style="gap:24px;">
+      <div class="row">
+        <div class="avatar avatar--sm">JR</div>
+        <div class="avatar">JR</div>
+        <div class="avatar avatar--lg">JR</div>
+      </div>
+      <div class="avatar-group">
+        <div class="avatar">JR</div>
+        <div class="avatar">MK</div>
+        <div class="avatar">TS</div>
+        <div class="avatar">AB</div>
+        <div class="avatar-group__more">+3</div>
+      </div>
+    </div>
+  </div>
+  <div class="compare__cell" data-mode="night">
+    <div class="row" style="gap:24px;">
+      <div class="row">
+        <div class="avatar avatar--sm">JR</div>
+        <div class="avatar">JR</div>
+        <div class="avatar avatar--lg">JR</div>
+      </div>
+      <div class="avatar-group">
+        <div class="avatar">JR</div>
+        <div class="avatar">MK</div>
+        <div class="avatar">TS</div>
+        <div class="avatar">AB</div>
+        <div class="avatar-group__more">+3</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

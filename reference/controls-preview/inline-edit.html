@@ -1,0 +1,36 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div style="display:grid;grid-template-columns:120px 1fr;gap:14px 22px;align-items:center;">
+    <span class="meta">NODE ID</span>
+    <span class="inline-edit" tabindex="0">
+      <span class="inline-edit__value" style="font-family:var(--font-mono);color:var(--accent);">edge-dr-01</span>
+      <span class="inline-edit__icon nf"></span>
+    </span>
+    <span class="meta">DISPLAY NAME</span>
+    <span class="inline-edit" tabindex="0">
+      <span class="inline-edit__value">Edge · Disaster Recovery</span>
+      <span class="inline-edit__icon nf"></span>
+    </span>
+    <span class="meta">REGION</span>
+    <span class="inline-edit is-editing">
+      <input class="input" value="Austin · TX" style="max-width:240px;">
+    </span>
+  </div>
+  <div class="meta" style="color:var(--fg-3);">HOVER TO REVEAL EDIT GLYPH · CLICK TO ENTER EDIT STATE</div>
+</div>
+
+</body>
+</html>

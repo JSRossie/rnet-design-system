@@ -1,10 +1,10 @@
 # JR / R—Net Design System
 
-**Version:** 1.2
+**Version:** 1.3
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
-**Last updated:** 2026.05.14
+**Last updated:** 2026.05.17
 
 ---
 
@@ -14,7 +14,7 @@ This is the canonical specification for the JR / R—Net design system. It exist
 
 **For humans:** read it like a manual. The "why" is in §1 and §2; the "what" is in §3 onward; the "how to extend" is in §15.
 
-**For AI systems:** treat every rule in §3–§10 as a constraint. When in doubt, prefer restraint over elaboration. The system favors negative space, single-accent discipline, and aviation-instrument precedent. Never invent colors, fonts, or elements outside this spec without explicit permission. When asked to extend the system, consult §15 first. When using glyphs from `GLYPHS.md`, respect the confidence tags — entries marked `[MDI-v3.x-claim]` or `[unfilled]` should be surfaced as uncertain rather than used silently.
+**For AI systems:** treat every rule in §3–§10 as a constraint. When in doubt, prefer restraint over elaboration. The system favors negative space, single-accent discipline, and aviation-instrument precedent. Never invent colors, fonts, or elements outside this spec without explicit permission. When asked to extend the system, consult §15 first. When using glyphs from `GLYPHS.md`, respect the confidence tags — entries marked `[MDI-v3.x-claim]` or `[unfilled]` should be surfaced as uncertain rather than used silently. When building UI controls, use the classes specified in §16 (and the `colors_and_type.css` semantic layer they read from) rather than re-deriving styling from primitives.
 
 ---
 
@@ -69,6 +69,10 @@ Three disciplines hold the system together:
 - **Mono is a primary voice, not a fallback.** It carries section labels, eyebrows, metadata, status, coordinates. Used inline within prose for technical terms, file paths, IDs.
 - **Generous line height for body** (1.65 minimum). The system never feels crowded.
 - **Tracking matters on uppercase labels** — at least 2px on all-caps mono labels. They read as drafting callouts, not screaming.
+
+### Web-control type additions (v1.1, see §16)
+
+The seven roles above are the system's canonical type vocabulary. UI components in §16 introduce four additional sizes — `subhead` (20px), `h3` (16px), `body-sm` (13px), `code` (13px) — exposed by `colors_and_type.css` as `--type-h2 / --type-h3 / --type-body-sm / --type-code` and in `tokens.json` under `font.size.{subhead,h3,bodySmall,code}`. These are web-control affordances, not new editorial roles; documents still draw from the seven canonical roles only.
 
 ---
 
@@ -215,6 +219,39 @@ All ratios computed per WCAG 2.1. AA Body requires 4.5:1; AA Large (18pt+ or 14p
 - Use semantic colors decoratively. If the meaning isn't literally "this is healthy" or "this is broken," don't reach for them.
 - Pile every industrial element into one document. Pick 2–3 per document maximum.
 - Use `amber` on light surfaces. It fails contrast. Use `amber-deep` instead, or reserve amber for dark mode.
+
+### 4.7 Semantic Web-Control Roles (v1.1)
+
+The primitives in §4.1–§4.4 are the **palette**. UI controls cannot encode "use amber on dark, sky-deep on light" in every component — they need to read from a mode-aware role like "accent." The semantic layer in `colors_and_type.css` provides that, exposing the following named roles. Each one is an alias (`var(--token)`) — no new colors are introduced.
+
+| Role | Day (default) | Night | Used by |
+|------|---------------|-------|---------|
+| `--bg` | `paper-true` | `night` | Page background |
+| `--bg-elev-1` | `paper-true` | `night-2` | Cards, popovers, toolbar |
+| `--bg-elev-2` | `paper-chart` | `night-3` | Code blocks, range tracks |
+| `--bg-callout` | `urban` | `night-3` | Inline callouts |
+| `--fg-1` | `ink` | `cream` | Primary text |
+| `--fg-2` | `ink-2` | `cream` | Secondary text |
+| `--fg-3` | `graphite` | `night-graphite` | Tertiary, metadata |
+| `--fg-mute` | `soft` | `night-soft` | Decorative only |
+| `--fg-on-accent` | `paper-true` | `night` | Text on accent fills |
+| `--rule` | `panel-light` | `night-rule` | Hairline borders |
+| `--rule-strong` | `panel` | `panel` | Emphasized rules |
+| `--rule-anchor` | `panel-deep` | `night-rule` | Anchored borders |
+| `--accent` | `sky-deep` | `amber` | Brand accent |
+| `--accent-soft` | `sky` | `amber-glow` | Accent hover, glow |
+| `--accent-edge` | `sky-light` | `amber-deep` | Accent edges |
+| `--accent-warm` | `ground-deep` | `ground-light` | Warm secondary |
+| `--ok / --warn / --alert` | semantic FGs | semantic glows | Status text |
+| `--ok-bg-tint / -warn / -alert` | semantic BGs | `night-3` | Status panels |
+| `--focus-ring` | `sky-deep` | `amber` | `:focus-visible` outline |
+| `--field-*` | composed | composed | Inputs, selects, textareas |
+| `--scrim / --scrim-soft` | `ink`-mix | `night`-mix | Modal / drawer / cmdk overlays |
+| `--bg-inverse / --fg-inverse` | `ink` / `paper-true` | `cream` / `night` | Tooltip (inverted surface) |
+
+The day/night flip is controlled by the document-level attribute `<html data-mode="day | night">`. All roles update automatically. Components in §16 read from this layer exclusively.
+
+Web-control affordances that did not exist as primitives — radii (`--radius-1` 2px / `--radius-2` 4px / `--radius-3` 6px / `--radius-pill`), motion (`--ease-instrument`, `--dur-fast/base/slow`), floating-surface shadows (`--shadow-popover`, `--shadow-modal`), overlay scrims (`--scrim`, `--scrim-soft`), and the inverted tooltip surface (`--bg-inverse`, `--fg-inverse`) — are added here under §4.7's authority. The radii and motion are catalogued in `tokens.json` under `radius` and `motion`; the shadows, scrims, and inverted surface are CSS-only, since they are mode-dependent compositions rather than flat primitives. None introduce a new color — scrims are `color-mix` of an existing ink with transparency, and the inverted surface swaps two existing primitives.
 
 ---
 
@@ -417,7 +454,8 @@ To stay disciplined, name what it isn't:
 | 0.8 | 2026.05.14 | Locked palette: 3 surfaces, R/Y/G semantics, magenta excluded |
 | 1.0 | 2026.05.14 | First stable spec |
 | 1.1 | 2026.05.14 | Verified contrast ratios; corrected `warn-fg` to #7A5A10; clarified monogram as SVG-defined; separated `GLYPHS.md` as living reference; added §15 extending guidance |
-| **1.2** | 2026.05.14 | **Current.** Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
+| 1.2 | 2026.05.14 | Aligned with `GLYPHS.md` v2.0 role-based architecture. §0 now instructs AI to respect glyph confidence tags. §7 documents the role-based registry and confidence-tag model. §15 glyph extension procedure points to `GLYPHS.md §10` audit workflow. |
+| **1.3** | 2026.05.17 | **Current.** First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -432,8 +470,11 @@ jr-design-system/
 ├── SHORT.md                      Concise version (one paragraph).
 ├── STANDARD.md                   Page-or-two version for system prompts.
 ├── GLYPHS.md                     Curated Nerd Font glyph reference (role-based, versioned).
+├── SHIPPING.md                   Versioned shipping manifest.
 ├── tokens.json                   Machine-readable design tokens.
-├── tokens.css                    CSS custom properties (drop-in).
+├── tokens.css                    CSS custom properties — primitives (drop-in).
+├── colors_and_type.css           CSS semantic layer + @font-face. Imports tokens.css. (v1.1)
+├── controls.css                  Web-control implementation. Imports colors_and_type.css. (v1.1)
 ├── tailwind.config.js            Tailwind preset (drop-in).
 ├── prompts/
 │   ├── for-claude.md             Optimized for Claude.
@@ -446,8 +487,12 @@ jr-design-system/
 │   ├── monogram-mono.svg         Monochrome mark.
 │   └── templates/                Stationery, document covers, dashboards.
 └── reference/
-    ├── style-guide.html          Interactive visual reference.
-    └── style-guide.pdf           Print-ready style guide.
+    ├── style-guide.html          Interactive brand reference.
+    ├── style-guide.pdf           Print-ready style guide.
+    ├── glyph-catalog.html        Browsable glyph catalog (companion to GLYPHS.md).
+    ├── controls-showcase.html    Interactive controls showcase. (v1.1)
+    ├── controls-compare.html     Day-vs-night side-by-side reference. (v1.1)
+    └── controls-preview/         Focused single-control preview cards. (v1.1)
 ```
 
 ---
@@ -467,14 +512,13 @@ The system is designed to grow. When you (or an AI) needs something the spec doe
 
 ### When extending UI components
 
-UI controls (buttons, forms, inputs, modals, tables, navigation) are **deferred to point of need**. This is intentional. The system ships with foundational primitives (color, type, surfaces, grammar) and waits to spec components until they're being built for an actual purpose.
+The system's first cohort of UI controls shipped in v1.3. See **§16 Components** for the complete inventory and the discipline rules they honor. The procedure below applies to components beyond that cohort.
 
-When the time comes:
-
-1. **Build for a specific use case first.** Don't design generic buttons; design buttons for the specific tool/app you're working on.
-2. **Derive from primitives.** Every component must compose from existing tokens. No new colors, no new spacing values, no new type sizes unless §15.palette procedure is followed.
-3. **Document the component in a new section** (`§16 Components` and onward) only after it has been used in two distinct contexts. One-off uses don't earn spec inclusion.
-4. **Honor the discipline.** The same rules in §12 ("what this is not") apply to components. No gradients, no glass, no decorative-only styling.
+1. **Build for a specific use case first.** Don't design generic patterns; design for the specific tool, app, or document you're working on.
+2. **Derive from primitives.** Every component must compose from existing tokens in `tokens.css` and the semantic layer in `colors_and_type.css` (§4.7). No new colors, no new spacing values, no new type sizes unless the §15.palette procedure is followed.
+3. **Earn the spec slot.** A new component enters §16 after it has been used in **two distinct contexts**. One-off uses don't earn spec inclusion — they live in the calling project until the second use proves the pattern.
+4. **Honor the discipline.** The rules in §12 ("what this is not") and §16's discipline checklist apply to every component. No gradients, no glass, no decorative-only styling, no pills on buttons.
+5. **Land everywhere at once.** A new component adds (a) a class block in `controls.css`, (b) a section in `reference/controls-showcase.html`, (c) a focused card in `reference/controls-preview/`, and (d) a row in §16's component inventory. Anything less leaves the spec out of sync with the implementation.
 
 ### When extending the glyph vocabulary
 
@@ -497,4 +541,91 @@ Re-read §1 (premise) and §12 (what it's not). Most extension decisions resolve
 
 ---
 
-*End of SYSTEM.md · v1.2 · 2026.05.14*
+## 16. Components (v1.1)
+
+The system's first UI-control cohort, implemented in `controls.css`. Every component reads from `colors_and_type.css` (§4.7's semantic role layer) and switches automatically when `<html data-mode="day | night">` flips.
+
+**See:** `reference/controls-showcase.html` (every component in both modes), `reference/controls-compare.html` (day vs night side-by-side), `reference/controls-preview/` (focused single-control cards).
+
+### 16.1 Inventory
+
+| Class | Role | Variants |
+|-------|------|----------|
+| `.btn` | Buttons | `--primary`, `--secondary`, `--ghost`, `--destructive`, `--icon`, `--sm`, `--lg`, `:disabled`, loading |
+| `.btn-group` | Adjacent button row | — |
+| `.field` / `.input` / `.textarea` / `.select` | Form fields | `.input--mono`, sizes, error/help states |
+| `.check` / `.radio` / `.switch` | Toggleable controls | — |
+| `.range` | Slider input | — |
+| `.number-input` | Numeric stepper input | `__btn--minus`, `__btn--plus` |
+| `.stepper` | Process / step indicator | `.is-complete`, `.is-current` states |
+| `.tag-input` | Multi-token input | — |
+| `.combobox` | Filter-search input | — |
+| `.dropzone` | File-drop region | — |
+| `.inline-edit` | In-place text edit | — |
+| `.badge` | Status / count chip | `--pill`, semantic variants |
+| `.icon-badge` | Count / status badge on an icon | `--accent`, `--ok`, `--warn`, `--dot`; anchor with `.has-icon-badge` |
+| `.alert` | Inline alert block | `--ok`, `--warn`, `--alert`, `--note` |
+| `.banner` | Top-of-page banner | semantic variants |
+| `.toast` | Floating notification | semantic variants |
+| `.tooltip` | Hover tooltip | directional |
+| `.popover` | Floating info surface | — |
+| `.card` | Surface container | `--stripe`, `--brackets`, with `__head`, `__body`, `__foot` |
+| `.modal` | Centered modal | with `__head`, `__body`, `__foot` |
+| `.drawer` | Edge-anchored drawer | `--left`, `--right` |
+| `.accordion` | Disclosure list | — |
+| `.empty` | Empty-state slate | — |
+| `.spinner` / `.skel` | Loading affordances | — |
+| `.tabs` | Tab navigation | with `__count` |
+| `.segmented` | Segmented control | — |
+| `.crumbs` | Breadcrumb trail | — |
+| `.pagination` | Page navigation | — |
+| `.progress` | Linear progress | semantic variants |
+| `.menu` | Dropdown menu | — |
+| `.cmdk` | Command palette | — |
+| `.table` | Data table | sortable, with `__head`, `__row`, `__cell` |
+| `.stat` | KPI display | with `__value`, `__label`, trend |
+| `.topbar` | App header | — |
+| `.sidenav` | Side navigation | — |
+| `.dot` | Status indicator | semantic + `--pulse` |
+| `.codeblock` | Code display | inline `<code>`, block `<pre>` |
+| `.kbd` | Keystroke display | — |
+| `.section-rule` | Labeled section divider | — |
+| `.avatar` / `.avatar-group` | User avatar | sizes, `--ai`, group stack |
+
+### 16.2 Discipline
+
+Components inherit §12 ("what this is not") and add component-specific rules:
+
+- **Single brand accent per context.** `sky-deep` in day, `amber` in night. Never both. Never a third.
+- **Semantic colors carry status only.** A `.btn--destructive` is destructive; a `.badge--ok` is nominal. Don't use semantic variants for decoration.
+- **Hierarchy from type, weight, case, and color** — not boxes, gradients, or shadows.
+- **Borders, not drop-shadows.** A drop-shadow is permitted only on a surface that *floats above the page* — menus, popovers, tooltips, toasts, modals, drawers, the combobox list, and the command palette. Flat, in-flow surfaces (cards, alerts, banners, tables, fields) use hairline `--rule` borders, never shadow.
+- **Architectural radii.** `--radius-1` (2px) on fields and buttons; `--radius-2` (4px) on chips and tags; `--radius-3` (6px) max on cards, modals, and drawers. `--radius-pill` is reserved for switch tracks, progress bars, and the `.badge--pill` chip variant. **No pills on buttons.**
+- **Mono-uppercase labels** at 2.5px tracking. Sentence-case web labels break the system's feel.
+- **No gradients, no glassmorphism, no decorative shadows, no italicized names, no emoji.** These are out by §12.
+- **Focus visible always.** Every interactive element exposes a 2px `--focus-ring` outline on `:focus-visible`. Don't suppress.
+
+### 16.3 Usage
+
+```html
+<html data-mode="day">                <!-- or "night" -->
+<link rel="stylesheet" href="controls.css">
+
+<button class="btn btn--primary">Save changes</button>
+
+<label class="field">
+  <span class="field__label">NODE ID</span>
+  <input class="input input--mono" value="edge-dr-01">
+</label>
+
+<div class="alert alert--ok">
+  <span class="alert__icon"></span>
+  <div class="alert__text">Backup completed at 03:14 UTC.</div>
+</div>
+```
+
+The `data-mode` attribute is the only switch: every variable in §4.7 tracks it. There is no JS theming layer; CSS does the entire job.
+
+---
+
+*End of SYSTEM.md · v1.3 · 2026.05.17*

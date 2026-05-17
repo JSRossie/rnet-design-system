@@ -1,0 +1,47 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;">
+  <div class="field">
+    <label class="field__label">EMAIL <span class="req">*</span></label>
+    <input class="input" type="email" placeholder="jr@rossie.net" />
+    <span class="field__help">USED FOR SIGN-IN</span>
+  </div>
+  <div class="field">
+    <label class="field__label">NODE ID</label>
+    <div class="input-wrap">
+      <span class="input-wrap__icon nf"></span>
+      <input class="input input--mono" type="text" value="edge-dr-01" />
+    </div>
+    <span class="field__help">7 CHARS · ALPHANUMERIC</span>
+  </div>
+  <div class="field">
+    <label class="field__label">PASSPHRASE</label>
+    <input class="input" type="password" value="••••••••••••" />
+  </div>
+  <div class="field">
+    <label class="field__label">ACCESS KEY</label>
+    <input class="input" type="text" value="invalid-format" aria-invalid="true" />
+    <span class="field__error">CHECKSUM MISMATCH</span>
+  </div>
+  <div class="field" style="grid-column:1/-1;">
+    <label class="field__label">FIELD NOTE</label>
+    <textarea class="textarea" placeholder="Observation, action taken, next step...">Edge node disk trending up. Schedule tier-2 archive sweep this week.</textarea>
+  </div>
+</div>
+
+</body>
+</html>

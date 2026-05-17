@@ -1,0 +1,34 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+  <div class="menu" style="position:relative;top:0;">
+    <div class="menu__label">NODE ACTIONS</div>
+    <button class="menu__item"><span class="nf"></span><span>Restart service</span><kbd>⌘R</kbd></button>
+    <button class="menu__item"><span class="nf"></span><span>Sync now</span><kbd>⌘S</kbd></button>
+    <button class="menu__item"><span class="nf"></span><span>Export logs</span><span></span></button>
+    <button class="menu__item" aria-disabled="true"><span class="nf"></span><span>Bulk archive</span><span></span></button>
+    <hr class="menu__divider">
+    <button class="menu__item menu__item--danger"><span class="nf"></span><span>Decommission</span><span></span></button>
+  </div>
+  <div class="menu" style="position:relative;top:0;" data-mode-inherit>
+    <div class="menu__label">VIEW</div>
+    <button class="menu__item"><span class="nf"></span><span>By site</span><span></span></button>
+    <button class="menu__item"><span class="nf"></span><span>By service</span><span></span></button>
+    <button class="menu__item"><span class="nf"></span><span>By status</span><span></span></button>
+  </div>
+</div>
+
+</body>
+</html>

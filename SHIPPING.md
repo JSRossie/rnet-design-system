@@ -1,129 +1,83 @@
-# Shipping Manifest — JR / R—Net Design System v1.0
+# Shipping Manifest — JR / R—Net Design System
 
-**Released:** 2026.05.14
-**Codename:** Charts & Vectors
 **For:** James Rossie
+**Codename:** Charts & Vectors
 
-This is the complete v1.0 delivery. Everything below is ready to upload to a GitHub repository or use immediately.
+This is the running shipping log. Each entry below corresponds to a released version of the system. New work appends to the top; previous entries stay intact.
 
 ---
 
-## What's in the box
+## v1.1 — 2026.05.17 · First UI-control cohort
 
-### Core documentation
+The system's first cohort of UI controls, plus the third monogram variant and a semantic-role layer that decouples components from the raw palette.
+
+### Added
+
+- **`colors_and_type.css`** — semantic role layer (`--bg`, `--fg-1`, `--accent`, `--rule`, `--focus-ring`, the `--field-*` family) plus `@font-face` declarations for Outfit, Urbanist, and JetBrainsMono. Imports `tokens.css`. Switches automatically on `<html data-mode="day | night">`. Documented as `SYSTEM.md §4.7`.
+- **`controls.css`** — first production cohort: `.btn`, `.input`, `.field`, `.check`, `.radio`, `.switch`, `.range`, `.stepper`, `.combobox`, `.tag-input`, `.dropzone`, `.inline-edit`, `.badge`, `.alert`, `.banner`, `.toast`, `.tooltip`, `.card`, `.modal`, `.drawer`, `.accordion`, `.empty`, `.spinner`, `.skel`, `.tabs`, `.segmented`, `.crumbs`, `.pagination`, `.progress`, `.menu`, `.cmdk`, `.table`, `.stat`, `.topbar`, `.sidenav`, `.dot`, `.codeblock`, `.kbd`, `.avatar`. Documented as `SYSTEM.md §16`.
+- **`components/monogram-mono.svg`** — third monogram variant (fax, emboss, single-color print). Fulfills the v1.0 "pending production" item.
+- **`reference/controls-showcase.html`** — every control in both modes, plus a composed R—Net dashboard example.
+- **`reference/controls-compare.html`** — day-vs-night side-by-side reference.
+- **`reference/controls-preview/`** — 40 focused single-control preview cards.
+
+### Changed
+
+- **`tokens.json`** → v1.1. Added `radius` (none/field/chip/card/pill), `motion.easing.instrument` + `motion.duration.{fast,base,slow}`, `space.scale.1`–`10`, `border.ruleStrong`, and web-control `font.size.{subhead,h3,bodySmall,code}` + matching tracking + lineHeight entries. No primitives renamed or removed.
+- **`tailwind.config.js`** → v1.1. Mirrored the tokens.json additions as Tailwind utilities (`rounded-field/chip/card/pill`, `ease-instrument`, `duration-fast/base/slow`, `spacing-1`–`10`, `border-hair/rule-strong`, `text-subhead/h3/body-sm/code`, `shadow-popover/modal`).
+- **`SYSTEM.md`** → v1.3. Added `§4.7 Semantic Web-Control Roles`, added `§16 Components`, rewrote the "When extending UI components" subsection of §15 to reference §16, updated §14 file tree, added v1.3 row to §13 version table, added a note on web-control type additions to §3.
+- **`README.md`** → v1.1. Added bullets for `colors_and_type.css`, `controls.css`, and the controls showcase under "What's in this repository."
+- **`components/README.md`** → all three monograms now marked shipped.
+- **`reference/README.md`** → entries added for `controls-showcase.html`, `controls-compare.html`, `controls-preview/`.
+
+### Naming note (worth a future cleanup)
+
+`colors_and_type.css` exposes the 20px web sub-section heading as `--type-h2`, while `SYSTEM.md §3`'s canonical "H2" is the 12px mono uppercase label. To avoid renaming an established CSS variable in active use, `tokens.json` distinguishes them as `font.size.h2` (12px, the label) and `font.size.subhead` (20px, the web sub-head). A future v1.2 of `colors_and_type.css` may add a `--type-subhead` alias and deprecate `--type-h2`.
+
+### Discipline check
+
+- ✓ No new colors. All `controls.css` rules read from `--*` aliases in `colors_and_type.css`, which read from primitives in `tokens.css`.
+- ✓ No new motion or radius primitives at the JSON layer beyond the additions catalogued in §4.7.
+- ✓ Every shipped class is exercised in both `controls-showcase.html` and `controls-compare.html` — verifying the two-distinct-contexts rule in §15.
+
+---
+
+## v1.0 — 2026.05.14 · First stable release
+
+### What was in the box
+
+#### Core documentation
 - **`README.md`** (v1.0) — The story. Read first. ~1,341 words. Hand-editable for voice.
 - **`SYSTEM.md`** (v1.2) — Complete specification with verified WCAG contrast ratios, all four color layers, type system, content patterns, and extension procedure.
 - **`GLYPHS.md`** (v2.0) — Role-based glyph registry. ~30 sanctioned roles with confidence tags. Includes test harness and audit procedure.
 
-### AI-prompt-ready spec versions
+#### AI-prompt-ready spec versions
 - **`SHORT.md`** — One paragraph. For tight context budgets.
 - **`STANDARD.md`** — Page-or-two. For most system prompts.
-- *(`SYSTEM.md` and `GLYPHS.md` serve as the full-fidelity versions)*
 
-### Machine-readable tokens (drop-in)
-- **`tokens.json`** — Style Dictionary / W3C Design Tokens format. Universal.
-- **`tokens.css`** — CSS custom properties. Drop into any web project.
-- **`tailwind.config.js`** — Tailwind preset. Drop into any Tailwind project.
+#### Machine-readable tokens (drop-in)
+- **`tokens.json`** (v1.0) — Style Dictionary / W3C Design Tokens format.
+- **`tokens.css`** (v1.0) — CSS custom properties.
+- **`tailwind.config.js`** (v1.0) — Tailwind preset.
 
-### AI prompts (one per tool)
+#### AI prompts (one per tool)
 - **`prompts/for-claude.md`** — Three fidelity levels for Claude.
 - **`prompts/for-chatgpt.md`** — Three fidelity levels for ChatGPT, with anti-patterns specific to GPT's quirks.
 - **`prompts/for-v0.md`** — Path-A (token-first) and Path-B (prompt-only) for v0, Cursor, Lovable, Bolt.
 - **`prompts/for-design-tools.md`** — Figma, Adobe Firefly, Illustrator, Midjourney, Photoshop.
 
-### Visual reference
-- **`reference/style-guide.html`** (v1.0) — Interactive visual reference, ~1,928 lines. Designed for both screen and print (US Letter, 0.75in margins). 7 sections + quick reference card.
-- *(`reference/style-guide.pdf`)* — Generate by opening the HTML in a browser and printing to PDF.
+#### Visual reference
+- **`reference/style-guide.html`** (v1.0) — Interactive visual reference. Designed for both screen and print (US Letter, 0.75in margins). 7 sections + quick reference card.
 
-### Components (pending your production work)
-- **`components/monogram-light.svg`** — *Replace stand-in with your final SVG.*
-- **`components/monogram-dark.svg`** — *Replace stand-in with your final SVG.*
-- **`components/monogram-mono.svg`** — *Replace stand-in with your final SVG.*
-- **`components/templates/`** — *Empty. Add document templates as you build them.*
+#### Components (partial)
+- **`components/monogram-light.svg`** — Shipped.
+- **`components/monogram-dark.svg`** — Shipped.
+- **`components/monogram-mono.svg`** — *Pending* (shipped in v1.1).
+- **`components/templates/`** — Empty. Add document templates as built.
 
----
+### Status at v1.0
 
-## What to do next
-
-### Immediate (this week)
-
-1. **Read README.md** end-to-end and hand-edit your voice in.
-2. **Verify GLYPHS.md codepoints** — run the test harness in §10 against your installed JetBrainsMono Nerd Font on macOS. Update tags from `[MDI-v3.x-claim]` to `[verified-2026.05]` where they render correctly, or to `[updated-...]` if you change codepoints. The Font Awesome (`[FA-stable]`) entries should all render correctly without intervention.
-3. **Open style-guide.html in your browser** — scroll through to validate the visual reference. Print to PDF to verify the print version. Save the PDF to `reference/style-guide.pdf`.
-
-### Short-term (this month)
-
-4. **Produce the final monogram SVG.** Use the prompts in `prompts/for-design-tools.md` with Adobe Illustrator AI or Adobe Firefly to refine your existing JR monogram into the three production variants. Drop them into `components/`.
-5. **Create the GitHub repository.** Public if you want AIs to fetch by URL; private if you prefer to paste files manually. Upload the entire structure.
-6. **First test prompt.** Pick a small real task (a thank-you note, a simple R—Net status page) and prompt Claude or ChatGPT using the relevant prompt file. See how the output holds up. Note any drift and refine the prompts.
-
-### Ongoing (as needed)
-
-7. **Add document templates** to `components/templates/` as you build them — stationery, business cards, R—Net dashboard skeletons, etc.
-8. **Extend the system** following the procedures in `SYSTEM.md §15` and `GLYPHS.md §10` rather than improvising.
-9. **Audit GLYPHS.md** every 6–12 months against current Nerd Fonts releases. Log changes in `GLYPHS.md §13`.
+All files aligned with `SYSTEM.md v1.2`. Spec was stable; controls intentionally deferred per §15 ("UI controls are deferred to point of need") until a real use case arrived. v1.1 is the realization of that promise.
 
 ---
 
-## Repository structure (final)
-
-```
-jr-design-system/
-├── README.md                           ✓ Ready (hand-edit voice)
-├── SYSTEM.md                           ✓ Ready
-├── SHORT.md                            ✓ Ready
-├── STANDARD.md                         ✓ Ready
-├── GLYPHS.md                           ✓ Ready (run test harness to verify)
-├── SHIPPING.md                         ✓ This file
-├── tokens.json                         ✓ Ready
-├── tokens.css                          ✓ Ready
-├── tailwind.config.js                  ✓ Ready
-├── prompts/
-│   ├── for-claude.md                   ✓ Ready
-│   ├── for-chatgpt.md                  ✓ Ready
-│   ├── for-v0.md                       ✓ Ready
-│   └── for-design-tools.md             ✓ Ready
-├── components/
-│   ├── monogram-light.svg              ⊘ Pending your production
-│   ├── monogram-dark.svg               ⊘ Pending your production
-│   ├── monogram-mono.svg               ⊘ Pending your production
-│   └── templates/                      ⊘ Build as needed
-└── reference/
-    ├── style-guide.html                ✓ Ready
-    └── style-guide.pdf                 ⊘ Generate from HTML (print to PDF)
-```
-
----
-
-## Versions
-
-| File | Version | Status |
-|------|---------|--------|
-| `SYSTEM.md` | 1.2 | Stable |
-| `GLYPHS.md` | 2.0 | Stable, pending verification pass |
-| `README.md` | 1.0 | Stable, pending your voice edits |
-| `style-guide.html` | 1.0 | Stable |
-| `tokens.json` | 1.0 | Stable |
-| `tokens.css` | 1.0 | Stable |
-| `tailwind.config.js` | 1.0 | Stable |
-| Prompt files | 1.0 | Stable |
-
-All files are aligned with `SYSTEM.md v1.2`.
-
----
-
-## A note on this version
-
-This is **v1.0** — the first stable release of a complete, internally-consistent system. It will need iteration as you use it. The most likely places for v1.1 are:
-
-- **GLYPHS.md** after you do the verification pass — some MDI codepoints may change
-- **Content patterns in SYSTEM.md §10** as you discover new document types worth codifying
-- **The README** as your voice settles in and you refine the story
-- **UI components** when you start building specific interfaces that need spec'd controls
-
-The architecture is designed for these changes. Follow the procedures in `SYSTEM.md §15` and `GLYPHS.md §10`, log changes in the version tables, and the system stays coherent as it grows.
-
----
-
-*Shipping manifest · v1.0 · 2026.05.14*
-*Owner: James Rossie · System: Charts & Vectors*
+*Manifest is append-only. New releases add a new section above; old sections are not edited except for typo fixes.*

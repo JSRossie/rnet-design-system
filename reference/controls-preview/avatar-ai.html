@@ -1,0 +1,52 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 260px; }
+  .frame { display: flex; flex-direction: column; gap: 18px; padding: 26px; background: var(--bg); color: var(--fg-1); }
+  .frame[data-mode="night"] { background: var(--night); color: var(--cream); }
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+</style>
+</head>
+<body>
+<div class="frame" data-mode="day">
+  <div class="lbl">DAY · CEREMONIAL · SYSTEM AVATAR</div>
+  <div class="row">
+    <div class="avatar avatar--ai avatar--sm">JR</div>
+    <div class="avatar avatar--ai">JR</div>
+    <div class="avatar avatar--ai avatar--lg">JR</div>
+    <div class="avatar avatar--ai avatar--lg">MK</div>
+    <div class="avatar avatar--ai avatar--lg">TS</div>
+  </div>
+  <div class="row">
+    <div class="avatar-group">
+      <div class="avatar avatar--ai">JR</div>
+      <div class="avatar avatar--ai">MK</div>
+      <div class="avatar avatar--ai">TS</div>
+      <div class="avatar-group__more">+3</div>
+    </div>
+  </div>
+</div>
+<div class="frame" data-mode="night">
+  <div class="lbl">NIGHT · INSTRUMENTED · SYSTEM AVATAR</div>
+  <div class="row">
+    <div class="avatar avatar--ai avatar--sm">JR</div>
+    <div class="avatar avatar--ai">JR</div>
+    <div class="avatar avatar--ai avatar--lg">JR</div>
+    <div class="avatar avatar--ai avatar--lg">MK</div>
+    <div class="avatar avatar--ai avatar--lg">TS</div>
+  </div>
+  <div class="row">
+    <div class="avatar-group">
+      <div class="avatar avatar--ai">JR</div>
+      <div class="avatar avatar--ai">MK</div>
+      <div class="avatar avatar--ai">TS</div>
+      <div class="avatar-group__more">+3</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

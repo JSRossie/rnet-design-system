@@ -1,0 +1,43 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div class="grp" style="margin-bottom:24px;">
+  <div class="lbl">TABS</div>
+  <div class="tabs">
+    <button class="tabs__tab is-active">Overview</button>
+    <button class="tabs__tab">Sites</button>
+    <button class="tabs__tab">Services</button>
+    <button class="tabs__tab">Activity</button>
+    <button class="tabs__tab">Settings</button>
+  </div>
+</div>
+<div class="grp">
+  <div class="lbl">SEGMENTED</div>
+  <div class="row">
+    <div class="segmented">
+      <button class="segmented__item is-active">Day</button>
+      <button class="segmented__item">Week</button>
+      <button class="segmented__item">Month</button>
+    </div>
+    <div class="segmented">
+      <button class="segmented__item">Light</button>
+      <button class="segmented__item is-active">Night</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

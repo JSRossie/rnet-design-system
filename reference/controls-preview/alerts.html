@@ -1,0 +1,50 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="alert alert--note">
+    <span class="alert__icon nf"></span>
+    <div class="alert__body">
+      <div class="alert__title">NOTE</div>
+      <div class="alert__text">Suggested next meeting · third week of May. I'll bring the working draft.</div>
+    </div>
+    <button class="alert__close nf" aria-label="close"></button>
+  </div>
+  <div class="alert alert--ok">
+    <span class="alert__icon nf"></span>
+    <div class="alert__body">
+      <div class="alert__title">NOMINAL</div>
+      <div class="alert__text">Backup of edge-dr completed 09:42. All systems responding within target latency.</div>
+    </div>
+  </div>
+  <div class="alert alert--warn">
+    <span class="alert__icon nf"></span>
+    <div class="alert__body">
+      <div class="alert__title">CAUTION</div>
+      <div class="alert__text">Disk on edge-dr trending up — 78%. Schedule tier-2 archive sweep this week.</div>
+    </div>
+  </div>
+  <div class="alert alert--alert">
+    <span class="alert__icon nf"></span>
+    <div class="alert__body">
+      <div class="alert__title">CRITICAL</div>
+      <div class="alert__text">VPN tunnel to montreal-2 has recovered after 4m 18s outage. Logs attached.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

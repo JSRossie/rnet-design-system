@@ -1,0 +1,49 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;">
+  <div class="field">
+    <label class="field__label">REGION</label>
+    <select class="select">
+      <option>Austin · TX (primary)</option>
+      <option>Boulder · CO</option>
+      <option>Montréal · QC</option>
+    </select>
+  </div>
+  <div class="field">
+    <label class="field__label">SEVERITY</label>
+    <select class="select">
+      <option>P1 · Critical</option>
+      <option>P2 · Major</option>
+      <option>P3 · Minor</option>
+    </select>
+  </div>
+  <div class="field">
+    <label class="field__label">SEARCH</label>
+    <div class="input-wrap">
+      <span class="input-wrap__icon nf"></span>
+      <input class="input" placeholder="Find node, service, or alert..." />
+    </div>
+  </div>
+  <div class="field">
+    <label class="field__label">LOCKED FIELD</label>
+    <input class="input" value="immutable" disabled />
+    <span class="field__help">READ-ONLY · IMMUTABLE</span>
+  </div>
+</div>
+
+</body>
+</html>
