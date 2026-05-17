@@ -1,9 +1,9 @@
 /**
  * Tailwind CSS preset for the JR / R—Net design system.
  *
- * Version:      1.0
- * Source:       SYSTEM.md v1.2 · tokens.json v1.0
- * Last updated: 2026.05.14
+ * Version:      1.1
+ * Source:       SYSTEM.md v1.3 · tokens.json v1.1
+ * Last updated: 2026.05.17
  *
  * Usage in tailwind.config.js:
  *
@@ -21,6 +21,20 @@
  *       Correspondence
  *     </span>
  *   </div>
+ *
+ * --- v1.1 additions (web-control primitives) ---
+ *
+ *   <div class="rounded-card border-rule-strong shadow-popover
+ *               p-5 ease-instrument duration-base">
+ *     <h2 class="text-subhead tracking-subhead leading-subhead">…</h2>
+ *     <p  class="text-body-sm">…</p>
+ *     <code class="text-code font-mono">…</code>
+ *   </div>
+ *
+ * v1.1 exposes the new radii, motion, extended spacing, and the
+ * web-control type sizes (subhead, h3, body-sm, code) so consumers
+ * using Tailwind have the same vocabulary as consumers using
+ * `colors_and_type.css` directly.
  */
 
 module.exports = {
@@ -90,6 +104,15 @@ module.exports = {
         'h2':       ['12px', { lineHeight: '1',    letterSpacing: '2.5px',  fontWeight: '500' }],
         'body':     ['15px', { lineHeight: '1.7' }],
         'metadata': ['10px', { lineHeight: '1.6',  letterSpacing: '1.5px' }],
+
+        // v1.1 — web-control type sizes
+        // Note: `subhead` is what colors_and_type.css exposes as `--type-h2`,
+        // a web-conventional sub-section heading. SYSTEM.md §3's "H2" remains
+        // the 12px mono label above. See PR notes / SYSTEM.md §16.
+        'subhead':  ['20px', { lineHeight: '1.25', letterSpacing: '-0.2px', fontWeight: '500' }],
+        'h3':       ['16px', { lineHeight: '1.35' }],
+        'body-sm':  ['13px', { lineHeight: '1.55' }],
+        'code':     ['13px', { lineHeight: '1.6' }],
       },
 
       letterSpacing: {
@@ -97,12 +120,18 @@ module.exports = {
         'h1-tight':      '-0.5px',
         'label':         '2.5px',
         'meta':          '1.5px',
+
+        // v1.1
+        'subhead':       '-0.2px',
       },
 
       lineHeight: {
         'display': '1.05',
         'h1':      '1.15',
         'body':    '1.7',
+
+        // v1.1
+        'subhead': '1.25',
       },
 
       spacing: {
@@ -110,6 +139,19 @@ module.exports = {
         'page':    '48px',
         'section': '72px',
         'element': '20px',
+
+        // v1.1 — numeric scale. `5`, `8`, `9` are aliases of the named
+        // values above (kept here for consistency in numeric usage).
+        '1':  '4px',
+        '2':  '8px',
+        '3':  '12px',
+        '4':  '16px',
+        '5':  '20px',
+        '6':  '28px',
+        '7':  '40px',
+        '8':  '48px',
+        '9':  '72px',
+        '10': '96px',
       },
 
       maxWidth: {
@@ -118,7 +160,39 @@ module.exports = {
       },
 
       borderWidth: {
-        'stripe': '4px',
+        'stripe':      '4px',
+        // v1.1
+        'hair':        '1px',
+        'rule-strong': '2px',
+      },
+
+      borderRadius: {
+        // v1.1 — architectural radii. No pill on buttons by spec (§16).
+        'none':  '0',
+        'field': '2px',     // buttons, inputs, segmented items
+        'chip':  '4px',     // tags, badges
+        'card':  '6px',     // cards, modals, drawers, toasts
+        'pill':  '9999px',  // switch tracks, progress bars, .badge--pill
+      },
+
+      transitionTimingFunction: {
+        // v1.1 — system-default ease. Quick start, gentle settle.
+        'instrument': 'cubic-bezier(0.2, 0, 0.1, 1)',
+      },
+
+      transitionDuration: {
+        // v1.1
+        'fast': '120ms',
+        'base': '180ms',
+        'slow': '260ms',
+      },
+
+      boxShadow: {
+        // v1.1 — only used on floating surfaces (popover, dropdown, modal,
+        // toast). Per §12, shadow is reserved for floating surfaces; flat
+        // panels use borders. Day-mode values; switch via `data-mode` CSS.
+        'popover': '0 1px 0 #D4CEBC, 0 4px 18px -8px rgba(31, 29, 24, 0.18)',
+        'modal':   '0 1px 0 #D4CEBC, 0 24px 80px -24px rgba(31, 29, 24, 0.28)',
       },
     },
   },

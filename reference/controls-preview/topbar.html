@@ -1,0 +1,36 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  body{padding:0;}
+</style>
+</head>
+<body>
+
+<div style="border:1px solid var(--rule);">
+  <div class="stripe-accent"></div>
+  <nav class="topbar">
+    <a class="topbar__brand" href="#"><img src="../../components/monogram-light.svg" style="width:24px;height:24px;" alt=""> R—NET <span class="em">INFRA</span></a>
+    <div class="topbar__nav">
+      <a href="#" aria-current="page">Overview</a>
+      <a href="#">Sites</a>
+      <a href="#">Services</a>
+      <a href="#">Logs</a>
+    </div>
+    <div class="topbar__actions">
+      <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span>
+      <button class="btn btn--secondary btn--sm">New Site</button>
+      <div class="avatar" title="JR">JR</div>
+    </div>
+  </nav>
+</div>
+
+</body>
+</html>

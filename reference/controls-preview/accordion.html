@@ -1,0 +1,35 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="accordion" style="max-width:580px;">
+  <details class="accordion__item" open>
+    <summary><span class="accordion__num">01</span><span>General settings</span><span class="accordion__chevron">▸</span></summary>
+    <div class="accordion__body">Sync interval, retry budget, archive target. Defaults pull from the cluster manifest.</div>
+  </details>
+  <details class="accordion__item">
+    <summary><span class="accordion__num">02</span><span>Backup &amp; retention</span><span class="accordion__chevron">▸</span></summary>
+    <div class="accordion__body">Tier-1 daily / tier-2 weekly. Retention 90 days. Off-site mirror on Sunday 02:00 UTC.</div>
+  </details>
+  <details class="accordion__item">
+    <summary><span class="accordion__num">03</span><span>Notifications</span><span class="accordion__chevron">▸</span></summary>
+    <div class="accordion__body">Channel routing, severity thresholds, on-call rotations.</div>
+  </details>
+  <details class="accordion__item">
+    <summary><span class="accordion__num">04</span><span>Security &amp; access</span><span class="accordion__chevron">▸</span></summary>
+    <div class="accordion__body">Key rotation, audit retention, allowed origins.</div>
+  </details>
+</div>
+
+</body>
+</html>

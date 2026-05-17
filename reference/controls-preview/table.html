@@ -1,0 +1,60 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Node</th>
+      <th>Site</th>
+      <th>Service</th>
+      <th class="num">Uptime</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono" style="color:var(--accent);"><span class="nf"></span> edge-dr-01</td>
+      <td>Austin · TX</td>
+      <td>backup · primary</td>
+      <td class="num mono">247d 14h</td>
+      <td><span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span></td>
+    </tr>
+    <tr>
+      <td class="mono" style="color:var(--accent);"><span class="nf"></span> core-mtl-02</td>
+      <td>Montréal · QC</td>
+      <td>routing · failover</td>
+      <td class="num mono">182d 03h</td>
+      <td><span class="badge badge--solid badge--warn"><span class="nf"></span> disk 78%</span></td>
+    </tr>
+    <tr>
+      <td class="mono" style="color:var(--accent);"><span class="nf"></span> ha-vault-bld</td>
+      <td>Boulder · CO</td>
+      <td>home-assistant</td>
+      <td class="num mono">98d 11h</td>
+      <td><span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span></td>
+    </tr>
+    <tr>
+      <td class="mono" style="color:var(--accent);"><span class="nf"></span> nas-arch-tx</td>
+      <td>Austin · TX</td>
+      <td>archive · cold</td>
+      <td class="num mono">4d 02h</td>
+      <td><span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

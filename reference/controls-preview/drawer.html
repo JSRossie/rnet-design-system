@@ -1,0 +1,40 @@
+<!doctype html>
+<html data-mode="night" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  body{padding:0;}
+</style>
+</head>
+<body>
+
+<div style="position:relative;height:360px;background:color-mix(in oklab, #000 30%, transparent);border:1px solid var(--rule);">
+  <div class="drawer" style="position:absolute;width:340px;">
+    <div class="drawer__head">
+      <div>
+        <div class="drawer__eyebrow">NODE · DETAILS</div>
+        <div class="drawer__title">edge-dr-01</div>
+      </div>
+      <button class="alert__close nf" aria-label="close" style="font-size:16px;cursor:pointer;"></button>
+    </div>
+    <div class="drawer__body">
+      <div class="col">
+        <div class="meta" style="color:var(--accent);">PROFILE</div>
+        <div class="field"><span class="field__label">REGION</span><div style="font-family:var(--font-body);font-size:14px;">Austin · TX</div></div>
+        <div class="field"><span class="field__label">SERVICE</span><div style="font-family:var(--font-body);font-size:14px;">backup · primary</div></div>
+        <div class="field"><span class="field__label">UPTIME</span><div class="mono" style="font-family:var(--font-mono);font-size:14px;color:var(--accent);">247 d 14 h</div></div>
+      </div>
+    </div>
+    <div class="drawer__foot">
+      <button class="btn btn--ghost btn--sm">Close</button>
+      <button class="btn btn--primary btn--sm">Open full view</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

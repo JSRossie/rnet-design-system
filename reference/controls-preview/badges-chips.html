@@ -1,0 +1,47 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div class="grp" style="margin-bottom:16px;">
+  <div class="lbl">OUTLINE</div>
+  <div class="row">
+    <span class="badge">default</span>
+    <span class="badge badge--accent">accent</span>
+    <span class="badge badge--warm">warm</span>
+    <span class="badge badge--ok"><span class="nf"></span> ok</span>
+    <span class="badge badge--warn"><span class="nf"></span> warn</span>
+    <span class="badge badge--alert"><span class="nf"></span> alert</span>
+  </div>
+</div>
+<div class="grp" style="margin-bottom:16px;">
+  <div class="lbl">SOLID · STATUS</div>
+  <div class="row">
+    <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal · 247d</span>
+    <span class="badge badge--solid badge--warn"><span class="nf"></span> disk 78%</span>
+    <span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span>
+    <span class="badge badge--solid badge--accent">live</span>
+  </div>
+</div>
+<div class="grp">
+  <div class="lbl">PILL · DISMISSIBLE</div>
+  <div class="row">
+    <span class="badge badge--pill badge--accent">production <button class="chip-close" aria-label="remove">×</button></span>
+    <span class="badge badge--pill">staging <button class="chip-close" aria-label="remove">×</button></span>
+    <span class="badge badge--pill badge--warm">austin-tx <button class="chip-close" aria-label="remove">×</button></span>
+  </div>
+</div>
+
+</body>
+</html>

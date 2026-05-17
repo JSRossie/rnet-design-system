@@ -1,0 +1,34 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="col" style="max-width:500px;">
+  <div class="range-field">
+    <label class="field__label">DISK THRESHOLD</label>
+    <span class="range-field__value">78%</span>
+    <input class="range" type="range" min="0" max="100" value="78">
+  </div>
+  <div class="range-field">
+    <label class="field__label">RETRY INTERVAL</label>
+    <span class="range-field__value">15 MIN</span>
+    <input class="range" type="range" min="1" max="60" value="15">
+  </div>
+  <div class="range-field">
+    <label class="field__label">RETENTION</label>
+    <span class="range-field__value">90 DAYS</span>
+    <input class="range" type="range" min="7" max="365" value="90">
+  </div>
+</div>
+
+</body>
+</html>

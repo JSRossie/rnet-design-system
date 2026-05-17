@@ -1,0 +1,39 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px 30px;">
+  <div class="grp">
+    <div class="lbl">CHECKBOX</div>
+    <label class="check"><input type="checkbox" checked><span class="check__box"></span><span>Enable Zigbee bridge</span></label>
+    <label class="check"><input type="checkbox"><span class="check__box"></span><span>Mirror to off-site</span></label>
+    <label class="check"><input type="checkbox" checked><span class="check__box"></span><span>Notify on alert</span></label>
+  </div>
+  <div class="grp">
+    <div class="lbl">RADIO</div>
+    <label class="radio"><input type="radio" name="mode"><span class="radio__dot"></span><span>Ceremonial</span></label>
+    <label class="radio"><input type="radio" name="mode" checked><span class="radio__dot"></span><span>Instrumented</span></label>
+    <label class="radio"><input type="radio" name="mode"><span class="radio__dot"></span><span>Auto / system</span></label>
+  </div>
+  <div class="grp">
+    <div class="lbl">SWITCH</div>
+    <label class="switch"><input type="checkbox" checked><span class="switch__track"></span><span>Auto-sync</span></label>
+    <label class="switch"><input type="checkbox"><span class="switch__track"></span><span>Beta features</span></label>
+    <label class="switch"><input type="checkbox" checked><span class="switch__track"></span><span>Telemetry</span></label>
+  </div>
+</div>
+
+</body>
+</html>

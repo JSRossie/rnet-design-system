@@ -1,0 +1,35 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px;align-items:center;justify-items:center;padding-top:40px;padding-bottom:40px;">
+  <div style="position:relative;">
+    <span class="tooltip tooltip--top" style="position:absolute;top:-32px;left:50%;transform:translateX(-50%);white-space:nowrap;">TOOLTIP · TOP</span>
+    <button class="btn btn--secondary btn--sm">Top</button>
+  </div>
+  <div style="position:relative;">
+    <span class="tooltip tooltip--right" style="position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);white-space:nowrap;">TOOLTIP · RIGHT</span>
+    <button class="btn btn--secondary btn--sm">Right</button>
+  </div>
+  <div style="position:relative;">
+    <span class="tooltip tooltip--bottom" style="position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);white-space:nowrap;">TOOLTIP · BOTTOM</span>
+    <button class="btn btn--secondary btn--sm">Bottom</button>
+  </div>
+  <div style="position:relative;">
+    <span class="tooltip tooltip--left" style="position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);white-space:nowrap;">TOOLTIP · LEFT</span>
+    <button class="btn btn--secondary btn--sm">Left</button>
+  </div>
+</div>
+
+</body>
+</html>

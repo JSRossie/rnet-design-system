@@ -1,0 +1,31 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+  <div class="empty">
+    <span class="empty__icon nf"></span>
+    <div class="empty__title">No incidents</div>
+    <div class="empty__text">Everything has been nominal for 14 days. Field reports will appear here when filed.</div>
+    <div class="empty__actions"><button class="btn btn--secondary btn--sm">File a report</button></div>
+  </div>
+  <div class="empty">
+    <span class="empty__icon nf"></span>
+    <div class="empty__title">No correspondence</div>
+    <div class="empty__text">Drafts and sent letters appear here. Start a new note from the composer.</div>
+    <div class="empty__actions"><button class="btn btn--primary btn--sm">New letter</button></div>
+  </div>
+</div>
+
+</body>
+</html>

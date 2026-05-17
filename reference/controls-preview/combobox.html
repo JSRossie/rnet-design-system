@@ -1,0 +1,33 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  body{padding:28px;min-height:300px;}
+</style>
+</head>
+<body>
+
+<div class="field" style="max-width:380px;">
+  <label class="field__label">FIND NODE</label>
+  <div class="combobox">
+    <div class="input-wrap">
+      <span class="input-wrap__icon nf"></span>
+      <input class="input combobox__input" type="text" value="edge" placeholder="Type to search…">
+      <span class="combobox__caret">⌄</span>
+    </div>
+    <div class="combobox__menu">
+      <button class="combobox__option is-active"><span class="nf"></span><span>edge-dr-01</span><span class="combobox__hint">AUSTIN · OK</span></button>
+      <button class="combobox__option"><span class="nf"></span><span>edge-mtl-02</span><span class="combobox__hint">MONTREAL · OK</span></button>
+      <button class="combobox__option"><span class="nf"></span><span>edge-bld-04</span><span class="combobox__hint">BOULDER · WARN</span></button>
+      <button class="combobox__option"><span class="nf"></span><span>core-mtl-02</span><span class="combobox__hint">MONTREAL · WARN</span></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

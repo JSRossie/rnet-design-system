@@ -1,0 +1,1896 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web-controls · Charts & Vectors</title>
+<link rel="stylesheet" href="../controls.css">
+<style>
+  /* ────────────────────────────────────────────────────────
+     Page chrome — sticky topbar + scroll layout
+     ──────────────────────────────────────────────────────── */
+  html, body { scroll-behavior: smooth; }
+  body { padding: 0; }
+  .page { padding-bottom: 120px; }
+
+  .stripe-top {
+    height: var(--bw-stripe);
+    background: var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .topshell {
+    position: sticky;
+    top: var(--bw-stripe);
+    z-index: 29;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ────────────────────────────────────────────────────────
+     Sections
+     ──────────────────────────────────────────────────────── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+  .section { padding: 72px 0; border-bottom: 1px dotted var(--rule); }
+  .section:last-of-type { border-bottom: 0; }
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 36px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.4px;
+    line-height: 1.15;
+    color: var(--fg-1);
+  }
+  .section-rule {
+    height: 1px;
+    background: var(--rule);
+  }
+  .section-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .section-intro {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--fg-1);
+    max-width: 720px;
+    margin: 0 0 32px 0;
+  }
+  .section-intro em { color: var(--accent-warm); font-style: italic; }
+
+  /* Subsection label (the system's flex-rule pattern) */
+  .sublabel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 36px 0 18px;
+  }
+  .sublabel::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* Generic row / col helpers */
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .grid-4 > .stat { border: 0; }
+
+  /* Cover */
+  .cover {
+    padding: 96px 0 80px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cover-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 64px;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .cover-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-top: 20px;
+  }
+  .cover-premise {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--fg-1);
+    max-width: 580px;
+    margin: 24px 0 0;
+  }
+  .cover-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    text-align: right;
+    line-height: 1.9;
+  }
+  .cover-meta .acc { color: var(--accent); }
+
+  /* TOC */
+  .toc {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .toc-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 18px;
+  }
+  .toc-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px 22px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .toc-list li {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+  .toc-list a {
+    color: var(--fg-1);
+    text-decoration: none;
+    border-bottom: 1px dotted transparent;
+  }
+  .toc-list a:hover { border-bottom-color: var(--accent); }
+  .toc-list .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  /* Spec box for showing a component beside its label */
+  .spec {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .spec:last-child { border-bottom: 0; }
+  .spec-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .spec-tag em { color: var(--accent); font-style: normal; }
+
+  /* Dashboard composition (last section) */
+  .dash {
+    background: var(--bg-elev-1);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-3);
+    overflow: hidden;
+  }
+  .dash__stripe { height: var(--bw-stripe); background: var(--accent); }
+  .dash__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .dash__brand {
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--fg-1);
+  }
+  .dash__brand .em { color: var(--accent); }
+  .dash__brand img { width: 32px; height: 32px; }
+  .dash__nav {
+    display: flex; gap: 6px;
+  }
+  .dash__nav a {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: var(--radius-1);
+    color: var(--fg-3);
+    border-bottom: 0;
+  }
+  .dash__nav a:hover { color: var(--fg-1); background: var(--bg-elev-2); }
+  .dash__nav a.is-active { color: var(--accent); }
+  .dash__meta {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    text-align: right;
+    line-height: 1.7;
+  }
+  .dash__meta .ok { color: var(--ok); }
+  .dash__body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+  }
+  .dash__side {
+    border-right: 1px solid var(--rule);
+    padding: 22px 0;
+    background: var(--bg);
+  }
+  .dash__side .sidenav__label { padding: 8px 22px 6px; }
+  .dash__side .sidenav__item { margin: 0 14px; }
+  /* Nested-sidenav fit: parent grid column owns the width, not the standalone min-width default */
+  .dash__side .sidenav { min-width: 0; width: 100%; }
+  .dash__main { padding: 28px 32px; }
+  .dash__main-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .dash__main-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.4px;
+    color: var(--fg-1);
+  }
+  .dash__main-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .dash__main-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* Toast position */
+  .toast-stack {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 60;
+  }
+  .toast-stack .alert {
+    min-width: 320px;
+    box-shadow: var(--shadow-popover);
+  }
+
+  /* Modal demo container */
+  .modal-demo { position: relative; }
+
+  /* Footer */
+  .footer {
+    padding: 48px 0 32px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: center;
+    margin-top: 72px;
+  }
+  .footer-left {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    line-height: 1.7;
+  }
+  .footer-right {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    text-align: right;
+    line-height: 1.7;
+  }
+  .footer-right .acc { color: var(--accent); }
+
+  /* Topbar tweaks */
+  .topbar .badge { font-size: 9px; }
+  .mode-toggle .segmented__item { padding: 5px 12px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CHROME · Sticky top accent stripe + topbar with mode toggle
+     ============================================================ -->
+<div class="stripe-top"></div>
+<div class="topshell">
+  <nav class="topbar container" style="padding-top:0;padding-bottom:0;height:64px;border-bottom:0;">
+    <a href="#cover" class="topbar__brand" data-mode-monogram>
+      <img src="../components/monogram-light.svg" id="monogram-mark" alt="" style="width:28px;height:28px;">
+      CHARTS <span class="em">&amp;</span> VECTORS
+    </a>
+    <div class="topbar__nav">
+      <a href="#buttons">Buttons</a>
+      <a href="#forms">Forms</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#nav">Nav</a>
+      <a href="#layout">Layout</a>
+      <a href="#data">Data</a>
+      <a href="#more">More</a>
+      <a href="#additions">Additions</a>
+      <a href="#dashboard">Dashboard</a>
+    </div>
+    <div class="topbar__actions">
+      <button class="btn btn--secondary btn--icon has-icon-badge" aria-label="notifications" title="Notifications · 3 unread">
+        <span class="nf"></span>
+        <span class="icon-badge icon-badge--accent">3</span>
+      </button>
+      <button class="btn btn--secondary btn--sm" id="open-cmdk" aria-label="open command palette">
+        <span class="nf"></span> Search <kbd style="margin-left:6px;">⌘K</kbd>
+      </button>
+      <span class="badge badge--solid badge--ok"><span class="nf"></span> v1.3</span>
+      <div class="segmented mode-toggle">
+        <button class="segmented__item is-active" data-mode-btn="day">Day</button>
+        <button class="segmented__item" data-mode-btn="night">Night</button>
+      </div>
+      <div class="menu-anchor">
+        <button class="avatar avatar--ai" id="user-trigger" aria-haspopup="true" aria-expanded="false" aria-label="user menu" style="cursor:pointer;">JR</button>
+        <div class="menu menu--right" id="user-menu" hidden>
+          <div class="menu__label">JAMES ROSSIE</div>
+          <button class="menu__item"><span class="nf"></span><span>Profile</span><span></span></button>
+          <button class="menu__item"><span class="nf"></span><span>Preferences</span><kbd>⌘,</kbd></button>
+          <button class="menu__item"><span class="nf"></span><span>API keys</span><span></span></button>
+          <hr class="menu__divider">
+          <button class="menu__item"><span class="nf"></span><span>Field notes</span><span></span></button>
+          <button class="menu__item"><span class="nf"></span><span>Documentation</span><span></span></button>
+          <hr class="menu__divider">
+          <button class="menu__item menu__item--danger"><span class="nf"></span><span>Sign out</span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="page">
+
+<!-- ============================================================
+     COVER
+     ============================================================ -->
+<section id="cover" class="container">
+  <div class="cover">
+    <div>
+      <div class="cover-eyebrow">UI KIT · v1.3 · WEB CONTROLS</div>
+      <h1 class="cover-title">web-controls</h1>
+      <div class="cover-sub">JR · R—NET · CHARTS &amp; VECTORS</div>
+      <p class="cover-premise">
+        The first production component set for the system. <em>Buttons, fields, navigation, feedback, data tables, layout</em> — all derived from the existing tokens. Two voices, one vocabulary. Toggle modes in the top right.
+      </p>
+    </div>
+    <div class="cover-meta">
+      VERSION · <span class="acc">1.3-CONTROLS</span><br/>
+      DERIVED FROM · SYSTEM.MD v1.2<br/>
+      DISCIPLINE · §12 RESTRAINED<br/>
+      2026.05.17
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-label">CONTENTS</div>
+    <ul class="toc-list">
+      <li><span class="num">01</span><a href="#foundations">Foundations recap</a></li>
+      <li><span class="num">02</span><a href="#buttons">Buttons</a></li>
+      <li><span class="num">03</span><a href="#forms">Forms &amp; inputs</a></li>
+      <li><span class="num">04</span><a href="#feedback">Feedback</a></li>
+      <li><span class="num">05</span><a href="#nav">Navigation</a></li>
+      <li><span class="num">06</span><a href="#layout">Layout &amp; cards</a></li>
+      <li><span class="num">07</span><a href="#data">Data tables</a></li>
+      <li><span class="num">08</span><a href="#more">More controls</a></li>
+      <li><span class="num">09</span><a href="#additions">Common additions</a></li>
+      <li><span class="num">10</span><a href="#dashboard">Composed example</a></li>
+    </ul>
+  </nav>
+</section>
+
+<!-- ============================================================
+     01 · FOUNDATIONS RECAP
+     ============================================================ -->
+<section id="foundations" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">01 ▸</div>
+      <div class="section-title">Foundations recap</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">TOKENS · NO NEW PRIMITIVES</div>
+    </div>
+    <p class="section-intro">
+      Every control on this page is derived from the same handful of tokens. The accent stripe at the top of this document, the eyebrow you're reading right now, the colour of the link in the sentence below — all the same three semantic variables (<code>--accent</code>, <code>--fg-3</code>, <code>--rule</code>). The kit adds no new primitives.
+    </p>
+
+    <div class="sublabel">PALETTE · BRAND LAYER</div>
+    <div class="grid-3" style="gap:14px;">
+      <div class="card" style="padding:0;">
+        <div style="height:64px;background:var(--accent);"></div>
+        <div style="padding:14px 18px;">
+          <div class="label" style="color:var(--fg-1);margin-bottom:4px;">ACCENT</div>
+          <div class="meta">SKY-DEEP · DAY · AMBER · NIGHT</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;">
+        <div style="height:64px;background:var(--accent-warm);"></div>
+        <div style="padding:14px 18px;">
+          <div class="label" style="color:var(--fg-1);margin-bottom:4px;">ACCENT WARM</div>
+          <div class="meta">GROUND-DEEP · ANCHORED USE</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;">
+        <div style="height:64px;background:var(--bg-callout);"></div>
+        <div style="padding:14px 18px;">
+          <div class="label" style="color:var(--fg-1);margin-bottom:4px;">CALLOUT TINT</div>
+          <div class="meta">URBAN · CALLOUTS ONLY</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sublabel">TYPE · THREE FACES</div>
+    <div class="col" style="gap:10px;">
+      <div class="spec">
+        <div class="spec-tag">DISPLAY</div>
+        <h1 class="display" style="font-size:48px;">Charts &amp; Vectors</h1>
+      </div>
+      <div class="spec">
+        <div class="spec-tag">BODY · <em>URBANIST</em></div>
+        <p style="margin:0;">Body sits in Urbanist at 15 px with line-height 1.7. The system is generous with vertical rhythm — it should never feel crowded.</p>
+      </div>
+      <div class="spec">
+        <div class="spec-tag">MONO · <em>METADATA</em></div>
+        <div class="meta" style="color:var(--fg-1);">SYS · 99.997% · 247D 14H 03M · NOMINAL</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 · BUTTONS
+     ============================================================ -->
+<section id="buttons" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">02 ▸</div>
+      <div class="section-title">Buttons</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">4 VARIANTS · 3 SIZES · STATES</div>
+    </div>
+    <p class="section-intro">
+      Primary is the single loaded mark on a surface; <em>at most one per view</em>. Secondary is the default. Ghost lives inline with prose. Destructive is reserved for irreversible action and never appears as the first call-to-action.
+    </p>
+
+    <div class="sublabel">VARIANTS</div>
+    <div class="col" style="gap:12px;">
+      <div class="spec">
+        <div class="spec-tag">PRIMARY</div>
+        <div class="row">
+          <button class="btn btn--primary btn--sm">Save changes</button>
+          <button class="btn btn--primary">Save changes</button>
+          <button class="btn btn--primary btn--lg">Save changes</button>
+          <button class="btn btn--primary" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="spec">
+        <div class="spec-tag">SECONDARY</div>
+        <div class="row">
+          <button class="btn btn--secondary btn--sm">Review</button>
+          <button class="btn btn--secondary">Review</button>
+          <button class="btn btn--secondary btn--lg">Review</button>
+          <button class="btn btn--secondary" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="spec">
+        <div class="spec-tag">GHOST</div>
+        <div class="row">
+          <button class="btn btn--ghost btn--sm">Cancel</button>
+          <button class="btn btn--ghost">Cancel</button>
+          <button class="btn btn--ghost btn--lg">Cancel</button>
+        </div>
+      </div>
+      <div class="spec">
+        <div class="spec-tag">DESTRUCTIVE</div>
+        <div class="row">
+          <button class="btn btn--destructive btn--sm">Decommission</button>
+          <button class="btn btn--destructive">Decommission</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sublabel">ICON BUTTONS · GROUPS</div>
+    <div class="spec">
+      <div class="spec-tag">ICON ONLY</div>
+      <div class="row">
+        <button class="btn btn--secondary btn--icon btn--sm" aria-label="settings"><span class="nf"></span></button>
+        <button class="btn btn--secondary btn--icon" aria-label="refresh"><span class="nf"></span></button>
+        <button class="btn btn--secondary btn--icon btn--lg" aria-label="add"><span class="nf"></span></button>
+        <button class="btn btn--primary btn--icon" aria-label="confirm"><span class="nf"></span></button>
+        <button class="btn btn--destructive btn--icon" aria-label="remove"><span class="nf"></span></button>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-tag">GROUPED</div>
+      <div class="row">
+        <div class="btn-group">
+          <button class="btn btn--secondary">Day</button>
+          <button class="btn btn--secondary">Week</button>
+          <button class="btn btn--secondary">Month</button>
+          <button class="btn btn--secondary">Year</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn--secondary btn--sm">All</button>
+          <button class="btn btn--secondary btn--sm">Active</button>
+          <button class="btn btn--secondary btn--sm">Archived</button>
+        </div>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-tag">WITH GLYPH</div>
+      <div class="row">
+        <button class="btn btn--primary"><span class="nf"></span> New node</button>
+        <button class="btn btn--secondary"><span class="nf"></span> Sync</button>
+        <button class="btn btn--ghost"><span class="nf"></span> Export</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 · FORMS
+     ============================================================ -->
+<section id="forms" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">03 ▸</div>
+      <div class="section-title">Forms &amp; inputs</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">FIELD · CONTROL · HELP</div>
+    </div>
+    <p class="section-intro">
+      A field carries three layers: a mono-uppercase <em>label</em> above, the control itself, and an optional <em>help</em> or <em>error</em> message below. Stack vertically with a 6 px gap. The label is the workhorse — it stays mono uppercase even for casual fields so the form reads as instrument, not as a marketing splash.
+    </p>
+
+    <div class="sublabel">TEXT INPUTS</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="field__label">EMAIL <span class="req">*</span></label>
+        <input class="input" type="email" placeholder="jr@rossie.net" />
+        <span class="field__help">USED FOR SIGN-IN</span>
+      </div>
+      <div class="field">
+        <label class="field__label">NODE ID</label>
+        <div class="input-wrap">
+          <span class="input-wrap__icon nf"></span>
+          <input class="input input--mono" type="text" value="edge-dr-01" />
+        </div>
+        <span class="field__help">7 CHARS · ALPHANUMERIC</span>
+      </div>
+      <div class="field">
+        <label class="field__label">PASSPHRASE</label>
+        <input class="input" type="password" value="••••••••••••" />
+      </div>
+      <div class="field">
+        <label class="field__label">ACCESS KEY</label>
+        <input class="input" type="text" value="aP-92x9G-INVALID" aria-invalid="true" />
+        <span class="field__error">CHECKSUM MISMATCH · RE-GENERATE</span>
+      </div>
+      <div class="field">
+        <label class="field__label">REGION</label>
+        <select class="select">
+          <option>Austin · TX (primary)</option>
+          <option>Boulder · CO</option>
+          <option>Montréal · QC</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label">LOCKED FIELD</label>
+        <input class="input" value="immutable" disabled />
+        <span class="field__help">READ-ONLY · IMMUTABLE</span>
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label class="field__label">FIELD NOTE</label>
+        <textarea class="textarea" placeholder="Observation, action taken, next step...">Edge node disk trending up. Schedule tier-2 archive sweep this week. Notified ops via push at 09:42.</textarea>
+        <span class="field__help">MARKDOWN · MAX 2 048 CHARS</span>
+      </div>
+    </div>
+
+    <div class="sublabel">SELECTION CONTROLS</div>
+    <div class="grid-3">
+      <div class="col" style="gap:12px;">
+        <div class="meta" style="color:var(--fg-3);">CHECKBOX</div>
+        <label class="check"><input type="checkbox" checked><span class="check__box"></span><span>Enable Zigbee bridge</span></label>
+        <label class="check"><input type="checkbox"><span class="check__box"></span><span>Mirror to off-site</span></label>
+        <label class="check"><input type="checkbox" checked><span class="check__box"></span><span>Notify on alert</span></label>
+        <label class="check"><input type="checkbox" disabled><span class="check__box"></span><span style="opacity:.5;">Premium feature</span></label>
+      </div>
+      <div class="col" style="gap:12px;">
+        <div class="meta" style="color:var(--fg-3);">RADIO</div>
+        <label class="radio"><input type="radio" name="r1"><span class="radio__dot"></span><span>Ceremonial — paper</span></label>
+        <label class="radio"><input type="radio" name="r1" checked><span class="radio__dot"></span><span>Instrumented — night</span></label>
+        <label class="radio"><input type="radio" name="r1"><span class="radio__dot"></span><span>Auto / match system</span></label>
+      </div>
+      <div class="col" style="gap:12px;">
+        <div class="meta" style="color:var(--fg-3);">SWITCH</div>
+        <label class="switch"><input type="checkbox" checked><span class="switch__track"></span><span>Auto-sync</span></label>
+        <label class="switch"><input type="checkbox"><span class="switch__track"></span><span>Beta features</span></label>
+        <label class="switch"><input type="checkbox" checked><span class="switch__track"></span><span>Telemetry</span></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 · FEEDBACK
+     ============================================================ -->
+<section id="feedback" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">04 ▸</div>
+      <div class="section-title">Feedback</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">ALERTS · BADGES · PROGRESS</div>
+    </div>
+    <p class="section-intro">
+      Feedback components carry the system's semantic layer — universal red / yellow / green for status, the brand accent for note, the warm secondary for advisory. Status colors <em>only</em> appear when literal status is being signaled. Decorative use is out.
+    </p>
+
+    <div class="sublabel">ALERTS · CALLOUTS</div>
+    <div class="col">
+      <div class="alert alert--note">
+        <span class="alert__icon nf"></span>
+        <div class="alert__body">
+          <div class="alert__title">NOTE</div>
+          <div class="alert__text">Suggested next meeting · third week of May. I'll bring the working draft and a print of the dashboard mockup.</div>
+        </div>
+        <button class="alert__close nf" aria-label="close"></button>
+      </div>
+      <div class="alert alert--ok">
+        <span class="alert__icon nf"></span>
+        <div class="alert__body">
+          <div class="alert__title">NOMINAL</div>
+          <div class="alert__text">Backup of edge-dr-01 completed 09:42. All services responding within target latency.</div>
+        </div>
+      </div>
+      <div class="alert alert--warn">
+        <span class="alert__icon nf"></span>
+        <div class="alert__body">
+          <div class="alert__title">CAUTION</div>
+          <div class="alert__text">Disk on edge-dr-01 trending up — 78%. Schedule tier-2 archive sweep this week.</div>
+        </div>
+      </div>
+      <div class="alert alert--alert">
+        <span class="alert__icon nf"></span>
+        <div class="alert__body">
+          <div class="alert__title">CRITICAL</div>
+          <div class="alert__text">VPN tunnel to montreal-2 recovered after 4 m 18 s outage. Logs attached.</div>
+        </div>
+        <button class="alert__close nf" aria-label="close"></button>
+      </div>
+    </div>
+
+    <div class="sublabel">BADGES · CHIPS</div>
+    <div class="col" style="gap:14px;">
+      <div class="row">
+        <span class="badge">default</span>
+        <span class="badge badge--accent">accent</span>
+        <span class="badge badge--warm">warm</span>
+        <span class="badge badge--ok"><span class="nf"></span> ok</span>
+        <span class="badge badge--warn"><span class="nf"></span> warn</span>
+        <span class="badge badge--alert"><span class="nf"></span> alert</span>
+      </div>
+      <div class="row">
+        <span class="badge badge--solid badge--accent">live</span>
+        <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal · 247d</span>
+        <span class="badge badge--solid badge--warn"><span class="nf"></span> disk 78%</span>
+        <span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span>
+      </div>
+      <div class="row">
+        <span class="badge badge--pill badge--accent">production <button class="chip-close" aria-label="remove">×</button></span>
+        <span class="badge badge--pill">staging <button class="chip-close" aria-label="remove">×</button></span>
+        <span class="badge badge--pill badge--warm">austin-tx <button class="chip-close" aria-label="remove">×</button></span>
+        <span class="badge badge--pill">primary <button class="chip-close" aria-label="remove">×</button></span>
+      </div>
+    </div>
+
+    <div class="sublabel">PROGRESS · METER</div>
+    <div class="col" style="gap:10px;max-width:640px;">
+      <div style="display:grid;grid-template-columns:80px 1fr 56px;gap:14px;align-items:center;">
+        <span class="meta" style="color:var(--fg-3);">BACKUP</span>
+        <div class="progress progress--ok"><div class="progress__bar" style="width:88%;"></div></div>
+        <span class="meta" style="color:var(--ok);">88%</span>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 56px;gap:14px;align-items:center;">
+        <span class="meta" style="color:var(--fg-3);">DISK</span>
+        <div class="progress progress--warn"><div class="progress__bar" style="width:78%;"></div></div>
+        <span class="meta" style="color:var(--warn);">78%</span>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 56px;gap:14px;align-items:center;">
+        <span class="meta" style="color:var(--fg-3);">CPU</span>
+        <div class="progress"><div class="progress__bar" style="width:32%;"></div></div>
+        <span class="meta" style="color:var(--accent);">32%</span>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 56px;gap:14px;align-items:center;">
+        <span class="meta" style="color:var(--fg-3);">MEM</span>
+        <div class="progress progress--alert"><div class="progress__bar" style="width:94%;"></div></div>
+        <span class="meta" style="color:var(--alert);">94%</span>
+      </div>
+    </div>
+
+    <div class="sublabel">KEYBOARD CHIPS · TOOLTIPS</div>
+    <div class="row">
+      <span style="font-family:var(--font-body);font-size:14px;color:var(--fg-3);">
+        Toggle palette <kbd>⌘</kbd><kbd>K</kbd>
+      </span>
+      <span style="font-family:var(--font-body);font-size:14px;color:var(--fg-3);margin-left:24px;">
+        Switch mode <kbd>⇧</kbd><kbd>D</kbd>
+      </span>
+      <span style="margin-left:24px;display:inline-flex;gap:12px;align-items:center;">
+        <span style="font-family:var(--font-body);font-size:14px;color:var(--fg-3);">Tooltip →</span>
+        <span class="tooltip">UPTIME · 247D 14H</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 · NAV
+     ============================================================ -->
+<section id="nav" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">05 ▸</div>
+      <div class="section-title">Navigation</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">TABS · CRUMBS · PAGINATION</div>
+    </div>
+    <p class="section-intro">
+      Navigation is mono throughout. The active state is carried by the <em>accent color</em> (and a 2 px underline on tabs) — never by a heavy fill or pill. This keeps even a five-tab strip from competing with the document beneath it.
+    </p>
+
+    <div class="sublabel">TABS</div>
+    <div class="tabs">
+      <button class="tabs__tab is-active">Overview</button>
+      <button class="tabs__tab">Sites</button>
+      <button class="tabs__tab">Services</button>
+      <button class="tabs__tab">Activity</button>
+      <button class="tabs__tab">Settings</button>
+    </div>
+
+    <div class="sublabel">SEGMENTED</div>
+    <div class="row">
+      <div class="segmented">
+        <button class="segmented__item is-active">Day</button>
+        <button class="segmented__item">Week</button>
+        <button class="segmented__item">Month</button>
+      </div>
+      <div class="segmented">
+        <button class="segmented__item">Grid</button>
+        <button class="segmented__item is-active">List</button>
+      </div>
+    </div>
+
+    <div class="sublabel">BREADCRUMBS</div>
+    <div class="crumbs">
+      <a href="#">R—Net</a>
+      <span class="crumbs__sep">▸</span>
+      <a href="#">Sites</a>
+      <span class="crumbs__sep">▸</span>
+      <a href="#">Austin · TX</a>
+      <span class="crumbs__sep">▸</span>
+      <span>edge-dr-01</span>
+    </div>
+
+    <div class="sublabel">PAGINATION</div>
+    <div class="pagination">
+      <button class="pagination__link" aria-label="previous">‹</button>
+      <button class="pagination__link">1</button>
+      <button class="pagination__link" aria-current="page">2</button>
+      <button class="pagination__link">3</button>
+      <button class="pagination__link">4</button>
+      <span class="pagination__ellipsis">…</span>
+      <button class="pagination__link">14</button>
+      <button class="pagination__link" aria-label="next">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 · LAYOUT
+     ============================================================ -->
+<section id="layout" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">06 ▸</div>
+      <div class="section-title">Layout &amp; cards</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">STRIPE · BRACKETS · MODAL</div>
+    </div>
+    <p class="section-intro">
+      Cards are <em>hairline-bordered, sharply-cornered (6 px max), and never shadowed</em>. The optional top accent stripe and corner-brackets variant carry the system's industrial grammar into application UI without crossing into pastiche.
+    </p>
+
+    <div class="sublabel">CARD VARIANTS</div>
+    <div class="grid-2">
+      <div class="card card--stripe">
+        <div class="card__head">
+          <div>
+            <div class="card__eyebrow">PROFILE · v1.0</div>
+            <div class="card__title">Edge node DR</div>
+          </div>
+          <div class="card__meta">REV 1.0<br/><span style="color:var(--ok);">NOMINAL</span></div>
+        </div>
+        <p style="margin:0 0 16px 0;font-size:14px;line-height:1.6;">
+          Primary disaster-recovery node for the Austin region. Holds the tier-2 archive and serves backup ingestion for the western cluster.
+        </p>
+        <div class="card__foot">
+          <button class="btn btn--ghost btn--sm">Cancel</button>
+          <button class="btn btn--primary btn--sm">Apply changes</button>
+        </div>
+      </div>
+
+      <div class="card card--brackets">
+        <span class="br-tr"></span><span class="br-bl"></span>
+        <div class="card__head" style="border-bottom-color:var(--rule-anchor);">
+          <div>
+            <div class="card__eyebrow" style="color:var(--accent-warm);">CEREMONIAL</div>
+            <div class="card__title">Correspondence</div>
+          </div>
+        </div>
+        <p style="margin:0;font-size:14px;line-height:1.6;">
+          Thank you for the conversation last Thursday. The framework you sketched on the back of the menu has stayed with me, and I've been turning it over since.
+        </p>
+      </div>
+    </div>
+
+    <div class="sublabel">STAT TILES</div>
+    <div class="grid-4">
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>UPTIME</div>
+        <div class="stat__value">99.997<span class="unit">%</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>NODES</div>
+        <div class="stat__value">42<span class="unit">/42</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>THROUGHPUT</div>
+        <div class="stat__value">2.4<span class="unit">GB/S</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>LATENCY</div>
+        <div class="stat__value">3<span class="unit">MS</span></div>
+      </div>
+    </div>
+
+    <div class="sublabel">MODAL · TRIGGER &amp; PREVIEW</div>
+    <div class="row">
+      <button class="btn btn--secondary" id="open-modal">Open confirm dialog</button>
+      <span class="meta" style="color:var(--fg-3);">CLICK TO OPEN · ESC TO CLOSE</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     07 · DATA
+     ============================================================ -->
+<section id="data" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">07 ▸</div>
+      <div class="section-title">Data tables</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">SPEC-SHEET DENSITY</div>
+    </div>
+    <p class="section-intro">
+      The table is an engineering spec sheet: <em>mono headers, hairline rows, dense padding, tabular figures, semantic status pills</em>. Node IDs render mono in accent color. The row hover is a single elevation step — no row-stripe, no zebra.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Node</th>
+          <th>Site</th>
+          <th>Service</th>
+          <th>Last seen</th>
+          <th class="num">Uptime</th>
+          <th class="num">Disk</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono" style="color:var(--accent);"><span class="nf"></span> edge-dr-01</td>
+          <td>Austin · TX</td>
+          <td>backup · primary</td>
+          <td class="mono">09:42 CST</td>
+          <td class="num mono">247 d 14 h</td>
+          <td class="num mono" style="color:var(--ok);">42%</td>
+          <td><span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--accent);"><span class="nf"></span> core-mtl-02</td>
+          <td>Montréal · QC</td>
+          <td>routing · failover</td>
+          <td class="mono">09:41 CST</td>
+          <td class="num mono">182 d 03 h</td>
+          <td class="num mono" style="color:var(--warn);">78%</td>
+          <td><span class="badge badge--solid badge--warn"><span class="nf"></span> disk</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--accent);"><span class="nf"></span> ha-vault-bld</td>
+          <td>Boulder · CO</td>
+          <td>home-assistant</td>
+          <td class="mono">09:42 CST</td>
+          <td class="num mono">98 d 11 h</td>
+          <td class="num mono" style="color:var(--ok);">38%</td>
+          <td><span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--accent);"><span class="nf"></span> nas-arch-tx</td>
+          <td>Austin · TX</td>
+          <td>archive · cold</td>
+          <td class="mono">06:18 CST</td>
+          <td class="num mono">4 d 02 h</td>
+          <td class="num mono" style="color:var(--alert);">94%</td>
+          <td><span class="badge badge--solid badge--alert"><span class="nf"></span> auth fail</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--accent);"><span class="nf"></span> proxmox-tx-1</td>
+          <td>Austin · TX</td>
+          <td>hypervisor</td>
+          <td class="mono">09:42 CST</td>
+          <td class="num mono">301 d 22 h</td>
+          <td class="num mono" style="color:var(--ok);">21%</td>
+          <td><span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     08 · MORE CONTROLS — banner, toast, menu, code, empty,
+     spinner, range, stepper, avatars, drawer
+     ============================================================ -->
+<section id="more" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">08 ▸</div>
+      <div class="section-title">More controls</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">BANNER · TOAST · MENU · CODE · EMPTY · SPINNER · RANGE · STEPPER · AVATARS · DRAWER</div>
+    </div>
+    <p class="section-intro">
+      The augmentation set: <em>banners</em> for full-bleed page status, <em>toasts</em> for transient notification, <em>menus</em> and <em>drawers</em> for click-to-open surfaces, plus the small utilities a real app needs — code blocks, empty states, async indicators, a stepper, ranges, avatar groups.
+    </p>
+
+    <div class="sublabel">BANNER · DISMISSIBLE</div>
+    <div class="banner banner--warn" id="demo-banner" style="border-radius:var(--radius-3);overflow:hidden;">
+      <span class="banner__icon nf"></span>
+      <span class="banner__title">SCHEDULED MAINTENANCE</span>
+      <span class="banner__text">2026.05.21 · 02:00–04:00 UTC · austin-tx region. All services failover to montreal-2.</span>
+      <button class="banner__close nf" aria-label="dismiss" data-dismiss="#demo-banner"></button>
+    </div>
+
+    <div class="sublabel">TOAST · TRIGGERS</div>
+    <div class="row">
+      <button class="btn btn--secondary" data-toast="ok">Backup complete</button>
+      <button class="btn btn--secondary" data-toast="warn">Disk warning</button>
+      <button class="btn btn--secondary" data-toast="alert">Auth failure</button>
+      <span class="meta" style="color:var(--fg-3);margin-left:8px;">CLICK · TOASTS APPEAR BOTTOM-RIGHT · AUTO-DISMISS 4S</span>
+    </div>
+
+    <div class="sublabel">DROPDOWN MENU · CLICK TO OPEN</div>
+    <div class="row" style="gap:24px;align-items:flex-start;">
+      <div class="menu-anchor">
+        <button class="btn btn--secondary" id="menu-trigger" aria-haspopup="true" aria-expanded="false">
+          Node actions <span class="nf" style="margin-left:6px;">⌄</span>
+        </button>
+        <div class="menu" id="menu-1" hidden>
+          <div class="menu__label">EDGE-DR-01</div>
+          <button class="menu__item"><span class="nf"></span><span>Restart service</span><kbd>⌘R</kbd></button>
+          <button class="menu__item"><span class="nf"></span><span>Sync now</span><kbd>⌘S</kbd></button>
+          <button class="menu__item"><span class="nf"></span><span>Export logs</span><span></span></button>
+          <button class="menu__item" aria-disabled="true"><span class="nf"></span><span>Bulk archive</span><span></span></button>
+          <hr class="menu__divider">
+          <button class="menu__item menu__item--danger"><span class="nf"></span><span>Decommission</span><span></span></button>
+        </div>
+      </div>
+      <span class="meta" style="color:var(--fg-3);">ALSO USES ⌘K LATER · ESC CLOSES</span>
+    </div>
+
+    <div class="sublabel">CODE BLOCK</div>
+    <div class="codeblock-frame" style="max-width:720px;">
+      <div class="codeblock-frame__head">
+        <span><span class="nf"></span> /etc/rnet/core.toml</span>
+        <span>TOML</span>
+      </div>
+<pre class="codeblock"><span class="tk-com"># R—Net core configuration · austin-tx</span>
+<span class="tk-key">node_id</span>   = <span class="tk-str">"edge-dr-01"</span>
+<span class="tk-key">region</span>    = <span class="tk-str">"austin-tx"</span>
+<span class="tk-key">retries</span>   = <span class="tk-num">3</span>
+<span class="tk-key">interval</span>  = <span class="tk-str">"PT15M"</span>
+
+[<span class="tk-key">backup</span>]
+<span class="tk-key">target</span>    = <span class="tk-str">"s3://rnet-arch/dr"</span>
+<span class="tk-key">retention</span> = <span class="tk-num">90</span>  <span class="tk-com"># days</span>
+</pre>
+    </div>
+
+    <div class="sublabel">EMPTY STATE</div>
+    <div class="grid-2">
+      <div class="empty">
+        <span class="empty__icon nf"></span>
+        <div class="empty__title">No incidents</div>
+        <div class="empty__text">Everything has been nominal for 14 days. Field reports will appear here when filed.</div>
+        <div class="empty__actions"><button class="btn btn--secondary btn--sm">File a report</button></div>
+      </div>
+      <div class="empty">
+        <span class="empty__icon nf"></span>
+        <div class="empty__title">No correspondence</div>
+        <div class="empty__text">Drafts and sent letters appear here. Start a new note from the composer.</div>
+        <div class="empty__actions"><button class="btn btn--primary btn--sm">New letter</button></div>
+      </div>
+    </div>
+
+    <div class="sublabel">SPINNER · SKELETON</div>
+    <div class="row" style="gap:28px;">
+      <span class="spinner spinner--sm"></span>
+      <span class="spinner"></span>
+      <span class="spinner spinner--lg"></span>
+      <span class="meta" style="color:var(--accent);display:inline-flex;align-items:center;gap:8px;"><span class="spinner spinner--sm"></span> REBUILDING INDEX</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;max-width:720px;">
+      <div class="col" style="gap:8px;">
+        <span class="skel skel--title"></span>
+        <span class="skel skel--line" style="width:90%;"></span>
+        <span class="skel skel--line" style="width:60%;"></span>
+        <span class="skel skel--line" style="width:75%;"></span>
+      </div>
+      <div class="col" style="gap:8px;">
+        <span class="skel skel--title" style="width:30%;"></span>
+        <span class="skel skel--line"></span>
+        <span class="skel skel--line" style="width:80%;"></span>
+        <span class="skel skel--line" style="width:65%;"></span>
+      </div>
+    </div>
+
+    <div class="sublabel">RANGE SLIDER</div>
+    <div class="col" style="max-width:520px;">
+      <div class="range-field">
+        <label class="field__label">DISK THRESHOLD</label>
+        <span class="range-field__value" data-bind="r1">78%</span>
+        <input class="range" type="range" min="0" max="100" value="78" data-source="r1" data-suffix="%">
+      </div>
+      <div class="range-field">
+        <label class="field__label">RETRY INTERVAL</label>
+        <span class="range-field__value" data-bind="r2">15 MIN</span>
+        <input class="range" type="range" min="1" max="60" value="15" data-source="r2" data-suffix=" MIN">
+      </div>
+      <div class="range-field">
+        <label class="field__label">RETENTION</label>
+        <span class="range-field__value" data-bind="r3">90 DAYS</span>
+        <input class="range" type="range" min="7" max="365" value="90" data-source="r3" data-suffix=" DAYS">
+      </div>
+    </div>
+
+    <div class="sublabel">STEPPER</div>
+    <div class="stepper" style="max-width:720px;">
+      <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Identify</span></div>
+      <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Provision</span></div>
+      <div class="stepper__step is-current"><span class="stepper__num">3</span><span class="stepper__label">Configure</span></div>
+      <div class="stepper__step"><span class="stepper__num">4</span><span class="stepper__label">Verify</span></div>
+      <div class="stepper__step"><span class="stepper__num">5</span><span class="stepper__label">Deploy</span></div>
+    </div>
+
+    <div class="sublabel">DRAWER · SIDE SHEET</div>
+    <div class="row">
+      <button class="btn btn--secondary" id="open-drawer">Open node details</button>
+      <span class="meta" style="color:var(--fg-3);">SLIDES IN FROM RIGHT · ESC CLOSES</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     09 · COMMON ADDITIONS — accordion, number-input, dropzone,
+     combobox, tag-input, dot, loading-btn, stat-trend,
+     icon-badge, tab-count, inline-edit, sortable headers,
+     directional tooltip, attitude-indicator avatar
+     ============================================================ -->
+<section id="additions" class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">09 ▸</div>
+      <div class="section-title">Common additions</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">15 ADDITIONAL CONTROLS</div>
+    </div>
+    <p class="section-intro">
+      Common form, navigation, and data patterns most apps need: <em>accordion, number stepper, dropzone, combobox, tag input, status dot, loading button, stat-trend, icon badge, tab count, inline edit, sortable headers, directional tooltip, and the attitude-indicator avatar</em>. Each composes from the same tokens.
+    </p>
+
+    <div class="sublabel">ACCORDION</div>
+    <div class="accordion" style="max-width:680px;">
+      <details class="accordion__item" open>
+        <summary><span class="accordion__num">01</span><span>General settings</span><span class="accordion__chevron">▸</span></summary>
+        <div class="accordion__body">Sync interval, retry budget, archive target. Defaults pull from the cluster manifest.</div>
+      </details>
+      <details class="accordion__item">
+        <summary><span class="accordion__num">02</span><span>Backup &amp; retention</span><span class="accordion__chevron">▸</span></summary>
+        <div class="accordion__body">Tier-1 daily / tier-2 weekly. Retention 90 days. Off-site mirror on Sunday 02:00 UTC.</div>
+      </details>
+      <details class="accordion__item">
+        <summary><span class="accordion__num">03</span><span>Notifications</span><span class="accordion__chevron">▸</span></summary>
+        <div class="accordion__body">Channel routing, severity thresholds, on-call rotations.</div>
+      </details>
+      <details class="accordion__item">
+        <summary><span class="accordion__num">04</span><span>Security &amp; access</span><span class="accordion__chevron">▸</span></summary>
+        <div class="accordion__body">Key rotation, audit retention, allowed origins.</div>
+      </details>
+    </div>
+
+    <div class="sublabel">NUMBER INPUT · STEPPER</div>
+    <div class="row" style="gap:24px;align-items:flex-end;">
+      <div class="field">
+        <label class="field__label">RETRIES</label>
+        <div class="number-input">
+          <button class="number-input__btn">−</button>
+          <input class="input input--mono" type="number" value="3" min="0" max="10">
+          <button class="number-input__btn">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">RETENTION · DAYS</label>
+        <div class="number-input">
+          <button class="number-input__btn">−</button>
+          <input class="input input--mono" type="number" value="90" min="7" max="365">
+          <button class="number-input__btn">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">PARALLEL JOBS</label>
+        <div class="number-input">
+          <button class="number-input__btn">−</button>
+          <input class="input input--mono" type="number" value="4">
+          <button class="number-input__btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sublabel">DROPZONE · FILE UPLOAD</div>
+    <label class="dropzone" style="max-width:580px;">
+      <span class="dropzone__icon nf"></span>
+      <span class="dropzone__text">Drop a configuration file here, or <em>browse</em></span>
+      <span class="dropzone__hint">TOML · CSV · JSON · MAX 8 MB</span>
+      <input type="file" class="sr-only">
+    </label>
+
+    <div class="sublabel">COMBOBOX · AUTOCOMPLETE</div>
+    <div class="row" style="gap:32px;align-items:flex-start;">
+      <div class="field" style="width:360px;">
+        <label class="field__label">FIND NODE</label>
+        <div class="combobox">
+          <div class="input-wrap">
+            <span class="input-wrap__icon nf"></span>
+            <input class="input combobox__input" type="text" value="edge" placeholder="Type to search…" id="cb-1-input">
+            <span class="combobox__caret">⌄</span>
+          </div>
+          <div class="combobox__menu" id="cb-1-menu">
+            <button class="combobox__option is-active"><span class="nf"></span><span>edge-dr-01</span><span class="combobox__hint">AUSTIN · OK</span></button>
+            <button class="combobox__option"><span class="nf"></span><span>edge-mtl-02</span><span class="combobox__hint">MONTREAL · OK</span></button>
+            <button class="combobox__option"><span class="nf"></span><span>edge-bld-04</span><span class="combobox__hint">BOULDER · WARN</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="width:360px;">
+        <label class="field__label">TAGS</label>
+        <div class="tag-input">
+          <span class="badge badge--pill badge--accent">production <button class="chip-close">×</button></span>
+          <span class="badge badge--pill badge--accent">austin-tx <button class="chip-close">×</button></span>
+          <span class="badge badge--pill badge--warm">backup <button class="chip-close">×</button></span>
+          <input class="tag-input__entry" placeholder="add tag…">
+        </div>
+      </div>
+    </div>
+
+    <div class="sublabel">STATUS DOT · LOADING BUTTON · ICON BADGE</div>
+    <div class="col">
+      <div class="row" style="gap:28px;">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--ok dot--pulse"></span> &nbsp; nominal</span>
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--warn"></span> &nbsp; degraded</span>
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--alert dot--pulse"></span> &nbsp; offline</span>
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-3);"><span class="dot dot--info"></span> &nbsp; syncing</span>
+      </div>
+      <div class="row" style="gap:14px;">
+        <button class="btn btn--primary btn--loading">Saving</button>
+        <button class="btn btn--secondary btn--loading">Syncing</button>
+        <button class="btn btn--ghost btn--loading">Cancelling</button>
+        <button class="btn btn--destructive btn--loading">Removing</button>
+      </div>
+      <div class="row" style="gap:14px;">
+        <button class="btn btn--secondary btn--icon has-icon-badge" aria-label="alerts">
+          <span class="nf"></span><span class="icon-badge icon-badge--alert">12</span>
+        </button>
+        <button class="btn btn--secondary btn--icon has-icon-badge" aria-label="messages">
+          <span class="nf"></span><span class="icon-badge icon-badge--accent">1</span>
+        </button>
+        <button class="btn btn--secondary btn--icon has-icon-badge" aria-label="updates">
+          <span class="nf"></span><span class="icon-badge icon-badge--dot icon-badge--ok"></span>
+        </button>
+        <span class="meta" style="color:var(--fg-3);">ICON BADGE \u00B7 COUNT + DOT</span>
+      </div>
+    </div>
+
+    <div class="sublabel">STAT · TREND</div>
+    <div class="grid-3">
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>UPTIME</div>
+        <div class="stat__value">99.997<span class="unit">%</span><span class="stat__trend stat__trend--up">↑ 0.003</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>THROUGHPUT</div>
+        <div class="stat__value">2.4<span class="unit">GB/S</span><span class="stat__trend stat__trend--down">↓ 0.1</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat__label"><span class="ic nf"></span>NODES</div>
+        <div class="stat__value">42<span class="unit">/42</span><span class="stat__trend stat__trend--flat">FLAT</span></div>
+      </div>
+    </div>
+
+    <div class="sublabel">TABS WITH COUNT · SORTABLE HEADERS</div>
+    <div class="col">
+      <div class="tabs">
+        <button class="tabs__tab is-active">Overview <span class="tabs__count">12</span></button>
+        <button class="tabs__tab">Sites <span class="tabs__count">4</span></button>
+        <button class="tabs__tab">Alerts <span class="tabs__count tabs__count--alert">3</span></button>
+        <button class="tabs__tab">Activity <span class="tabs__count">247</span></button>
+        <button class="tabs__tab">Settings</button>
+      </div>
+      <table class="table">
+        <thead><tr>
+          <th class="is-sortable">Node <span class="table__sort-icon"></span></th>
+          <th class="is-sortable">Site <span class="table__sort-icon"></span></th>
+          <th class="is-sortable is-desc num">Uptime <span class="table__sort-icon"></span></th>
+          <th class="is-sortable is-asc num">Disk <span class="table__sort-icon"></span></th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--accent);">edge-dr-01</td><td>Austin</td><td class="num mono">247d 14h</td><td class="num mono" style="color:var(--ok);">42%</td><td><span class="badge badge--solid badge--ok">nominal</span></td></tr>
+          <tr><td class="mono" style="color:var(--accent);">core-mtl-02</td><td>Montréal</td><td class="num mono">182d 03h</td><td class="num mono" style="color:var(--warn);">78%</td><td><span class="badge badge--solid badge--warn">disk</span></td></tr>
+          <tr><td class="mono" style="color:var(--accent);">nas-arch-tx</td><td>Austin</td><td class="num mono">4d 02h</td><td class="num mono" style="color:var(--alert);">94%</td><td><span class="badge badge--solid badge--alert">auth</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sublabel">INLINE EDIT</div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:14px 22px;align-items:center;max-width:560px;">
+      <span class="meta">NODE ID</span>
+      <span class="inline-edit" tabindex="0">
+        <span class="inline-edit__value" style="font-family:var(--font-mono);color:var(--accent);">edge-dr-01</span>
+        <span class="inline-edit__icon nf"></span>
+      </span>
+      <span class="meta">DISPLAY NAME</span>
+      <span class="inline-edit" tabindex="0">
+        <span class="inline-edit__value">Edge · Disaster Recovery</span>
+        <span class="inline-edit__icon nf"></span>
+      </span>
+    </div>
+
+    <div class="sublabel">DIRECTIONAL TOOLTIP</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px;justify-items:center;align-items:center;padding:36px 0;max-width:680px;">
+      <div style="position:relative;">
+        <span class="tooltip tooltip--top" style="position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);white-space:nowrap;">TOOLTIP · TOP</span>
+        <button class="btn btn--secondary btn--sm">Top</button>
+      </div>
+      <div style="position:relative;">
+        <span class="tooltip tooltip--right" style="position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);white-space:nowrap;">TOOLTIP · RIGHT</span>
+        <button class="btn btn--secondary btn--sm">Right</button>
+      </div>
+      <div style="position:relative;">
+        <span class="tooltip tooltip--bottom" style="position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);white-space:nowrap;">TOOLTIP · BOTTOM</span>
+        <button class="btn btn--secondary btn--sm">Bottom</button>
+      </div>
+      <div style="position:relative;">
+        <span class="tooltip tooltip--left" style="position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);white-space:nowrap;">TOOLTIP · LEFT</span>
+        <button class="btn btn--secondary btn--sm">Left</button>
+      </div>
+    </div>
+
+    <div class="sublabel">AVATAR · SYSTEM</div>
+    <p style="margin:0 0 14px 0;font-size:14px;color:var(--fg-3);line-height:1.6;">
+      The system avatar is set apart from a plain avatar by its mono typeface, not by any surface treatment. The attitude-indicator reference is carried by the em-dash, the palette, and the accent stripe; the avatar stays quiet — a flat surface neutral, legible as an identity chip first.
+    </p>
+    <div class="col">
+      <div class="row" style="gap:18px;align-items:center;">
+        <div class="avatar avatar--ai avatar--sm">JR</div>
+        <div class="avatar avatar--ai">JR</div>
+        <div class="avatar avatar--ai avatar--lg">JR</div>
+        <div class="avatar avatar--ai avatar--lg">MK</div>
+        <div class="avatar avatar--ai avatar--lg">TS</div>
+        <span class="meta" style="color:var(--fg-3);margin-left:8px;">SIZES \u00b7 ACCENT FOLLOWS MODE</span>
+      </div>
+      <div class="row" style="gap:18px;align-items:center;">
+        <div class="avatar-group">
+          <div class="avatar avatar--ai">JR</div>
+          <div class="avatar avatar--ai">MK</div>
+          <div class="avatar avatar--ai">TS</div>
+          <div class="avatar-group__more">+3</div>
+        </div>
+        <span class="meta" style="color:var(--fg-3);margin-left:8px;">GROUP · OVERLAPPING</span>
+      </div>
+    </div>
+
+    <div class="sublabel">COMMAND PALETTE · \u2318K</div>
+    <div class="row">
+      <button class="btn btn--secondary" id="open-cmdk-2">
+        <span class="nf"></span> Open command palette <kbd style="margin-left:6px;">\u2318K</kbd>
+      </button>
+      <span class="meta" style="color:var(--fg-3);">SPOTLIGHT-STYLE \u00b7 GROUPED RESULTS \u00b7 KEYBOARD HINTS</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     10 · APPLICATION COMPOSITION
+     ============================================================ -->
+<section id="dashboard" class="section" style="border-bottom:0;">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">10 ▸</div>
+      <div class="section-title">Composed example</div>
+      <div class="section-rule"></div>
+      <div class="section-meta">R—NET CORE · LIVE</div>
+    </div>
+    <p class="section-intro">
+      Every component on this page, composed into one surface. <em>Drop into Night mode to see it dressed for instrument lighting.</em>
+    </p>
+
+    <div class="dash">
+      <div class="dash__stripe"></div>
+      <div class="dash__head">
+        <a href="#" class="dash__brand">
+          <img src="../components/monogram-light.svg" id="dash-monogram" alt="">
+          R—NET <span class="em">INFRA</span>
+        </a>
+        <nav class="dash__nav">
+          <a href="#" class="is-active">Overview</a>
+          <a href="#">Sites</a>
+          <a href="#">Services</a>
+          <a href="#">Logs</a>
+          <a href="#">Security</a>
+        </nav>
+        <div class="dash__meta">
+          REV 1.0 · <span class="ok">NOMINAL</span><br/>
+          09:42 CST · 2026.05.17
+        </div>
+      </div>
+      <div class="dash__body">
+        <aside class="dash__side">
+          <nav class="sidenav" style="border:0;padding:0;">
+            <div class="sidenav__label">CONTEXT</div>
+            <a class="sidenav__item is-active"><span class="nf"></span> Overview</a>
+            <a class="sidenav__item"><span class="nf"></span> Sites</a>
+            <a class="sidenav__item"><span class="nf"></span> Network</a>
+            <a class="sidenav__item"><span class="nf"></span> Storage</a>
+            <div class="sidenav__label">SYSTEM</div>
+            <a class="sidenav__item"><span class="nf"></span> Activity</a>
+            <a class="sidenav__item"><span class="nf"></span> Security</a>
+            <a class="sidenav__item"><span class="nf"></span> Settings</a>
+          </nav>
+        </aside>
+        <main class="dash__main">
+          <div class="dash__main-head">
+            <div>
+              <div class="dash__main-eyebrow">OVERVIEW · LIVE</div>
+              <div class="dash__main-title">Core status</div>
+            </div>
+            <div class="dash__main-actions">
+              <div class="segmented">
+                <button class="segmented__item is-active">Day</button>
+                <button class="segmented__item">Week</button>
+                <button class="segmented__item">Month</button>
+              </div>
+              <button class="btn btn--secondary btn--sm"><span class="nf"></span> Refresh</button>
+              <button class="btn btn--primary btn--sm">New incident</button>
+            </div>
+          </div>
+
+          <div class="grid-4" style="margin-bottom:24px;">
+            <div class="stat">
+              <div class="stat__label"><span class="ic nf"></span>UPTIME</div>
+              <div class="stat__value">99.997<span class="unit">%</span></div>
+            </div>
+            <div class="stat">
+              <div class="stat__label"><span class="ic nf"></span>NODES</div>
+              <div class="stat__value">42<span class="unit">/42</span></div>
+            </div>
+            <div class="stat">
+              <div class="stat__label"><span class="ic nf"></span>THROUGHPUT</div>
+              <div class="stat__value">2.4<span class="unit">GB/S</span></div>
+            </div>
+            <div class="stat">
+              <div class="stat__label"><span class="ic nf"></span>LATENCY</div>
+              <div class="stat__value">3<span class="unit">MS</span></div>
+            </div>
+          </div>
+
+          <div class="alert alert--warn" style="margin-bottom:24px;">
+            <span class="alert__icon nf"></span>
+            <div class="alert__body">
+              <div class="alert__title">OBSERVATION</div>
+              <div class="alert__text">Edge node disk trending up. Schedule tier-2 archive sweep this week.</div>
+            </div>
+          </div>
+
+          <div class="sublabel" style="margin-top:0;">RECENT ACTIVITY</div>
+          <div style="display:grid;grid-template-columns:80px 24px 1fr auto;gap:10px 18px;font-family:var(--font-mono);font-size:11px;align-items:baseline;color:var(--fg-3);">
+            <span style="color:var(--accent);">09:42</span><span class="nf" style="color:var(--ok);"></span><span style="color:var(--fg-1);">BACKUP · edge-dr · OK · 12.4 GB</span><span>EDGE-DR-01</span>
+            <span style="color:var(--accent);">08:58</span><span class="nf" style="color:var(--ok);"></span><span style="color:var(--fg-1);">CERT · auto-renewed · 90D</span><span>RNET-PROXY</span>
+            <span style="color:var(--accent);">07:14</span><span class="nf" style="color:var(--warn);"></span><span style="color:var(--fg-1);">DISK · 78% · trending up</span><span>CORE-MTL-02</span>
+            <span style="color:var(--accent);">02:18</span><span class="nf" style="color:var(--alert);"></span><span style="color:var(--fg-1);">VPN · recovered · 4m 18s outage</span><span>VPN-TUN-04</span>
+            <span style="color:var(--accent);">01:02</span><span class="nf" style="color:var(--ok);"></span><span style="color:var(--fg-1);">AUTH · key rotation · 12 keys</span><span>AUSTIN-TX</span>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="container">
+  <div class="footer">
+    <div class="footer-left">
+      JR · R—NET · CHARTS &amp; VECTORS<br/>
+      v1.3-CONTROLS · 2026.05.17
+    </div>
+    <div class="footer-right">
+      DERIVED FROM <span class="acc">SYSTEM.MD v1.2</span><br/>
+      <span class="nf"></span>  AUSTIN · TX
+    </div>
+  </div>
+</footer>
+
+</div><!-- /.page -->
+
+<!-- ============================================================
+     MODAL · hidden until triggered
+     ============================================================ -->
+<div id="modal-overlay" class="modal-overlay" hidden>
+  <div class="modal" role="dialog" aria-labelledby="modal-title">
+    <div class="modal__head">
+      <div>
+        <div class="modal__eyebrow">ACTION · IRREVERSIBLE</div>
+        <div class="modal__title" id="modal-title">Decommission edge-dr-01?</div>
+      </div>
+      <button class="alert__close nf" aria-label="close" id="close-modal" style="font-size:16px;cursor:pointer;"></button>
+    </div>
+    <div class="modal__body">
+      <p style="margin:0 0 14px 0;font-size:14px;line-height:1.6;color:var(--fg-1);">
+        This will remove the node from the cluster, revoke its credentials, and archive its logs. The action cannot be undone from this surface.
+      </p>
+      <div class="alert alert--warn" style="padding:12px 14px;">
+        <span class="alert__icon nf"></span>
+        <div class="alert__body">
+          <div class="alert__title">CAUTION</div>
+          <div class="alert__text" style="font-size:12px;">3 services still bind to this node. Migrate before continuing.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" id="cancel-modal">Cancel</button>
+      <button class="btn btn--destructive">Decommission</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     COMMAND PALETTE · ⌘K spotlight
+     ============================================================ -->
+<div id="cmdk-overlay" class="cmdk-overlay" hidden>
+  <div class="cmdk" role="dialog" aria-labelledby="cmdk-input">
+    <div class="cmdk__head">
+      <span class="cmdk__icon nf"></span>
+      <input id="cmdk-input" class="cmdk__input" placeholder="Search nodes, sites, services, actions…">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="cmdk__body">
+      <div class="cmdk__group">
+        <div class="cmdk__label">QUICK ACTIONS</div>
+        <button class="cmdk__item is-active"><span class="nf"></span><span>Trigger backup · all nodes</span><span class="cmdk__item__hint"><kbd>⌘B</kbd></span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>New incident report</span><span class="cmdk__item__hint"><kbd>⌘I</kbd></span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>Sync all clusters</span><span class="cmdk__item__hint"><kbd>⌘S</kbd></span></button>
+      </div>
+      <div class="cmdk__group">
+        <div class="cmdk__label">NODES</div>
+        <button class="cmdk__item"><span class="nf"></span><span>edge-dr-01</span><span class="cmdk__item__hint">AUSTIN · OK</span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>core-mtl-02</span><span class="cmdk__item__hint">MONTRÉAL · DISK 78%</span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>nas-arch-tx</span><span class="cmdk__item__hint">AUSTIN · AUTH FAIL</span></button>
+      </div>
+      <div class="cmdk__group">
+        <div class="cmdk__label">NAVIGATION</div>
+        <button class="cmdk__item"><span class="nf"></span><span>Overview</span><span class="cmdk__item__hint">GO TO</span></button>
+        <button class="cmdk__item"><span class="nf"></span><span>Settings · Preferences</span><span class="cmdk__item__hint">GO TO</span></button>
+      </div>
+    </div>
+    <div class="cmdk__foot">
+      <span><kbd>↑↓</kbd> NAVIGATE</span>
+      <span><kbd>↵</kbd> SELECT</span>
+      <span><kbd>ESC</kbd> CLOSE</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DRAWER · hidden until triggered
+     ============================================================ -->
+<div id="drawer-overlay" class="drawer-overlay" hidden></div>
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer__head">
+    <div>
+      <div class="drawer__eyebrow">NODE · DETAILS</div>
+      <div class="drawer__title">edge-dr-01</div>
+    </div>
+    <button class="alert__close nf" aria-label="close" id="close-drawer" style="font-size:16px;cursor:pointer;"></button>
+  </div>
+  <div class="drawer__body">
+    <div class="col" style="gap:16px;">
+      <div class="meta" style="color:var(--accent);">PROFILE</div>
+      <div class="field"><span class="field__label">REGION</span><div style="font-family:var(--font-body);font-size:14px;">Austin · TX</div></div>
+      <div class="field"><span class="field__label">SERVICE</span><div style="font-family:var(--font-body);font-size:14px;">backup · primary</div></div>
+      <div class="field"><span class="field__label">UPTIME</span><div style="font-family:var(--font-mono);font-size:14px;color:var(--accent);">247 d 14 h</div></div>
+      <hr style="border:0;border-top:1px solid var(--rule);margin:8px 0;">
+      <div class="meta" style="color:var(--accent);">STATUS</div>
+      <div class="row">
+        <span class="badge badge--solid badge--ok"><span class="nf"></span> nominal</span>
+        <span class="badge">live</span>
+      </div>
+      <div style="display:grid;grid-template-columns:60px 1fr 40px;gap:10px;align-items:center;">
+        <span class="meta">DISK</span>
+        <div class="progress progress--ok"><div class="progress__bar" style="width:42%;"></div></div>
+        <span class="meta" style="color:var(--ok);">42%</span>
+      </div>
+    </div>
+  </div>
+  <div class="drawer__foot">
+    <button class="btn btn--ghost btn--sm" id="cancel-drawer">Close</button>
+    <button class="btn btn--primary btn--sm">Open full view</button>
+  </div>
+</aside>
+
+<!-- ============================================================
+     TOAST STACK · injected dynamically
+     ============================================================ -->
+<div class="toast-stack" id="toast-stack"></div>
+
+<script>
+  // ────────────────────────────────────────────────────────
+  // Mode toggle
+  // ────────────────────────────────────────────────────────
+  const html = document.documentElement;
+  const setMode = (mode) => {
+    html.setAttribute('data-mode', mode);
+    document.querySelectorAll('[data-mode-btn]').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.modeBtn === mode);
+    });
+    // Swap monogram variant
+    const file = mode === 'night' ? 'monogram-dark.svg' : 'monogram-light.svg';
+    document.querySelectorAll('#monogram-mark, #dash-monogram').forEach(img => {
+      img.src = `../components/${file}`;
+    });
+    try { localStorage.setItem('cv:mode', mode); } catch(e) {}
+  };
+  document.querySelectorAll('[data-mode-btn]').forEach(b => {
+    b.addEventListener('click', () => setMode(b.dataset.modeBtn));
+  });
+  // Restore mode
+  try {
+    const saved = localStorage.getItem('cv:mode');
+    if (saved === 'night' || saved === 'day') setMode(saved);
+  } catch(e) {}
+  // Keyboard shortcut: ⇧ + D
+  document.addEventListener('keydown', (e) => {
+    if (e.shiftKey && e.key === 'D') {
+      setMode(html.getAttribute('data-mode') === 'night' ? 'day' : 'night');
+    }
+  });
+
+  // ────────────────────────────────────────────────────────
+  // Modal
+  // ────────────────────────────────────────────────────────
+  const overlay = document.getElementById('modal-overlay');
+  const openModal = () => overlay.hidden = false;
+  const closeModal = () => overlay.hidden = true;
+  document.getElementById('open-modal').addEventListener('click', openModal);
+  document.getElementById('close-modal').addEventListener('click', closeModal);
+  document.getElementById('cancel-modal').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ────────────────────────────────────────────────────────
+  // Segmented & tabs — non-mode ones flip is-active among siblings
+  // ────────────────────────────────────────────────────────
+  document.querySelectorAll('.segmented').forEach(seg => {
+    if (seg.classList.contains('mode-toggle')) return;
+    seg.addEventListener('click', (e) => {
+      const btn = e.target.closest('.segmented__item');
+      if (!btn) return;
+      seg.querySelectorAll('.segmented__item').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+  document.querySelectorAll('.tabs').forEach(tabs => {
+    tabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tabs__tab');
+      if (!btn) return;
+      tabs.querySelectorAll('.tabs__tab').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+  // Pagination
+  document.querySelectorAll('.pagination').forEach(p => {
+    p.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pagination__link');
+      if (!btn || !btn.textContent.trim().match(/^\d+$/)) return;
+      p.querySelectorAll('.pagination__link').forEach(b => b.removeAttribute('aria-current'));
+      btn.setAttribute('aria-current', 'page');
+    });
+  });
+
+  // ────────────────────────────────────────────────────────
+  // Chip-close + banner dismiss (any [data-dismiss] target)
+  // ────────────────────────────────────────────────────────
+  document.querySelectorAll('.chip-close').forEach(c => {
+    c.addEventListener('click', (e) => {
+      e.stopPropagation();
+      c.closest('.badge')?.remove();
+    });
+  });
+  document.querySelectorAll('[data-dismiss]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelector(b.dataset.dismiss)?.remove();
+    });
+  });
+  // Toast triggers + auto-dismiss
+  const toastStack = document.getElementById('toast-stack');
+  const toastCopy = {
+    ok:    { title: 'BACKUP COMPLETE', body: 'edge-dr-01 · 12.4 GB · 09:42', icon: '\uf00c' },
+    warn:  { title: 'DISK 78%',        body: 'core-mtl-02 · trending up · sweep scheduled', icon: '\uf071' },
+    alert: { title: 'AUTH FAILURE',    body: 'nas-arch-tx · 3 retries · escalated', icon: '\uf00d' },
+  };
+  document.querySelectorAll('[data-toast]').forEach(b => {
+    b.addEventListener('click', () => {
+      const k = b.dataset.toast;
+      const t = toastCopy[k];
+      if (!t) return;
+      const el = document.createElement('div');
+      el.className = `toast toast--${k}`;
+      el.innerHTML = `
+        <span class="toast__icon nf">${t.icon}</span>
+        <div><div class="toast__title">${t.title}</div><div>${t.body}</div></div>
+        <button class="toast__close nf" aria-label="close">\uf00d</button>`;
+      el.querySelector('.toast__close').addEventListener('click', () => el.remove());
+      toastStack.appendChild(el);
+      setTimeout(() => { el.style.transition = 'opacity 240ms'; el.style.opacity = '0'; }, 3700);
+      setTimeout(() => el.remove(), 4000);
+    });
+  });
+  // Dropdown menu — click to open/close, click-outside to close
+  const menuTrigger = document.getElementById('menu-trigger');
+  const menu1 = document.getElementById('menu-1');
+  if (menuTrigger && menu1) {
+    menuTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = !menu1.hidden;
+      menu1.hidden = open;
+      menuTrigger.setAttribute('aria-expanded', String(!open));
+    });
+    document.addEventListener('click', (e) => {
+      if (!menu1.contains(e.target) && e.target !== menuTrigger) {
+        menu1.hidden = true;
+        menuTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu1.hidden) {
+        menu1.hidden = true;
+        menuTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  // Drawer
+  const drawer = document.getElementById('drawer');
+  const drawerOv = document.getElementById('drawer-overlay');
+  const openDrawer = () => { drawer.hidden = false; drawerOv.hidden = false; };
+  const closeDrawer = () => { drawer.hidden = true;  drawerOv.hidden = true;  };
+  document.getElementById('open-drawer')?.addEventListener('click', openDrawer);
+  document.getElementById('close-drawer')?.addEventListener('click', closeDrawer);
+  document.getElementById('cancel-drawer')?.addEventListener('click', closeDrawer);
+  drawerOv?.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+  // Range live-binding
+  document.querySelectorAll('input.range[data-source]').forEach(r => {
+    const bind = document.querySelector(`[data-bind="${r.dataset.source}"]`);
+    if (!bind) return;
+    const suf = r.dataset.suffix || '';
+    r.addEventListener('input', () => { bind.textContent = r.value + suf; });
+  });
+
+  // ────────────────────────────────────────────────────────
+  // Command palette (⌘K)
+  // ────────────────────────────────────────────────────────
+  const cmdk = document.getElementById('cmdk-overlay');
+  const cmdkInput = document.getElementById('cmdk-input');
+  const openCmdk = () => {
+    cmdk.hidden = false;
+    requestAnimationFrame(() => cmdkInput?.focus());
+  };
+  const closeCmdk = () => { cmdk.hidden = true; cmdkInput.value = ''; };
+  document.getElementById('open-cmdk')?.addEventListener('click', openCmdk);
+  document.getElementById('open-cmdk-2')?.addEventListener('click', openCmdk);
+  cmdk?.addEventListener('click', (e) => { if (e.target === cmdk) closeCmdk(); });
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      cmdk.hidden ? openCmdk() : closeCmdk();
+    }
+    if (e.key === 'Escape' && !cmdk.hidden) closeCmdk();
+  });
+  // cmdk arrow-key navigation
+  cmdk?.addEventListener('keydown', (e) => {
+    const items = [...cmdk.querySelectorAll('.cmdk__item:not([hidden])')];
+    let idx = items.findIndex(i => i.classList.contains('is-active'));
+    if (e.key === 'ArrowDown') { idx = Math.min(items.length - 1, idx + 1); }
+    else if (e.key === 'ArrowUp') { idx = Math.max(0, idx - 1); }
+    else return;
+    e.preventDefault();
+    items.forEach(i => i.classList.remove('is-active'));
+    items[idx]?.classList.add('is-active');
+    items[idx]?.scrollIntoView({ block: 'nearest' });
+  });
+
+  // ────────────────────────────────────────────────────────
+  // User menu (top-bar avatar)
+  // ────────────────────────────────────────────────────────
+  const userTrigger = document.getElementById('user-trigger');
+  const userMenu = document.getElementById('user-menu');
+  if (userTrigger && userMenu) {
+    userTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = !userMenu.hidden;
+      userMenu.hidden = open;
+      userTrigger.setAttribute('aria-expanded', String(!open));
+    });
+    document.addEventListener('click', (e) => {
+      if (!userMenu.contains(e.target) && e.target !== userTrigger) {
+        userMenu.hidden = true;
+        userTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ────────────────────────────────────────────────────────
+  // Number input — wire +/− buttons to sibling input
+  // ────────────────────────────────────────────────────────
+  document.querySelectorAll('.number-input').forEach(ni => {
+    const inp = ni.querySelector('input');
+    const [minus, plus] = ni.querySelectorAll('.number-input__btn');
+    const step = +(inp?.step || 1);
+    const min  = inp?.min ? +inp.min : -Infinity;
+    const max  = inp?.max ? +inp.max :  Infinity;
+    minus?.addEventListener('click', () => {
+      inp.value = Math.max(min, (+inp.value || 0) - step);
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    plus?.addEventListener('click', () => {
+      inp.value = Math.min(max, (+inp.value || 0) + step);
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+
+  // ────────────────────────────────────────────────────────
+  // Sortable table headers
+  // ────────────────────────────────────────────────────────
+  document.querySelectorAll('.table th.is-sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const tbl = th.closest('table');
+      const next = th.classList.contains('is-asc') ? 'desc' : th.classList.contains('is-desc') ? null : 'asc';
+      tbl.querySelectorAll('th.is-sortable').forEach(o => o.classList.remove('is-asc', 'is-desc'));
+      if (next) th.classList.add(`is-${next}`);
+    });
+  });
+
+  // ────────────────────────────────────────────────────────
+  // Inline-edit — click to switch to input, blur/Enter to commit
+  // ────────────────────────────────────────────────────────
+  document.querySelectorAll('.inline-edit:not(.is-editing)').forEach(el => {
+    el.addEventListener('click', () => {
+      const valSpan = el.querySelector('.inline-edit__value');
+      if (!valSpan) return;
+      const current = valSpan.textContent.trim();
+      el.classList.add('is-editing');
+      el.innerHTML = `<input class="input" value="${current.replace(/"/g, '&quot;')}" style="max-width:280px;">`;
+      const input = el.querySelector('input');
+      input.focus(); input.select();
+      const commit = () => {
+        const v = input.value.trim() || current;
+        el.classList.remove('is-editing');
+        el.innerHTML = `<span class="inline-edit__value" style="font-family:${valSpan.style.fontFamily};color:${valSpan.style.color};">${v}</span><span class="inline-edit__icon nf">\uf044</span>`;
+      };
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') input.blur();
+        if (e.key === 'Escape') { input.value = current; input.blur(); }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

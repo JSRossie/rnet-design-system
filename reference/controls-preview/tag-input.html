@@ -1,0 +1,28 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="field" style="max-width:520px;">
+  <label class="field__label">TAGS</label>
+  <div class="tag-input">
+    <span class="badge badge--pill badge--accent">production <button class="chip-close" aria-label="remove">×</button></span>
+    <span class="badge badge--pill badge--accent">austin-tx <button class="chip-close" aria-label="remove">×</button></span>
+    <span class="badge badge--pill badge--warm">backup <button class="chip-close" aria-label="remove">×</button></span>
+    <span class="badge badge--pill">primary <button class="chip-close" aria-label="remove">×</button></span>
+    <input class="tag-input__entry" placeholder="add tag…">
+  </div>
+  <span class="field__help">ENTER TO ADD · BACKSPACE TO REMOVE</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  .grp { display: flex; flex-direction: column; gap: 10px; }
+  .grp .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-3); }
+  
+</style>
+</head>
+<body>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+  <div class="card card--stripe">
+    <div class="card__head">
+      <div>
+        <div class="card__eyebrow">PROFILE · v1.0</div>
+        <div class="card__title">Edge node DR</div>
+      </div>
+      <div class="card__meta">REV 1.0<br/><span style="color:var(--ok);">NOMINAL</span></div>
+    </div>
+    <p style="margin:0;font-size:13.5px;line-height:1.6;">Primary disaster-recovery node for Austin region. Holds tier-2 archive and serves backup ingestion.</p>
+  </div>
+  <div class="card card--brackets">
+    <span class="br-tr"></span><span class="br-bl"></span>
+    <div class="card__head">
+      <div>
+        <div class="card__eyebrow">CEREMONIAL</div>
+        <div class="card__title">Correspondence</div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:13.5px;line-height:1.6;">Thank you for the conversation last Thursday. The framework you sketched has stayed with me.</p>
+  </div>
+</div>
+
+</body>
+</html>

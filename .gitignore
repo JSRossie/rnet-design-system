@@ -11,3 +11,6 @@ fonts/.venv/
 
 # Scratch / exploratory samples — not part of the system
 .temp/
+
+# Staging area for incoming files before integration
+.staging/

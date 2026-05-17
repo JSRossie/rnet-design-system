@@ -1,0 +1,32 @@
+<!doctype html>
+<html data-mode="day" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../controls.css">
+<style>
+  body { margin: 0; padding: 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 14px; }
+  
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="stepper">
+    <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Identify</span></div>
+    <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Provision</span></div>
+    <div class="stepper__step is-current"><span class="stepper__num">3</span><span class="stepper__label">Configure</span></div>
+    <div class="stepper__step"><span class="stepper__num">4</span><span class="stepper__label">Verify</span></div>
+    <div class="stepper__step"><span class="stepper__num">5</span><span class="stepper__label">Deploy</span></div>
+  </div>
+  <div style="height:18px;"></div>
+  <div class="stepper">
+    <div class="stepper__step is-complete"><span class="stepper__num">✓</span><span class="stepper__label">Draft</span></div>
+    <div class="stepper__step is-current"><span class="stepper__num">2</span><span class="stepper__label">Review</span></div>
+    <div class="stepper__step"><span class="stepper__num">3</span><span class="stepper__label">Send</span></div>
+  </div>
+</div>
+
+</body>
+</html>
