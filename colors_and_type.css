@@ -58,8 +58,12 @@
    Semantic roles · DAY (ceremonial / light) is the default
    Each value MUST be an upstream `var(...)`. No new colors.
    ============================================================ */
+/* `body.vscode-light` activates the same set inside VS Code's
+   markdown preview, which carries its theme as a body class and
+   never sets `data-mode` (§17.5). */
 :root,
-[data-mode="day"] {
+[data-mode="day"],
+body.vscode-light {
   /* ─── Surface roles ──────────────────────────────────────── */
   --bg:            var(--paper-true);
   --bg-chart:      var(--paper-chart);
@@ -138,7 +142,13 @@
 /* ============================================================
    Semantic roles · NIGHT (instrumented / dark)
    ============================================================ */
-[data-mode="night"] {
+/* VS Code's dark and high-contrast preview themes route here.
+   High-contrast is a placeholder mapping — the system has no
+   high-contrast variant yet (§17.5, open question). */
+[data-mode="night"],
+body.vscode-dark,
+body.vscode-high-contrast,
+body.vscode-high-contrast-light {
   --bg:            var(--night);
   --bg-chart:      var(--night-2);
   --bg-elev-1:     var(--night-2);

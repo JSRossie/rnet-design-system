@@ -1,0 +1,8 @@
+{
+  // Charts & Vectors VS Code preview chrome (SYSTEM.md §17.5) needs this
+  // extension: it renders YAML front matter as the table that markdown.css
+  // restyles into the metadata strip. The system itself ships only CSS.
+  "recommendations": [
+    "bierner.markdown-yaml-preamble"
+  ]
+}

@@ -9,11 +9,15 @@
    `ul`/`ol`, `pre`, `code`, `blockquote`, `hr`, `table` — with no
    class hooks required on the rendered output.
 
-   Two scopes:
-     .md    — the rendered markdown body (720px prose measure).
-     .doc   — the preview chrome around it (stripe, eyebrow, footer).
-              Per §17, chrome is supplied by the previewer, never by
-              the markdown itself.
+   Three scopes:
+     .md               — the rendered markdown body (720px measure).
+     .doc              — standalone preview chrome around it (stripe,
+                         eyebrow, footer). Per §17, chrome is supplied
+                         by the previewer, never by the markdown.
+     body.vscode-body  — the VS Code built-in markdown preview (§17.5).
+                         The body element rules carry both `.md` and
+                         this scope via `:is()`; the VS Code chrome is
+                         a separate section at the foot of this file.
 
    Discipline (§4.5 of proposals/markdown-preview.md):
      - No forked role variables. Every value composes from the
@@ -30,7 +34,7 @@
 /* ============================================================
    The markdown body — 720px prose measure
    ============================================================ */
-.md {
+:is(.md, body.vscode-body) {
   max-width: var(--content-max-prose);
   font-family: var(--font-body);
   color: var(--fg-1);
@@ -39,20 +43,20 @@
 /* ─── Heading ramp — prose-scoped (§17, §4.1 of the proposal) ──
    h1/h2/h3 in Outfit at prose sizes; h4 reuses the system's
    mono-uppercase eyebrow rung; h5/h6 fall back to bold inline. */
-.md h1,
-.md h2,
-.md h3 {
+:is(.md, body.vscode-body) h1,
+:is(.md, body.vscode-body) h2,
+:is(.md, body.vscode-body) h3 {
   font-family: var(--font-display);
   color: var(--fg-1);
 }
-.md h1 {
+:is(.md, body.vscode-body) h1 {
   font-size: var(--type-md-h1);
   font-weight: 600;
   letter-spacing: -1.2px;
   line-height: 1.12;
   margin: 0 0 var(--space-2) 0;
 }
-.md h2 {
+:is(.md, body.vscode-body) h2 {
   font-size: var(--type-md-h2);
   font-weight: 500;
   letter-spacing: -0.4px;
@@ -61,7 +65,7 @@
   padding-bottom: var(--space-2);
   border-bottom: var(--bw-hair) solid var(--rule);
 }
-.md h3 {
+:is(.md, body.vscode-body) h3 {
   font-size: var(--type-md-h3);
   font-weight: 500;
   letter-spacing: -0.2px;
@@ -69,7 +73,7 @@
   margin: var(--space-6) 0 0 0;
 }
 /* h4 — the system's existing mono-uppercase eyebrow (reused rung). */
-.md h4 {
+:is(.md, body.vscode-body) h4 {
   font-family: var(--font-mono);
   font-size: var(--type-label);
   font-weight: 500;
@@ -79,8 +83,8 @@
   margin: var(--space-6) 0 0 0;
 }
 /* h5/h6 — no new rung; bold inline-weight text at body size. */
-.md h5,
-.md h6 {
+:is(.md, body.vscode-body) h5,
+:is(.md, body.vscode-body) h6 {
   font-family: var(--font-body);
   font-size: var(--type-body);
   font-weight: 600;
@@ -89,43 +93,43 @@
 }
 
 /* ─── Body prose ──────────────────────────────────────────── */
-.md p {
+:is(.md, body.vscode-body) p {
   font-size: var(--type-body);
   line-height: 1.72;
   margin: var(--space-3) 0;
   max-width: none;
 }
-.md strong { font-weight: 600; color: var(--fg-1); }
-.md em     { font-style: italic; }
+:is(.md, body.vscode-body) strong { font-weight: 600; color: var(--fg-1); }
+:is(.md, body.vscode-body) em     { font-style: italic; }
 
 /* Links carry meaning — exempt from §4.6 accent-count discipline
    (resolved as §7 resolves functional glyphs). */
-.md a {
+:is(.md, body.vscode-body) a {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   transition: border-color var(--dur-fast) var(--ease-instrument);
 }
-.md a:hover { border-bottom-color: var(--accent); }
-.md a:focus-visible {
+:is(.md, body.vscode-body) a:hover { border-bottom-color: var(--accent); }
+:is(.md, body.vscode-body) a:focus-visible {
   outline: var(--focus-ring-w) solid var(--focus-ring);
   outline-offset: 2px;
 }
-.md small { color: var(--fg-3); }
+:is(.md, body.vscode-body) small { color: var(--fg-3); }
 
 /* ─── Lists ───────────────────────────────────────────────── */
-.md ul,
-.md ol {
+:is(.md, body.vscode-body) ul,
+:is(.md, body.vscode-body) ol {
   font-size: var(--type-body);
   line-height: 1.72;
   padding-left: var(--space-6);
   margin: var(--space-3) 0;
 }
-.md li { margin: var(--space-1) 0; }
-.md li > ul,
-.md li > ol { margin: var(--space-1) 0; }
-.md ul li::marker { color: var(--accent-soft); }
-.md ol li::marker {
+:is(.md, body.vscode-body) li { margin: var(--space-1) 0; }
+:is(.md, body.vscode-body) li > ul,
+:is(.md, body.vscode-body) li > ol { margin: var(--space-1) 0; }
+:is(.md, body.vscode-body) ul li::marker { color: var(--accent-soft); }
+:is(.md, body.vscode-body) ol li::marker {
   font-family: var(--font-mono);
   font-size: var(--type-body-sm);
   color: var(--fg-3);
@@ -134,7 +138,7 @@
 /* ─── Code — re-derives the `.codeblock` treatment (§4.5) ─────
    Inline `code` gets a subtle chip; fenced `pre` matches the
    `controls.css` `.codeblock` surface exactly. */
-.md :not(pre) > code {
+:is(.md, body.vscode-body) :not(pre) > code {
   font-family: var(--font-mono);
   font-size: 0.86em;
   color: var(--accent);
@@ -142,7 +146,7 @@
   padding: 1.5px 5px;
   border-radius: var(--radius-2);
 }
-.md pre {
+:is(.md, body.vscode-body) pre {
   font-family: var(--font-mono);
   font-size: var(--type-code);
   line-height: 1.6;
@@ -154,7 +158,7 @@
   margin: var(--space-5) 0;
   overflow-x: auto;
 }
-.md pre code {
+:is(.md, body.vscode-body) pre code {
   background: none;
   padding: 0;
   font-size: inherit;
@@ -165,33 +169,33 @@
    Plain `> quote` reads as the note callout. A previewer may add
    `.ok` / `.warn` / `.alert` to map a quote onto the semantic
    layer (§4.4); the brand accent stays separate from status. */
-.md blockquote {
+:is(.md, body.vscode-body) blockquote {
   margin: var(--space-5) 0;
   padding: 14px 18px;
   background: var(--bg-callout);
   border-left: 3px solid var(--accent-warm);
   color: var(--fg-1);
 }
-.md blockquote p {
+:is(.md, body.vscode-body) blockquote p {
   font-size: var(--type-body-sm);
   margin: var(--space-2) 0;
   color: inherit;
 }
-.md blockquote p:first-child { margin-top: 0; }
-.md blockquote p:last-child  { margin-bottom: 0; }
-.md blockquote.ok    { background: var(--ok-bg-tint);    border-left-color: var(--ok); }
-.md blockquote.warn  { background: var(--warn-bg-tint);  border-left-color: var(--warn); }
-.md blockquote.alert { background: var(--alert-bg-tint); border-left-color: var(--alert); }
+:is(.md, body.vscode-body) blockquote p:first-child { margin-top: 0; }
+:is(.md, body.vscode-body) blockquote p:last-child  { margin-bottom: 0; }
+:is(.md, body.vscode-body) blockquote.ok    { background: var(--ok-bg-tint);    border-left-color: var(--ok); }
+:is(.md, body.vscode-body) blockquote.warn  { background: var(--warn-bg-tint);  border-left-color: var(--warn); }
+:is(.md, body.vscode-body) blockquote.alert { background: var(--alert-bg-tint); border-left-color: var(--alert); }
 
 /* ─── Horizontal rule — hair rule ─────────────────────────── */
-.md hr {
+:is(.md, body.vscode-body) hr {
   border: 0;
   border-top: var(--bw-hair) solid var(--rule);
   margin: var(--space-7) 0;
 }
 
 /* ─── Tables — the R—Net sites-table pattern (`.table`) ─────── */
-.md table {
+:is(.md, body.vscode-body) table {
   width: 100%;
   border-collapse: collapse;
   font-family: var(--font-body);
@@ -199,7 +203,7 @@
   color: var(--fg-1);
   margin: var(--space-5) 0;
 }
-.md th {
+:is(.md, body.vscode-body) th {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
@@ -211,15 +215,15 @@
   background: var(--bg-elev-2);
   border-bottom: 1px solid var(--rule-strong);
 }
-.md td {
+:is(.md, body.vscode-body) td {
   padding: 9px 12px;
   line-height: 1.5;
   border-bottom: 1px solid var(--rule);
 }
-.md tbody tr:last-child td { border-bottom: 0; }
+:is(.md, body.vscode-body) tbody tr:last-child td { border-bottom: 0; }
 
 /* ─── Images ──────────────────────────────────────────────── */
-.md img {
+:is(.md, body.vscode-body) img {
   max-width: 100%;
   height: auto;
   border: 1px solid var(--rule);
@@ -282,6 +286,89 @@
 .doc-foot {
   display: flex;
   justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  border-top: var(--bw-hair) solid var(--rule);
+  margin-top: var(--space-8);
+  padding-top: var(--space-3);
+}
+
+/* ============================================================
+   VS Code preview chrome (§17.5)
+   ============================================================
+   The built-in markdown preview renders into `body.vscode-body`
+   with no `.doc` wrapper, so the chrome is drawn from the body
+   box itself plus the front-matter table that the
+   `bierner.markdown-yaml-preamble` extension renders as the
+   body's first child. Form is fixed by the system; content
+   varies via front matter (§17.4). The footer carries the fixed
+   wordmark only — variable footer metadata waits for a richer
+   target (§17.5, deferred).
+   ============================================================ */
+
+/* The preview body is the document column — centered, 720px from
+   the shared body rule above, with `.doc`-equivalent padding. */
+body.vscode-body {
+  margin: 0 auto;
+  padding: 0 var(--space-7) var(--space-10);
+  box-sizing: border-box;
+}
+
+/* Accent stripe — mirrors `.doc-stripe`, drawn at the column top.
+   `::before` is a pseudo-element, so the preamble table below is
+   still `:first-child`. */
+body.vscode-body::before {
+  content: "";
+  display: block;
+  height: var(--bw-stripe);
+  background: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+/* Metadata strip — the front-matter table, restyled into the
+   §10.1 title + metadata block. The table's native layout already
+   sets keys in a row above their values; this styles that grid
+   rather than rebuilding it, so it holds for any front-matter key
+   order. The `ground-deep` bottom rule is the §10 classification
+   stripe. */
+body.vscode-body > table:first-child {
+  width: 100%;
+  margin: 0 0 var(--space-7);
+  border: 0;
+  border-bottom: 3px solid var(--ground-deep);
+}
+body.vscode-body > table:first-child th,
+body.vscode-body > table:first-child td {
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 0 var(--space-5) var(--space-1) 0;
+}
+body.vscode-body > table:first-child th {
+  font-weight: 500;
+  color: var(--fg-3);
+}
+body.vscode-body > table:first-child td {
+  color: var(--accent-warm);
+  padding-bottom: var(--space-3);
+}
+
+/* Footer — hairline rule and a wordmark. The wordmark text is the
+   one project-level knob this target exposes: a consumer project
+   sets `--doc-footer` to a quoted string in a CSS file loaded after
+   `markdown.css` (§17.5). `none` drops the footer; unset uses the
+   system default. This is project-level only — per-document footer
+   metadata is not reachable from CSS (§17.5, deferred). */
+body.vscode-body::after {
+  content: var(--doc-footer, "JR / R—NET ◇ CHARTS & VECTORS");
+  display: block;
   font-family: var(--font-mono);
   font-size: var(--type-meta);
   letter-spacing: var(--track-meta);

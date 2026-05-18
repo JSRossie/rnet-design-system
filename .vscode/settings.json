@@ -1,0 +1,10 @@
+{
+  // Render this repo's own markdown under Charts & Vectors in the VS Code
+  // built-in preview (SYSTEM.md §17.5). Listed in dependency order;
+  // markdown.css also @imports the first two, so this is belt-and-suspenders.
+  "markdown.styles": [
+    "tokens.css",
+    "colors_and_type.css",
+    "markdown.css"
+  ]
+}

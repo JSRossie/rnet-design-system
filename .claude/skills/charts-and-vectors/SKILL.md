@@ -68,6 +68,61 @@ the stylesheet is enough; no separate font setup. Switch mode with the
 Machine-readable tokens, if a build step needs them:
 `https://cdn.rossie.net/charts-and-vectors/tokens/v1/tokens.json`.
 
+## The VS Code markdown preview
+
+The built-in VS Code markdown preview is a supported render target — a
+markdown document styled under the system reads correctly in the editor, not
+only as exported HTML (`SYSTEM.md §17.5`). Wiring a project to it takes two
+`.vscode/` files and one extension; the system itself ships only CSS.
+
+`extensions.json` recommends the single dependency. The preview chrome — the
+metadata strip — needs front matter in the page DOM, which the
+Microsoft-authored `bierner.markdown-yaml-preamble` extension supplies:
+
+```json
+{ "recommendations": ["bierner.markdown-yaml-preamble"] }
+```
+
+`settings.json` points the preview at the system CSS. The CDN `rnet.css`
+bundle already carries the markdown layer and its preview-chrome rules:
+
+```json
+{
+  "markdown.styles": [
+    "https://cdn.rossie.net/charts-and-vectors/css/v1/rnet.css"
+  ]
+}
+```
+
+The footer wordmark is the one project-level knob. To override it, add a CSS
+file setting `--doc-footer` and list it *after* the bundle — a quoted string
+sets the text, `none` drops the footer, unset uses the system wordmark. It is
+one footer per repository, not per document:
+
+```css
+/* .vscode/cv-preview.css */
+body.vscode-body { --doc-footer: "ACME ◇ INTERNAL"; }
+```
+
+```json
+"markdown.styles": [
+  "https://cdn.rossie.net/charts-and-vectors/css/v1/rnet.css",
+  ".vscode/cv-preview.css"
+]
+```
+
+To have Claude set this up, paste this prompt:
+
+> Configure this project's VS Code markdown preview to use the Charts &
+> Vectors design system. Create `.vscode/extensions.json` recommending the
+> `bierner.markdown-yaml-preamble` extension, and `.vscode/settings.json`
+> with `markdown.styles` pointing at
+> `https://cdn.rossie.net/charts-and-vectors/css/v1/rnet.css`. If I give you
+> a footer wordmark string, also create `.vscode/cv-preview.css` setting
+> `body.vscode-body { --doc-footer: "…"; }` and append that file to
+> `markdown.styles`. Then tell me to install the recommended extension and
+> reload.
+
 ## The disciplines — the rules that carry the most weight
 
 If you compress everything else, keep these four. Most design decisions resolve
