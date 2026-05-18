@@ -20,9 +20,9 @@ subset to Latin.
 |------|------|
 | `fonts/JetBrainsMonoNerdFont-*.ttf` | Source fonts (in repo, not deployed). |
 | `fonts/build-fonts.sh` | The build. Regenerates every production woff2. |
-| `fonts/cloudflare-deploy/` | Exact upload payload for Cloudflare Pages. |
+| `cdn/charts-and-vectors/fonts/` | Deployed woff2 — `build-fonts.sh` emits here. |
 | `fonts/UNICODE-RANGE.css` | Generated `unicode-range` for the `-min` @font-face. |
-| `fonts/HOSTING.md` | Deployment / verification runbook. |
+| `cdn/HOSTING.md` | CDN structure, deployment, and verification runbook. |
 
 ## One-time toolchain setup
 
@@ -82,10 +82,11 @@ Like Outfit/Urbanist: take Google's own Latin-subset variable woff2 as-is.
 - Add `@font-face` rules in `reference/style-guide.html` pointing at
   `https://cdn.rossie.net/charts-and-vectors/fonts/<file>.woff2`. Use `font-display: swap`;
   variable fonts use `font-weight: 200 800`.
-- List the file in `fonts/cloudflare-deploy/index.html`.
-- Document it in the table in `fonts/HOSTING.md`.
-- The `_headers` glob `/fonts/*` already sets CORS + cache — no change needed.
-- Re-upload `fonts/cloudflare-deploy/` to Cloudflare Pages (see `HOSTING.md`).
+- List the file in `cdn/index.html`.
+- Document it in the table in `cdn/HOSTING.md`.
+- The `_headers` glob `/charts-and-vectors/fonts/*` already sets CORS + cache —
+  no change needed.
+- Push to `main` — Cloudflare Pages auto-deploys (see `cdn/HOSTING.md`).
 
 ## The unicode-range fallback pattern (subset + full safety net)
 
@@ -109,5 +110,6 @@ by `build-fonts.sh`; keep it pasted into the `-min` `@font-face` rules in sync.
 - `pyftsubset` warns `PfEd NOT subset` — harmless (FontForge private table).
 - Subset coverage: verify with fontTools `getBestCmap()` that every intended
   codepoint survived before deploying.
-- Until `cloudflare-deploy/` is re-uploaded, `cdn.rossie.net` serves the old
-  files — the style guide will show fallback fonts.
+- Until the rebuilt woff2 under `cdn/charts-and-vectors/fonts/` is committed and
+  pushed to `main`, `cdn.rossie.net` serves the old files — the style guide will
+  show fallback fonts.
