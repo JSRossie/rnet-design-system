@@ -1,9 +1,9 @@
 # Data Visualization Guidance for Charts & Vectors
 
-**Status:** proposal — promotes candidate #1 from the v1.6 staging note
+**Status:** Graduated 2026.05.17 into `SYSTEM.md` §19 and `charts.css`. Retained for design-rationale history; not a live proposal.
 **Target repository:** `rnet-design-system`
-**Suggested home:** SYSTEM.md §19 + `charts.css`, this proposal retained as the record
 **Drafted:** 2026.05.17, branch `10-data-visualization`
+**Shipped in:** SYSTEM.md v1.7
 
 ---
 

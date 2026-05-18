@@ -1,9 +1,10 @@
 # Charts & Vectors in the VS Code Markdown Preview — Implementation Plan
 
-**Status:** plan, ready to execute
+**Status:** Graduated 2026.05.18 into `SYSTEM.md` §17.5, `markdown.css`, and `colors_and_type.css`. Retained for design-rationale history; not a live proposal.
 **Branch:** `11-markdown-preview-vscode`
-**Supersedes the approach in:** `proposals/cv-markdown-preview-extension-proposal.md`
+**Supersedes the approach in:** `proposals/superseded/cv-markdown-preview-extension-proposal.md`
 **Drafted:** 2026.05.18
+**Shipped in:** SYSTEM.md v1.8
 
 ---
 
@@ -111,7 +112,7 @@ containers. These are refinements; none blocks the objective.
 - **SYSTEM.md §17** — add §17.5 "VS Code preview target": the three-target
   account, the `markdown-yaml-preamble` dependency, and the §3 scope boundary
   adopted as a standing rule. Changelog → v1.8. No primitive or token change.
-- **`proposals/cv-markdown-preview-extension-proposal.md`** — add a resolution
+- **`proposals/superseded/cv-markdown-preview-extension-proposal.md`** — add a resolution
   header pointing at this plan; retain for rationale history.
 - **README** — a "Reading docs in VS Code" section: install
   `bierner.markdown-yaml-preamble`, point `markdown.styles` at the CDN

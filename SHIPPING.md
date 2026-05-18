@@ -15,7 +15,7 @@ The chart layer the codename always promised. Promotes candidate #1 of the v1.6 
 
 - **`charts.css`** — the data-visualization layer, a new top-level file parallel to `controls.css` and `markdown.css`. Imports `colors_and_type.css`. Styles eleven chart types (line, area, sparkline, bar / column, stacked & grouped bar, scatter, histogram, heatmap, gauge, meter, big-number stat, network diagram) across two render paths — CSS / HTML for grid-aligned charts, SVG for charts needing arbitrary geometry. No charting library, no runtime JS. Documented as `SYSTEM.md §19`.
 - **`reference/charts-showcase.html`** — every §19 chart type in both modes, the day-vs-night compare reference.
-- **`proposals/data-visualization.md`** — the promotion record: the gap, the catalog, the palette sourcing, and the open questions.
+- **`proposals/graduated/data-visualization.md`** — the promotion record: the gap, the catalog, the palette sourcing, and the open questions.
 
 ### Changed
 
@@ -56,7 +56,7 @@ A general account of the chrome regions every template shares — the frame the 
 
 ## v1.3 — 2026.05.17 · Editorial voice
 
-A writing-voice standard for prose deliverables — the editorial voice graduates from `proposals/rnet-voice.md` into the spec. The system's first extension that is editorial rather than visual.
+A writing-voice standard for prose deliverables — the editorial voice graduates from `proposals/graduated/rnet-voice.md` into the spec. The system's first extension that is editorial rather than visual.
 
 ### Added
 
@@ -69,7 +69,7 @@ A writing-voice standard for prose deliverables — the editorial voice graduate
 - **`STANDARD.md`** → v1.1. Added a "Written Voice" section, retitled its "Voice & Naming" heading to "Naming & Signing" to match SYSTEM.md, and refreshed the footer (`derived from SYSTEM.md v1.5`).
 - **`prompts/for-claude.md`** → v1.1, **`prompts/for-chatgpt.md`** → v1.1 — added a voice pointer: when the deliverable is prose, attach `VOICE.md`. The two visual-generation prompt files (`for-v0`, `for-design-tools`) are unchanged.
 - **`README.md`** — added a `VOICE.md` bullet under "What's in this repository."
-- **`proposals/rnet-voice.md`** — opened and decisions resolved this branch; status "ready to graduate."
+- **`proposals/graduated/rnet-voice.md`** — opened and decisions resolved this branch; status "ready to graduate."
 
 ### Discipline check
 
@@ -81,7 +81,7 @@ A writing-voice standard for prose deliverables — the editorial voice graduate
 
 ## v1.2 — 2026.05.17 · Rendered markdown
 
-Styling for rendered markdown and markdown previews — the markdown content pattern graduates from `proposals/markdown-preview.md` into the spec.
+Styling for rendered markdown and markdown previews — the markdown content pattern graduates from `proposals/graduated/markdown-preview.md` into the spec.
 
 ### Added
 
@@ -94,7 +94,7 @@ Styling for rendered markdown and markdown previews — the markdown content pat
 - **`SYSTEM.md`** → v1.4. Added `§17 Rendered Markdown` (content vs. chrome, heading ramp, element mapping, front-matter vocabulary), added the v1.4 row to §13, listed `markdown.css` and `markdown-showcase.html` in §14, and added a §17 pointer to the §3 type-additions note.
 - **`README.md`** — added bullets for `markdown.css` and the markdown showcase under "What's in this repository."
 - **`reference/README.md`** — added a "Markdown reference" section for `markdown-showcase.html`.
-- **`proposals/markdown-preview.md`** — open decisions (§4) resolved; status updated to "ready to graduate."
+- **`proposals/graduated/markdown-preview.md`** — open decisions (§4) resolved; status updated to "ready to graduate."
 
 ### Discipline check
 

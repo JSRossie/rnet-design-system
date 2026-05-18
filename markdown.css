@@ -19,7 +19,7 @@
                          this scope via `:is()`; the VS Code chrome is
                          a separate section at the foot of this file.
 
-   Discipline (§4.5 of proposals/markdown-preview.md):
+   Discipline (§4.5 of proposals/graduated/markdown-preview.md):
      - No forked role variables. Every value composes from the
        §4.7 semantic layer in `colors_and_type.css`.
      - Code blocks and callouts re-derive the `.codeblock` /

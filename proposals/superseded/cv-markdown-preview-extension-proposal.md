@@ -12,7 +12,7 @@
 > already renders YAML front matter into the preview DOM, so plain CSS can
 > draw the chrome. The system reaches the VS Code preview by shipping CSS
 > only; no extension is authored, and the §4 packages restructure is not
-> needed. The implemented approach is `proposals/markdown-preview-vscode-plan.md`,
+> needed. The implemented approach is `proposals/graduated/markdown-preview-vscode-plan.md`,
 > graduated into `SYSTEM.md §17.5`. The §3 scope boundary is adopted as a
 > standing rule. Sections below are kept for the cost analysis and the
 > rejected-path record.
