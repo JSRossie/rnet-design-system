@@ -117,6 +117,22 @@
   --scrim-soft:   color-mix(in oklab, var(--ink) 40%, transparent);
   --bg-inverse:   var(--ink);
   --fg-inverse:   var(--paper-true);
+
+  /* ─── Chart data roles (v1.2 — see SYSTEM.md §19) ────────── */
+  /* Categorical series ramp. Scoped to a chart frame (§19.2);
+     does not participate in the single-accent rule. */
+  --series-1:  var(--sky-deep);
+  --series-2:  var(--ground-deep);
+  --series-3:  var(--amber-deep);
+  --series-4:  var(--terrain-deep);
+  --series-5:  var(--scope-deep);
+  --series-6:  var(--panel-deep);
+  /* Sequential ramp — sectional terrain elevation tint. */
+  --seq-1:     var(--paper-chart);
+  --seq-2:     var(--urban);
+  --seq-3:     var(--ground-light);
+  --seq-4:     var(--ground);
+  --seq-5:     var(--ground-deep);
 }
 
 /* ============================================================
@@ -169,6 +185,19 @@
   --scrim-soft:   color-mix(in oklab, var(--night) 56%, transparent);
   --bg-inverse:   var(--cream);
   --fg-inverse:   var(--night);
+
+  /* ─── Chart data roles (v1.2 — see SYSTEM.md §19) ────────── */
+  --series-1:  var(--sky-light);
+  --series-2:  var(--ground-light);
+  --series-3:  var(--amber-glow);
+  --series-4:  var(--terrain-light);
+  --series-5:  var(--scope-light);
+  --series-6:  var(--night-graphite);
+  --seq-1:     var(--night-2);
+  --seq-2:     var(--night-4);
+  --seq-3:     var(--ground-deep);
+  --seq-4:     var(--amber-deep);
+  --seq-5:     var(--amber-glow);
 }
 
 /* ============================================================

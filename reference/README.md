@@ -23,3 +23,9 @@ Each file `<link>`s `../controls.css` and loads `@font-face` declarations from `
 Companion to `markdown.css` and `SYSTEM.md §17`.
 
 - `markdown-showcase.html` — Rendered markdown in both modes. Carries a live YAML front-matter editor: edit the front matter and the preview chrome (eyebrow, classification stripe, footer) re-renders. Includes a manual day/night toggle. `<link>`s `../markdown.css`.
+
+## Charts reference (v1.7)
+
+Companion to `charts.css` and `SYSTEM.md §19`.
+
+- `charts-showcase.html` — Every §19 chart type rendered day-vs-night side by side: time-series, categorical, distribution, and the matrix-and-readouts group, plus the categorical series ramp and the sequential ramp. `<link>`s `../charts.css`.

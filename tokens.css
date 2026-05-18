@@ -1,9 +1,9 @@
 /* ============================================================
    JR / R—Net Design System · Charts & Vectors
    ============================================================
-   Version:      1.0
-   Last updated: 2026.05.14
-   Source:       SYSTEM.md v1.2
+   Version:      1.2
+   Last updated: 2026.05.17
+   Source:       SYSTEM.md v1.7
    Generated:    tokens.json
    ============================================================
    
@@ -55,6 +55,12 @@
   --amber:         #D49826;  /* R—Net accent. DARK MODE ONLY. */
   --amber-glow:    #F0B84A;  /* Dark-mode glow on amber elements. */
   --amber-deep:    #8C6018;  /* Light-mode amber (rare; use over --amber). */
+
+  /* ─── Chart data · Sectional + scope-sourced (v1.2, §19) ─ */
+  --terrain-deep:  #5A6B33;  /* Chart series, light mode. Source: VFR sectional terrain green. */
+  --terrain-light: #9DAE73;  /* Chart series, dark mode. Source: terrain green, night band. */
+  --scope-deep:    #2F6562;  /* Chart series, light mode. Source: radar-scope / EFIS phosphor teal. */
+  --scope-light:   #82AEA9;  /* Chart series, dark mode. Source: scope teal, night band. */
 
   /* ─── Semantic · Universal R/Y/G ───────────────────────── */
   --ok-fg:         #4A7A3A;  /* Foreground for OK / nominal. */

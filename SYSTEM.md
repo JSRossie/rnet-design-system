@@ -1,6 +1,6 @@
 # JR / R—Net Design System
 
-**Version:** 1.6
+**Version:** 1.7
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
@@ -78,7 +78,7 @@ The seven roles above are the system's canonical type vocabulary. UI components 
 
 ## 4. Color System
 
-The palette is organized in **four conceptual layers**. They never mix roles. All values below have been verified for WCAG 2.1 contrast compliance — see §4.5 for the contrast matrix.
+The palette is organized in **four conceptual layers**. They never mix roles. All values below have been verified for WCAG 2.1 contrast compliance — see §4.5 for the contrast matrix. A fifth, chart-scoped color group (the categorical series ramp) is defined in §19.1; it is held deliberately apart so chart series colors never dilute the brand accent.
 
 ### 4.1 Layer 1: Surfaces
 
@@ -204,6 +204,21 @@ All ratios computed per WCAG 2.1. AA Body requires 4.5:1; AA Large (18pt+ or 14p
 | `warn-glow` on `night` | 9.04 | ✓ | ✓ |
 | `ok-glow` on `night` | 6.86 | ✓ | ✓ |
 | `alert-glow` on `night` | 4.46 | — | ✓ |
+
+**Chart data — series primitives (v1.2, §19.1):**
+
+The two new chart primitives, on the surfaces they mark. A chart mark is a graphical object (WCAG 1.4.11, 3.0:1 floor); all four clear AA Body besides.
+
+| Pairing | Ratio | AA Body | AA Large |
+|---------|------:|:-------:|:--------:|
+| `terrain-deep` on `paper-true` | 5.43 | ✓ | ✓ |
+| `terrain-deep` on `paper-chart` | 5.34 | ✓ | ✓ |
+| `scope-deep` on `paper-true` | 6.16 | ✓ | ✓ |
+| `scope-deep` on `paper-chart` | 6.06 | ✓ | ✓ |
+| `terrain-light` on `night` | 6.97 | ✓ | ✓ |
+| `terrain-light` on `night-2` | 6.20 | ✓ | ✓ |
+| `scope-light` on `night` | 6.85 | ✓ | ✓ |
+| `scope-light` on `night-2` | 6.09 | ✓ | ✓ |
 
 **Body text rule:** any character glyph used at body size must achieve AA Body (4.5:1) on its actual surface. Labels, eyebrows, and decorative metadata may use AA Large pairings (3.0:1).
 
@@ -484,7 +499,8 @@ To stay disciplined, name what it isn't:
 | 1.3 | 2026.05.17 | First UI-control cohort shipped. Added §4.7 (semantic web-control roles) and §16 (Components). `tokens.json` and `tailwind.config.js` extended to v1.1 with new radii, motion, extended spacing, and web-control type sizes. `colors_and_type.css` and `controls.css` added as new top-level files. Third monogram variant (`monogram-mono.svg`) shipped. §15 UI-extension procedure updated to point at §16. No primitive changes — all additions compose from v1.2 tokens. |
 | 1.4 | 2026.05.17 | Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
 | 1.5 | 2026.05.17 | Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
-| **1.6** | 2026.05.17 | **Current.** Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns": added §10.1 (Chrome regions), a non-prescriptive all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, and gathered the four existing patterns under §10.2 with their header/footer terminology aligned to the §10.1 region names. §17.4 front-matter fields now map to the §10.1 region each feeds (new **Feeds** column). §10 keeps its section number; cross-references intact. Editorial only — no primitive, color, token, component, or CSS changes. |
+| 1.6 | 2026.05.17 | Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns": added §10.1 (Chrome regions), a non-prescriptive all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, and gathered the four existing patterns under §10.2 with their header/footer terminology aligned to the §10.1 region names. §17.4 front-matter fields now map to the §10.1 region each feeds (new **Feeds** column). §10 keeps its section number; cross-references intact. Editorial only — no primitive, color, token, component, or CSS changes. |
+| **1.7** | 2026.05.17 | **Current.** Added §19 (Data Visualization) and `charts.css` — the eleven-type chart layer the system's codename always promised. Four new primitives (`terrain-deep/-light`, `scope-deep/-light`) for the categorical series ramp, sourced through the §15 palette procedure and added to the §4.5 contrast matrix; the sequential ramp introduces no new color. New chart roles `--series-1..6` and `--seq-1..5` in `colors_and_type.css`. `tokens.json` / `tokens.css` step to v1.2. §19.2 grants a scoped single-accent exemption to chart frames, mirroring §17.3. Added `reference/charts-showcase.html`. Promotes candidate #1 of the v1.6 staging note; the record is `proposals/data-visualization.md`. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -506,6 +522,7 @@ jr-design-system/
 ├── colors_and_type.css           CSS semantic layer + @font-face. Imports tokens.css. (v1.1)
 ├── controls.css                  Web-control implementation. Imports colors_and_type.css. (v1.1)
 ├── markdown.css                  Rendered-markdown styling. Imports colors_and_type.css. (v1.4)
+├── charts.css                    Data-visualization layer. Imports colors_and_type.css. (v1.7, see §19)
 ├── tailwind.config.js            Tailwind preset (drop-in).
 ├── prompts/
 │   ├── for-claude.md             Optimized for Claude.
@@ -524,7 +541,8 @@ jr-design-system/
     ├── controls-showcase.html    Interactive controls showcase. (v1.1)
     ├── controls-compare.html     Day-vs-night side-by-side reference. (v1.1)
     ├── controls-preview/         Focused single-control preview cards. (v1.1)
-    └── markdown-showcase.html    Rendered markdown + front-matter previewer. (v1.4)
+    ├── markdown-showcase.html    Rendered markdown + front-matter previewer. (v1.4)
+    └── charts-showcase.html      Every §19 chart type in both modes. (v1.7)
 ```
 
 ---
@@ -742,4 +760,85 @@ The voice is a writer's standard, not a styling layer. It removes the recognizab
 
 ---
 
-*End of SYSTEM.md · v1.6 · 2026.05.17*
+## 19. Data Visualization (v1.7)
+
+The system is named "Charts & Vectors," and §1 promises it reads instrumented for network diagrams and dashboards. This section makes good on the name. It governs how charts are colored, composed, and rendered, so that a chart in an R—Net status document is a faithful instance of the system rather than a surface where every author re-derives the rules.
+
+`charts.css` is the implementation. It imports `colors_and_type.css` like every other stylesheet here and switches on `<html data-mode>` with no per-chart override. There is no charting library and no runtime JavaScript — a chart is rendered HTML or rendered SVG, and stays a static asset.
+
+**See:** `reference/charts-showcase.html` (every chart type in both modes); `proposals/data-visualization.md` (the promotion record and the full sourcing rationale).
+
+### 19.1 The chart palette
+
+A multi-series chart needs several distinguishable colors. The four-layer palette of §4 does not supply them — the brand layer is disciplined to a single accent, and the semantic layer is reserved for literal status. The chart palette is therefore a **fifth color group**, documented here and held deliberately apart from the §4 layers: a series color signals "this series," never "this is the accent."
+
+**Categorical series ramp.** Six mode-aware roles, exposed by `colors_and_type.css` as `--series-1` through `--series-6`. Four are aliases of existing tokens; two required new primitives, added through the §15 palette procedure.
+
+| Role | Day | Night | Source |
+|------|-----|-------|--------|
+| `--series-1` | `sky-deep` | `sky-light` | Existing — attitude-indicator sky |
+| `--series-2` | `ground-deep` | `ground-light` | Existing — sectional terrain, mahogany |
+| `--series-3` | `amber-deep` | `amber-glow` | Existing — NVIS cockpit lighting |
+| `--series-4` | `terrain-deep` | `terrain-light` | **New** — VFR sectional terrain green |
+| `--series-5` | `scope-deep` | `scope-light` | **New** — radar-scope / EFIS phosphor teal |
+| `--series-6` | `panel-deep` | `night-graphite` | Existing — instrument-panel grey, the neutral series |
+
+The two new primitives are sourced the way the rest of the palette is — `terrain` from the green elevation tint of a VFR sectional chart, `scope` from the phosphor green-teal of a radar display. The system has no honest green free for chart use (its only green, `ok-fg`, is semantic) and no fifth distinguishable hue at all, so these are a genuine need, not a convenience. Magenta is not in the ramp; its v0.8 exclusion stands.
+
+| Token | Hex | Role |
+|-------|-----|------|
+| `terrain-deep` | `#5A6B33` | Chart series, light mode (`--series-4`) |
+| `terrain-light` | `#9DAE73` | Chart series, dark mode (`--series-4`) |
+| `scope-deep` | `#2F6562` | Chart series, light mode (`--series-5`) |
+| `scope-light` | `#82AEA9` | Chart series, dark mode (`--series-5`) |
+
+**Sequential ramp.** Heatmaps need a sequential ramp, not a categorical one. Five steps, `--seq-1` through `--seq-5`, and it introduces no new color — every step is an existing token, read as the elevation tint of a sectional chart.
+
+| Step | Day | Night |
+|------|-----|-------|
+| `--seq-1` (low) | `paper-chart` | `night-2` |
+| `--seq-2` | `urban` | `night-4` |
+| `--seq-3` | `ground-light` | `ground-deep` |
+| `--seq-4` | `ground` | `amber-deep` |
+| `--seq-5` (high) | `ground-deep` | `amber-glow` |
+
+### 19.2 The single-accent exemption
+
+§2 and §4.6 hold the system to one brand accent per context; a six-series chart cannot honor that. The resolution is the one §17.3 already used for link-dense documents — a scoped, named exemption, not a hole in the rule.
+
+A chart may use the full `--series-*` ramp **inside the chart's own frame, and only there**. The ramp does not reach page chrome, headings, or prose. A document's accent is still its accent; a chart is a bounded surface speaking a controlled vocabulary, the way a code block or a data table is. A **single-series** chart takes the brand accent and no ramp — the ramp is earned by genuine multi-series need, not reached for by default.
+
+### 19.3 Chart types
+
+`charts.css` covers eleven types in four groups.
+
+| Group | Types | Render |
+|-------|-------|--------|
+| Time-series | Line, area (incl. stacked), sparkline | SVG; sparkline inline SVG |
+| Categorical | Bar / column, stacked & grouped bar | CSS / HTML |
+| Distribution | Scatter / dot plot, histogram | Scatter SVG; histogram CSS / HTML |
+| Matrix & readouts | Heatmap, gauge, meter / progress, big-number stat, network diagram | Heatmap / gauge / meter / stat CSS / HTML; network SVG |
+
+Three types are **declined**, recorded so they are not re-raised: pie and donut charts (a startup-deck reflex out by §12, and a worse encoding than a bar at any size); 3-D charts of every kind; and skeuomorphic bezel-and-needle gauges (§12 forbids simulated instrument bezels — the gauge that ships is a flat arc).
+
+### 19.4 Render model
+
+A chart renders by one of two paths, and the author — person or AI — picks per chart:
+
+- **CSS / HTML** — bars, histograms, heatmaps, meters, gauges, and big-number stats are sized elements on a grid. No SVG.
+- **SVG** — line, area, scatter, and network diagrams need arbitrary points, paths, and edges; `charts.css` paints the SVG elements the author emits.
+
+The test: a set of rectangles or cells aligned to a grid is CSS; anything needing arbitrary geometry is SVG. Both paths read the same roles, so a chart looks identical whichever way it was authored.
+
+### 19.5 Discipline
+
+Charts inherit §12 and §4.6 and add:
+
+- **Series count is a smell.** Past four or five series a chart stops being readable. The ramp stops at six because six is already a warning; a chart that needs a seventh should be split or re-cut, not given a seventh color.
+- **Semantic colors stay semantic.** A red bar means a failing value, not "series three." Charts draw series color from `--series-*`; status *within* a chart draws from the §4.4 layer. The two never trade jobs.
+- **Gridlines recede.** Axes and gridlines read from `--rule`; they are scaffolding, never foreground. No chart junk — no gradient fills, no drop-shadows on bars, no extrusion.
+- **The data is the ink.** Hierarchy comes from the data, not decoration. Negative space carries the chart the way it carries the page.
+
+---
+
+*End of SYSTEM.md · v1.7 · 2026.05.17*
