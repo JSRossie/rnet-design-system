@@ -1,0 +1,30 @@
+# Cloudflare Pages headers — https://developers.cloudflare.com/pages/configuration/headers/
+# cdn.rossie.net serves the JR / R—Net design system under the /charts-and-vectors/
+# namespace; the domain root is reserved for future, unrelated content.
+# Cross-origin loads (style-guide.html, R—Net) REQUIRE CORS.
+
+# Fonts — subset-stable; content never changes under a given filename.
+/charts-and-vectors/fonts/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: font/woff2
+
+# CSS — rolling major channel. Tracks the latest v1.x; updates must propagate,
+# so cache briefly and revalidate in the background.
+/charts-and-vectors/css/v1/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# CSS — pinned release snapshots (v1.N.N). Frozen at release; cache forever.
+/charts-and-vectors/css/v1.*/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# Tokens — same channel / pinned split as the CSS above.
+/charts-and-vectors/tokens/v1/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/charts-and-vectors/tokens/v1.*/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable

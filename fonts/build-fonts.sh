@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Rebuilds the production webfonts in cloudflare-deploy/fonts/.
+# Rebuilds the production webfonts in cdn/charts-and-vectors/fonts/.
 #
 # Outputs:
 #   jetbrains-mono-nerd-{regular,medium}-min.woff2  — subset of the .ttf source
@@ -15,7 +15,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 PY=.venv/bin/pyftsubset
-OUT=cloudflare-deploy/fonts
+OUT=../cdn/charts-and-vectors/fonts
 mkdir -p "$OUT"
 
 # --- JetBrainsMono Nerd Font: subset to the GLYPHS.md catalog ----------------

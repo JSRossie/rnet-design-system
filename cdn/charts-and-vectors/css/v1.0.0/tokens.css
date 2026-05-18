@@ -1,0 +1,126 @@
+/* ============================================================
+   JR / R—Net Design System · Charts & Vectors
+   ============================================================
+   Version:      1.0
+   Last updated: 2026.05.14
+   Source:       SYSTEM.md v1.2
+   Generated:    tokens.json
+   ============================================================
+   
+   Drop-in CSS custom properties. Import this file at the
+   top of any stylesheet:
+   
+     @import "tokens.css";
+   
+   Then reference tokens by their CSS variable name:
+   
+     .stripe { background: var(--sky-deep); height: 4px; }
+     body    { color: var(--ink); background: var(--paper-true); }
+   
+   ============================================================ */
+
+:root {
+  /* ─── Surfaces · Light ─────────────────────────────────── */
+  --paper-true:    #FAF6EC;  /* Ceremonial. Personal letters, formal docs. */
+  --paper-chart:   #FCF4DF;  /* Technical default. R—Net light docs. */
+  --urban:         #F8E4AE;  /* Callout tint ONLY. Never a full-page bg. */
+
+  /* ─── Surfaces · Night ─────────────────────────────────── */
+  --night:         #1C1E1C;  /* Dark mode base. Warm charcoal, not pure black. */
+  --night-2:       #252824;  /* Dark elevated panel. */
+  --night-3:       #2F322D;  /* Dark secondary elevated (note callouts). */
+  --night-4:       #3A3D37;  /* Dark tertiary (inline code, chips). */
+  --cream:         #EDE8D8;  /* Dark mode ink — instrument paint color. */
+
+  /* ─── Structure · Ink & Panel ──────────────────────────── */
+  --ink:           #1F1D18;  /* Primary text on light surfaces. */
+  --ink-2:         #3A3730;  /* Secondary deep ink. */
+  --graphite:      #6B675C;  /* Labels, metadata, secondary text. */
+  --soft:          #989486;  /* Tertiary. Decorative only — fails WCAG body. */
+  --panel-light:   #D4CEBC;  /* Borders, rules, dividers (light). */
+  --panel:         #8E8B80;  /* Strong rules, panel mid-tone. */
+  --panel-deep:    #5A5750;  /* Strong borders, shadows. */
+  --night-rule:    #3D403A;  /* Borders in dark mode. */
+  --night-rule-soft:#2A2D28; /* Soft dividers in dark mode. */
+  --night-graphite:#8A8470;  /* Secondary text in dark mode (AA Large only). */
+  --night-soft:    #5E5B50;  /* Tertiary text in dark mode (decorative only). */
+
+  /* ─── Brand · Cockpit-sourced ──────────────────────────── */
+  --sky:           #6B9BB8;  /* Personal accent. Light-mode highlights. */
+  --sky-deep:      #4A7A96;  /* Eyebrow labels, light-mode accent stripe. */
+  --sky-light:     #A8C5D8;  /* Dark-mode notes, sky borders. */
+  --ground:        #8B5A3C;  /* Secondary warm. Callout borders, monogram J. */
+  --ground-deep:   #6B4226;  /* Borders, classification stripes, anchors. */
+  --ground-light:  #B08362;  /* Dark-mode location tags. */
+  --amber:         #D49826;  /* R—Net accent. DARK MODE ONLY. */
+  --amber-glow:    #F0B84A;  /* Dark-mode glow on amber elements. */
+  --amber-deep:    #8C6018;  /* Light-mode amber (rare; use over --amber). */
+
+  /* ─── Semantic · Universal R/Y/G ───────────────────────── */
+  --ok-fg:         #4A7A3A;  /* Foreground for OK / nominal. */
+  --ok-bg:         #D8E0C8;  /* Background tint for OK panels. */
+  --ok-glow:       #8DB072;  /* Dark-mode glow for OK indicators. */
+  --warn-fg:       #7A5A10;  /* Foreground for warning / caution. */
+  --warn-bg:       #F5E4A8;  /* Background tint for warning panels. */
+  --warn-glow:     #E6B84A;  /* Dark-mode glow for warning indicators. */
+  --alert-fg:      #A8362A;  /* Foreground for alert / critical. */
+  --alert-bg:      #ECC8C0;  /* Background tint for alert panels. */
+  --alert-glow:    #D4604E;  /* Dark-mode glow for alert indicators. */
+
+  /* ─── Type · Families ──────────────────────────────────── */
+  --font-display:  'Outfit', sans-serif;
+  --font-body:     'Urbanist', sans-serif;
+  --font-mono:     'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace;
+
+  /* ─── Type · Weights ───────────────────────────────────── */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+
+  /* ─── Type · Sizes ─────────────────────────────────────── */
+  --size-display:    48px;  /* Range 36–56px */
+  --size-h1:         32px;  /* Range 28–36px */
+  --size-h2:         12px;  /* Range 11–12px, uppercase mono */
+  --size-body:       15px;  /* Range 14–16px */
+  --size-metadata:   10px;  /* Range 9–11px, uppercase mono */
+
+  /* ─── Type · Tracking ──────────────────────────────────── */
+  --tracking-display-tight: -1.5px;
+  --tracking-h1-tight:      -0.5px;
+  --tracking-label-loose:   2.5px;
+  --tracking-meta-loose:    1.5px;
+
+  /* ─── Type · Line Height ───────────────────────────────── */
+  --lh-display: 1.05;
+  --lh-h1:      1.15;
+  --lh-body:    1.7;
+
+  /* ─── Spacing ──────────────────────────────────────────── */
+  --space-page:    48px;
+  --space-section: 72px;
+  --space-element: 20px;
+
+  /* ─── Layout ───────────────────────────────────────────── */
+  --content-max-technical: 1280px;
+  --content-max-prose:     720px;
+
+  /* ─── Borders ──────────────────────────────────────────── */
+  --border-stripe-accent: 4px;
+  --border-rule-hair:     1px;
+}
+
+/* ============================================================
+   Optional dark mode flip via [data-mode="night"]
+   ============================================================ */
+[data-mode="night"] {
+  --surface-default: var(--night);
+  --ink-default:     var(--cream);
+  --accent-primary:  var(--amber);
+}
+
+[data-mode="day"] {
+  --surface-default: var(--paper-true);
+  --ink-default:     var(--ink);
+  --accent-primary:  var(--sky-deep);
+}
