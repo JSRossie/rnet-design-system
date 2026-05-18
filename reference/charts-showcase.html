@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>charts showcase · day vs night · Charts &amp; Vectors</title>
+<link rel="stylesheet" href="../charts.css">
+<style>
+  /* ────────────────────────────────────────────────────────
+     charts-showcase.html — companion to charts.css / §19.
+     Every §19 chart type, day vs night. Page chrome only is
+     styled here; every chart is built from charts.css classes.
+
+     The inline script assembles the example markup — the same
+     static HTML / SVG an author or build step would emit. The
+     charts themselves carry no runtime JS, per §19.
+     ──────────────────────────────────────────────────────── */
+  body {
+    margin: 0;
+    background: #6B675C;
+    color: #FAF6EC;
+    font-family: 'Urbanist', sans-serif;
+  }
+  .chrome {
+    background: #1F1D18; color: #EDE8D8;
+    padding: 18px 28px;
+    border-bottom: 4px solid #4A7A96;
+    display: grid; grid-template-columns: auto 1fr auto;
+    align-items: center; gap: 22px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .chrome__title { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.3px; }
+  .chrome__title .em { color: #D49826; }
+  .chrome__sub {
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #8A8470;
+  }
+  .chrome__legend { display: flex; gap: 14px; font-family: 'JetBrainsMono Nerd Font', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .chrome__legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .chrome__legend .sw { width: 14px; height: 14px; border: 1px solid #3D403A; }
+  .day-sw { background: #FAF6EC; } .night-sw { background: #1C1E1C; }
+
+  .compare {
+    display: grid; grid-template-columns: 230px 1fr 1fr;
+    gap: 1px; background: #5A5750; border-top: 1px solid #5A5750;
+  }
+  .compare__head {
+    background: #2F322D; color: #EDE8D8;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 22px;
+  }
+  .compare__head--day   { background: #4A7A96; color: #FAF6EC; text-align: center; }
+  .compare__head--night { background: #D49826; color: #1C1E1C; text-align: center; }
+
+  .compare__label { padding: 26px 22px; background: #252824; color: #EDE8D8; }
+  .compare__label h3 { margin: 0 0 6px; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 15px; color: #EDE8D8; }
+  .compare__label .grp {
+    font-family: 'JetBrainsMono Nerd Font', monospace; font-size: 9px;
+    letter-spacing: 1.5px; text-transform: uppercase; color: #8A8470;
+    display: block; margin-bottom: 8px;
+  }
+  .compare__label p { margin: 0; font-size: 12px; line-height: 1.6; color: #A8A394; }
+  .compare__label code { font-family: 'JetBrainsMono Nerd Font', monospace; font-size: 11px; color: #B08362; }
+
+  .compare__cell { padding: 32px 28px; display: flex; align-items: center; justify-content: center; }
+  .compare__cell[data-mode="day"]   { background: #FAF6EC; }
+  .compare__cell[data-mode="night"] { background: #1C1E1C; }
+
+  footer {
+    padding: 26px 28px; color: #C9C4B4;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    font-size: 10px; letter-spacing: 1px; border-top: 1px solid #5A5750;
+  }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <div>
+    <div class="chrome__title">Charts &amp; <span class="em">Vectors</span></div>
+    <div class="chrome__sub">charts.css · §19 data visualization</div>
+  </div>
+  <div></div>
+  <div class="chrome__legend">
+    <span><span class="sw day-sw"></span>Day</span>
+    <span><span class="sw night-sw"></span>Night</span>
+  </div>
+</div>
+
+<div class="compare">
+  <div class="compare__head">Type</div>
+  <div class="compare__head compare__head--day">Day · Ceremonial</div>
+  <div class="compare__head compare__head--night">Night · Instrumented</div>
+</div>
+
+<div class="compare" id="grid"></div>
+
+<footer>charts-showcase.html · §19 · charts.css v1.0 · 2026.05.17</footer>
+
+<script>
+/* ──────────────────────────────────────────────────────────
+   Example-markup assembly. Each `charts` entry returns the
+   static HTML/SVG for one chart, built only from charts.css
+   classes. The renderer drops each into a day cell and a
+   night cell so the two modes sit side by side.
+   ────────────────────────────────────────────────────────── */
+const X = [40, 94, 148, 202, 256, 310];
+const xL = ['JAN','FEB','MAR','APR','MAY','JUN'];
+const pts = a => a.map((y,i)=>`${X[i]},${y}`).join(' ');
+const grid = () => '<g class="chart-grid">' +
+  [20,52,84,116,148].map(y=>`<line x1="40" y1="${y}" x2="312" y2="${y}"/>`).join('') + '</g>';
+const axes = () =>
+  '<line class="chart-axis" x1="40" y1="20" x2="40" y2="150"/>' +
+  '<line class="chart-axis" x1="40" y1="150" x2="312" y2="150"/>';
+const xticks = () => X.map((x,i)=>`<text class="chart-tick chart-tick--label" x="${x}" y="166" text-anchor="middle">${xL[i]}</text>`).join('');
+const yticks = () => [['20','100'],['52','75'],['84','50'],['116','25'],['148','0']]
+  .map(([y,v])=>`<text class="chart-tick" x="34" y="${+y+3}" text-anchor="end">${v}</text>`).join('');
+
+const charts = {
+
+  line() {
+    const A=[120,98,106,72,80,46], B=[140,132,122,126,104,96], C=[100,90,104,68,76,52];
+    const ser=(cls,d)=>`<g class="series ${cls}">
+      <polyline class="series-line" points="${pts(d)}"/>
+      ${d.map((y,i)=>`<circle class="series-mark" cx="${X[i]}" cy="${y}" r="2.6"/>`).join('')}</g>`;
+    return `<figure class="chart">
+      <figcaption class="chart__title">Edge latency · ms · 3 nodes</figcaption>
+      <svg class="chart-plot" viewBox="0 0 340 178">
+        ${grid()}${axes()}${xticks()}${yticks()}
+        ${ser('series--1',A)}${ser('series--2',B)}${ser('series--4',C)}
+      </svg>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--s1"></span>edge-dr-01</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--s2"></span>edge-dr-02</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--s4"></span>edge-sf-01</li>
+      </ul></figure>`;
+  },
+
+  area() {
+    const L1=[120,108,116,96,104,88], L2=[88,80,92,64,72,52];
+    const fillLow = `${pts(L1)} ${X[5]},150 ${X[0]},150`;
+    let band = pts(L2);
+    for (let i=L1.length-1;i>=0;i--) band += ` ${X[i]},${L1[i]}`;
+    return `<figure class="chart">
+      <figcaption class="chart__title">Throughput · req/s · stacked</figcaption>
+      <svg class="chart-plot" viewBox="0 0 340 178">
+        ${grid()}${axes()}${xticks()}${yticks()}
+        <g class="series series--1"><polygon class="series-fill" points="${fillLow}"/>
+          <polyline class="series-line" points="${pts(L1)}"/></g>
+        <g class="series series--3"><polygon class="series-fill" points="${band}"/>
+          <polyline class="series-line" points="${pts(L2)}"/></g>
+      </svg>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--s1"></span>cache hit</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--s3"></span>origin</li>
+      </ul></figure>`;
+  },
+
+  spark() {
+    const set=[
+      ['cpu · dr-01','62%','',[24,20,26,16,22,12,18,9,14,7]],
+      ['mem · dr-01','71%','',[18,19,17,20,18,21,19,22,20,23]],
+      ['errors · 24h','warn','sparkline--warn',[8,9,7,10,9,13,11,16,14,19]],
+    ];
+    const draw=(mod,d)=>{
+      const max=Math.max(...d),min=Math.min(...d);
+      const sx=i=>4+i*(100/(d.length-1)), sy=v=>3+(1-(v-min)/(max-min||1))*22;
+      const pl=d.map((v,i)=>`${sx(i)},${sy(v)}`).join(' ');
+      return `<svg class="sparkline ${mod}" viewBox="0 0 108 28" preserveAspectRatio="none">
+        <polyline points="${pl}"/>
+        <circle class="sparkline__cap" cx="${sx(d.length-1)}" cy="${sy(d[d.length-1])}" r="2.8"/></svg>`;
+    };
+    let rows = set.map(([lab,val,mod,d])=>`
+      <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;">
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--fg-3);">${lab}</span>
+        ${draw(mod,d)}
+        <span style="font-family:var(--font-mono);font-size:13px;color:var(--fg-1);">${val}</span>
+      </div>`).join('');
+    return `<figure class="chart" style="max-inline-size:360px;">
+      <figcaption class="chart__title">Node vitals · sparklines</figcaption>
+      <div style="display:flex;flex-direction:column;gap:16px;">${rows}</div></figure>`;
+  },
+
+  bar() {
+    const V=[57,76,43,83,64,70], cats=['DR-01','DR-02','SF-01','SF-02','LA-01','LA-02'];
+    return `<figure class="chart">
+      <figcaption class="chart__title">Sessions · per node</figcaption>
+      <div class="bar-chart">
+        <div class="bar-chart__plot">
+          ${V.map(v=>`<div class="bar" style="--v:${v}"></div>`).join('')}
+        </div>
+        <div class="bar-chart__axis">${cats.map(c=>`<span>${c}</span>`).join('')}</div>
+      </div></figure>`;
+  },
+
+  stack() {
+    const cats=['Q1','Q2','Q3','Q4','Q5'];
+    const data=[[22,15,12],[19,20,13],[27,12,17],[16,23,20],[24,17,15]];
+    const cols=data.map((seg,i)=>`
+      <div class="bar bar--stacked" style="--v:100">
+        <span class="bar__seg series--1" style="--v:${seg[0]}"></span>
+        <span class="bar__seg series--2" style="--v:${seg[1]}"></span>
+        <span class="bar__seg series--3" style="--v:${seg[2]}"></span>
+      </div>`).join('');
+    return `<figure class="chart">
+      <figcaption class="chart__title">Capacity · TB · by tier</figcaption>
+      <div class="bar-chart">
+        <div class="bar-chart__plot">${cols}</div>
+        <div class="bar-chart__axis">${cats.map(c=>`<span>${c}</span>`).join('')}</div>
+      </div>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s1"></span>hot</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s2"></span>warm</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s3"></span>cold</li>
+      </ul></figure>`;
+  },
+
+  grouped() {
+    const cats=['DR','SF','LA'];
+    const data=[[60,44],[78,52],[40,66]];
+    const cols=data.map(g=>`
+      <div class="bar-group">
+        <div class="bar" style="--v:${g[0]};background:var(--series-1)"></div>
+        <div class="bar" style="--v:${g[1]};background:var(--series-5)"></div>
+      </div>`).join('');
+    return `<figure class="chart" style="max-inline-size:300px;">
+      <figcaption class="chart__title">Read vs. write · k ops</figcaption>
+      <div class="bar-chart">
+        <div class="bar-chart__plot">${cols}</div>
+        <div class="bar-chart__axis">${cats.map(c=>`<span>${c}</span>`).join('')}</div>
+      </div>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s1"></span>read</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s5"></span>write</li>
+      </ul></figure>`;
+  },
+
+  scatter() {
+    const A=[[60,120],[88,104],[110,128],[132,96],[156,108],[180,84],[208,92],[236,72]];
+    const B=[[72,142],[100,132],[124,146],[150,128],[176,134],[204,118],[230,124],[262,110]];
+    return `<figure class="chart">
+      <figcaption class="chart__title">Latency vs. load</figcaption>
+      <svg class="chart-plot" viewBox="0 0 340 178">
+        ${grid()}${axes()}${yticks()}
+        <g class="series series--1">${A.map(p=>`<circle class="series-mark" cx="${p[0]}" cy="${p[1]}" r="3.4"/>`).join('')}</g>
+        <g class="series series--5">${B.map(p=>`<rect class="series-mark" x="${p[0]-3}" y="${p[1]-3}" width="6" height="6"/>`).join('')}</g>
+      </svg>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--dot chart__key--s1"></span>region A</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--square chart__key--s5"></span>region B</li>
+      </ul></figure>`;
+  },
+
+  histogram() {
+    const V=[28,46,68,90,100,78,52,30], lo=[0,25,50,75,100,125,150,175];
+    return `<figure class="chart">
+      <figcaption class="chart__title">Response time · distribution · ms</figcaption>
+      <div class="bar-chart bar-chart--histogram">
+        <div class="bar-chart__plot">${V.map(v=>`<div class="bar" style="--v:${v}"></div>`).join('')}</div>
+        <div class="bar-chart__axis">${lo.map(v=>`<span>${v}</span>`).join('')}</div>
+      </div></figure>`;
+  },
+
+  heatmap() {
+    const lv=[
+      [1,1,2,2,3,1,1],[1,2,3,3,4,2,1],[2,3,4,5,4,2,1],
+      [2,3,5,5,5,3,2],[1,2,3,4,3,2,1],[1,1,2,2,2,1,1],
+    ];
+    const cells=lv.flat().map(v=>`<div class="heatmap__cell" data-level="${v}"></div>`).join('');
+    return `<figure class="chart" style="max-inline-size:340px;">
+      <figcaption class="chart__title">Deploy activity · 6 weeks</figcaption>
+      <div class="heatmap" style="--cols:7;">${cells}</div>
+      <div class="ramp-scale">Quiet
+        <span class="ramp-scale__bar"><i></i><i></i><i></i><i></i><i></i></span>
+        Peak</div></figure>`;
+  },
+
+  gauge() {
+    return `<figure class="chart" style="max-inline-size:420px;">
+      <figcaption class="chart__title">Node dr-01 · utilization</figcaption>
+      <div style="display:flex;gap:30px;align-items:center;flex-wrap:wrap;">
+        <div class="gauge gauge--warn" style="--value:68" role="img" aria-label="Disk 68 percent">
+          <span class="gauge__value">68<span class="gauge__unit">%</span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px;flex:1;min-inline-size:170px;">
+          <div class="meter">
+            <div class="meter__head"><span>Backup</span><span>100%</span></div>
+            <div class="meter__track"><div class="meter__fill meter__fill--ok" style="--v:100"></div></div>
+          </div>
+          <div class="meter">
+            <div class="meter__head"><span>Index rebuild</span><span>54%</span></div>
+            <div class="meter__track"><div class="meter__fill" style="--v:54"></div></div>
+          </div>
+          <div class="meter">
+            <div class="meter__head"><span>Cert window</span><span>11d</span></div>
+            <div class="meter__track"><div class="meter__fill meter__fill--warn" style="--v:18"></div></div>
+          </div>
+        </div>
+      </div></figure>`;
+  },
+
+  stat() {
+    return `<figure class="chart" style="max-inline-size:460px;">
+      <figcaption class="chart__title">R—Net · 30-day readout</figcaption>
+      <div class="stat-row">
+        <div class="stat stat--ok">
+          <div class="stat__label">Uptime · 30d</div>
+          <div class="stat__value">99.94<span class="stat__unit">%</span></div>
+          <div class="stat__delta stat__delta--up">▲ 0.06 vs. prior</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">P95 latency</div>
+          <div class="stat__value">82<span class="stat__unit">ms</span></div>
+          <div class="stat__delta stat__delta--down">▼ 14 vs. prior</div>
+        </div>
+        <div class="stat stat--warm">
+          <div class="stat__label">Active nodes</div>
+          <div class="stat__value">6<span class="stat__unit">/6</span></div>
+          <div class="stat__delta">all nominal</div>
+        </div>
+      </div></figure>`;
+  },
+
+  network() {
+    const nodes=[
+      {x:60,y:46,t:'core',s:'series--1'},
+      {x:180,y:30,t:'dr-01',s:'series--1'},
+      {x:300,y:50,t:'dr-02',s:'series--1'},
+      {x:120,y:130,t:'sf-01',s:'series--4'},
+      {x:250,y:140,t:'sf-02',s:'series--warn'},
+      {x:340,y:118,t:'la-01',s:'series--1'},
+    ];
+    const edges=[[0,1],[0,3],[1,2],[1,4],[2,5],[3,4],[4,5]];
+    const e=edges.map(([a,b])=>{
+      const n1=nodes[a],n2=nodes[b];
+      return `<line class="network__edge" x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}"/>`;
+    }).join('');
+    const nm=nodes.map(n=>`<g class="${n.s}">
+      <circle class="network__node" cx="${n.x}" cy="${n.y}" r="13"/>
+      <circle class="network__node-core" cx="${n.x}" cy="${n.y}" r="4.5"/>
+      <text class="network__label" x="${n.x}" y="${n.y+27}" text-anchor="middle">${n.t}</text></g>`).join('');
+    return `<figure class="chart">
+      <figcaption class="chart__title">R—Net topology · 6 nodes</figcaption>
+      <svg class="network" viewBox="0 0 380 172">${e}${nm}</svg>
+      <ul class="chart__legend">
+        <li class="chart__legend-item"><span class="chart__key chart__key--dot chart__key--s1"></span>nominal</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--dot chart__key--s4"></span>degraded link</li>
+        <li class="chart__legend-item"><span class="chart__key chart__key--dot chart__key--warn"></span>caution</li>
+      </ul></figure>`;
+  },
+};
+
+const rows = [
+  ['Time-series','Line chart','One or more series over time. Gridlines from <code>--rule</code>; multi-series uses the ramp.','line'],
+  ['Time-series','Area chart · stacked','Filled bands at fixed <code>series-fill</code> opacity so stacks stay legible.','area'],
+  ['Time-series','Sparkline','Axis-less inline trend for status docs and table cells.','spark'],
+  ['Categorical','Bar / column','Single series, single accent — no per-bar color.','bar'],
+  ['Categorical','Stacked bar','Composition within a category. The ramp earns its place here.','stack'],
+  ['Categorical','Grouped bar','A thin-bar cluster per category for side-by-side compare.','grouped'],
+  ['Distribution','Scatter / dot plot','Two-variable relationship; series by ramp + mark shape.','scatter'],
+  ['Distribution','Histogram','Single-variable distribution; adjacent bins, single accent.','histogram'],
+  ['Matrix & readouts','Heatmap','Sequential-ramp cells via <code>data-level</code>. Terrain-tint sourcing.','heatmap'],
+  ['Matrix & readouts','Gauge · meter','Conic gauge (hard-stop, not a §12 gradient) and linear meters.','gauge'],
+  ['Matrix & readouts','Big-number stat','The dashboard readout — figure, label, signed delta.','stat'],
+  ['Matrix & readouts · the "Vectors"','Network diagram','The §1 network-diagram promise made literal.','network'],
+];
+
+const g = document.getElementById('grid');
+for (const [grp,name,desc,key] of rows) {
+  const markup = charts[key]();
+  g.insertAdjacentHTML('beforeend', `
+    <div class="compare__label">
+      <span class="grp">${grp}</span>
+      <h3>${name}</h3>
+      <p>${desc}</p>
+    </div>
+    <div class="compare__cell" data-mode="day">${markup}</div>
+    <div class="compare__cell" data-mode="night">${markup}</div>`);
+}
+</script>
+
+</body>
+</html>

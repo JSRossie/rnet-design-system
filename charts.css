@@ -1,0 +1,472 @@
+/* ============================================================
+   charts.css
+   ============================================================
+   JR / R—Net Design System · Charts & Vectors
+   Version:      1.0   (SYSTEM.md §19, spec v1.7)
+   Imports:      colors_and_type.css  →  tokens.css
+
+   Data-visualization layer. Styles the eleven §19 chart types
+   across two render paths:
+
+     · CSS / HTML  — bars, histograms, heatmaps, meters,
+                     big-number stats. Sized elements on a grid.
+     · SVG         — line, area, scatter, network diagrams.
+                     The author emits geometry; this file paints
+                     stroke, fill, and type.
+
+   Both paths read the §4.7 semantic roles and the §19.1 chart
+   roles (--series-1..6, --seq-1..5). There is no runtime JS and
+   no charting library. `data-mode` does the entire day/night
+   job, with no per-chart override.
+
+   This file MUST NOT redefine a primitive or a role. The chart
+   roles live in `colors_and_type.css`; everything here composes
+   from them.
+   ============================================================ */
+
+@import "colors_and_type.css";
+
+/* ============================================================
+   1. Figure — the chart frame
+   ------------------------------------------------------------
+   Every chart is wrapped in `.chart`. The frame is the §19.2
+   boundary: the --series-* ramp is legible inside it and
+   nowhere else.
+   ============================================================ */
+.chart {
+  display: block;
+  margin: 0;
+  max-inline-size: 520px;
+  color: var(--fg-1);
+  font-family: var(--font-body);
+}
+.chart--wide { max-inline-size: var(--content-max-technical); }
+
+.chart__title {
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-block-end: var(--space-3);
+}
+
+.chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.chart__legend-item { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+/* legend key — a line swatch by default, a dot or square via modifier */
+.chart__key { inline-size: 16px; block-size: 3px; background: var(--accent); }
+.chart__key--dot    { inline-size: 9px; block-size: 9px; border-radius: 50%; }
+.chart__key--square { inline-size: 9px; block-size: 9px; }
+.chart__key--s1 { background: var(--series-1); }
+.chart__key--s2 { background: var(--series-2); }
+.chart__key--s3 { background: var(--series-3); }
+.chart__key--s4 { background: var(--series-4); }
+.chart__key--s5 { background: var(--series-5); }
+.chart__key--s6 { background: var(--series-6); }
+.chart__key--ok    { background: var(--ok); }
+.chart__key--warn  { background: var(--warn); }
+.chart__key--alert { background: var(--alert); }
+
+/* ============================================================
+   2. SVG render path
+   ------------------------------------------------------------
+   For line, area, scatter, and network charts. The author
+   supplies the <svg viewBox> and the geometry; the classes
+   below paint it.
+
+   A series carries its color on `color`; geometry paints with
+   `currentColor` (the one SVG presentation value that resolves
+   a CSS custom property reliably as an attribute).
+
+     <g class="series series--2">
+       <polyline fill="none" stroke="currentColor" .../>
+     </g>
+   ============================================================ */
+.chart-plot { display: block; inline-size: 100%; block-size: auto; overflow: visible; }
+
+.chart-grid line,
+.chart-grid path { stroke: var(--rule); stroke-width: 1; fill: none; }
+
+.chart-axis { stroke: var(--rule-strong); stroke-width: 1.25; fill: none; }
+
+.chart-tick,
+text.chart-tick {
+  fill: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.5px;
+}
+.chart-tick--label { text-transform: uppercase; }
+
+/* Single-series charts take the brand accent — no ramp (§19.2). */
+.series        { color: var(--accent); }
+.series--1     { color: var(--series-1); }
+.series--2     { color: var(--series-2); }
+.series--3     { color: var(--series-3); }
+.series--4     { color: var(--series-4); }
+.series--5     { color: var(--series-5); }
+.series--6     { color: var(--series-6); }
+/* Status within a chart draws from §4.4 — never from the ramp. */
+.series--ok    { color: var(--ok); }
+.series--warn  { color: var(--warn); }
+.series--alert { color: var(--alert); }
+
+/* Area fills sit under their stroke at a low, fixed opacity so
+   stacked bands stay legible. Apply to the <polygon>/<path>. */
+.series-fill { fill: currentColor; fill-opacity: 0.22; stroke: none; }
+.series-line { fill: none; stroke: currentColor; stroke-width: 2;
+               stroke-linejoin: round; stroke-linecap: round; }
+.series-mark { fill: currentColor; stroke: none; }
+
+/* ============================================================
+   3. Network / node-link diagram  (SVG)
+   ------------------------------------------------------------
+   The "Vectors" half of the codename. Edges recede to a rule
+   weight; nodes are open rings so the surface reads through.
+   ============================================================ */
+.network {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  color: var(--accent);          /* default node color; a .series-* on a
+                                    node group overrides it by inheritance */
+}
+.network__edge {
+  stroke: var(--rule-strong);
+  stroke-width: 1.5;
+}
+.network__edge--accent { stroke: var(--accent); }
+.network__node {
+  fill: var(--bg);
+  stroke: currentColor;          /* set by a .series-* class on the node */
+  stroke-width: 2.5;
+}
+.network__node-core { fill: currentColor; stroke: none; }
+.network__label {
+  fill: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   4. Sparkline  (inline SVG)
+   ------------------------------------------------------------
+   Axis-less micro-trend for status documents and table cells.
+   Class goes on the <svg>; size it with the type around it.
+   ============================================================ */
+.sparkline {
+  display: inline-block;
+  inline-size: 7.5em;
+  block-size: 1.7em;
+  vertical-align: -0.35em;
+  color: var(--accent);
+}
+.sparkline polyline,
+.sparkline path { fill: none; stroke: currentColor; stroke-width: 2;
+                  stroke-linejoin: round; stroke-linecap: round; }
+.sparkline .sparkline__cap { fill: currentColor; stroke: none; }
+.sparkline--ok    { color: var(--ok); }
+.sparkline--warn  { color: var(--warn); }
+.sparkline--alert { color: var(--alert); }
+
+/* ============================================================
+   5. Bar / column chart  (CSS / HTML)
+   ------------------------------------------------------------
+     <div class="bar-chart">
+       <div class="bar-chart__plot">
+         <div class="bar" style="--v:62"></div>    <!-- --v is 0..100 -->
+         ...
+       </div>
+       <div class="bar-chart__axis"><span>DR-01</span> ...</div>
+     </div>
+
+   Histograms use the same markup with `.bar-chart--histogram`
+   (zero gap — bins are adjacent).
+   ============================================================ */
+.bar-chart { display: block; }
+
+.bar-chart__plot {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  block-size: 168px;
+  padding-block-start: var(--space-2);
+  border-block-end: 1.25px solid var(--rule-strong);
+  /* Horizontal gridlines: hard-stop repeating lines, not a fill. */
+  background-image: repeating-linear-gradient(
+    to top, transparent 0, transparent calc(25% - 1px),
+    var(--rule) calc(25% - 1px), var(--rule) 25%);
+}
+.bar-chart--histogram .bar-chart__plot { gap: 1px; }
+
+.bar {
+  flex: 1;
+  min-inline-size: 4px;
+  block-size: calc(var(--v, 0) * 1%);
+  min-block-size: 2px;
+  background: var(--accent);
+}
+.bar--muted { background: var(--rule-strong); }
+.bar--ok    { background: var(--ok); }
+.bar--warn  { background: var(--warn); }
+.bar--alert { background: var(--alert); }
+
+/* Stacked column — segments stack from the baseline up.
+   Each segment's --v is its share of plot height (0..100). */
+.bar--stacked {
+  display: flex;
+  flex-direction: column-reverse;
+  background: none;
+}
+.bar__seg {
+  display: block;
+  inline-size: 100%;
+  block-size: calc(var(--v, 0) * 1%);
+  background: currentColor;          /* set by a .series-* class */
+  color: var(--accent);
+}
+.bar__seg.series--1 { color: var(--series-1); }
+.bar__seg.series--2 { color: var(--series-2); }
+.bar__seg.series--3 { color: var(--series-3); }
+.bar__seg.series--4 { color: var(--series-4); }
+.bar__seg.series--5 { color: var(--series-5); }
+.bar__seg.series--6 { color: var(--series-6); }
+
+/* Grouped columns — a cluster of thin bars per category.
+   `align-self: stretch` gives the group the plot's full height so
+   its child bars' percentage heights have a definite box to resolve
+   against (the plot sets `align-items: flex-end`, which would
+   otherwise leave the group at content height). */
+.bar-group {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+  align-items: flex-end;
+  align-self: stretch;
+}
+.bar-group .bar { min-inline-size: 3px; }
+
+.bar-chart__axis {
+  display: flex;
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.bar-chart--histogram .bar-chart__axis { gap: 1px; }
+.bar-chart__axis > * { flex: 1; text-align: center; }
+
+/* ============================================================
+   6. Heatmap / matrix  (CSS grid)
+   ------------------------------------------------------------
+     <div class="heatmap" style="--cols:7">
+       <div class="heatmap__cell" data-level="3"></div>
+       ...
+     </div>
+
+   `data-level` 1..5 maps onto the sequential ramp. Level 0
+   (or no attribute) is an empty cell on the chart elevation.
+   ============================================================ */
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 7), 1fr);
+  gap: 3px;
+  max-inline-size: 420px;
+}
+.heatmap__cell {
+  aspect-ratio: 1;
+  background: var(--bg-chart);
+  outline: 1px solid var(--bg);          /* hairline seam, mode-aware */
+  outline-offset: -1px;
+}
+.heatmap__cell[data-level="1"] { background: var(--seq-1); }
+.heatmap__cell[data-level="2"] { background: var(--seq-2); }
+.heatmap__cell[data-level="3"] { background: var(--seq-3); }
+.heatmap__cell[data-level="4"] { background: var(--seq-4); }
+.heatmap__cell[data-level="5"] { background: var(--seq-5); }
+
+/* Row / column labels, when the heatmap is wrapped in a grid
+   with a label track. */
+.heatmap__label {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* Sequential scale legend — five hard-stop swatches. */
+.ramp-scale {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.ramp-scale__bar { display: flex; flex: 1; block-size: 8px; max-inline-size: 160px; }
+.ramp-scale__bar > i { flex: 1; }
+.ramp-scale__bar > i:nth-child(1) { background: var(--seq-1); }
+.ramp-scale__bar > i:nth-child(2) { background: var(--seq-2); }
+.ramp-scale__bar > i:nth-child(3) { background: var(--seq-3); }
+.ramp-scale__bar > i:nth-child(4) { background: var(--seq-4); }
+.ramp-scale__bar > i:nth-child(5) { background: var(--seq-5); }
+
+/* ============================================================
+   7. Gauge  (CSS conic)
+   ------------------------------------------------------------
+     <div class="gauge" style="--value:68" role="img"
+          aria-label="Disk · 68%">
+       <span class="gauge__value">68<span class="gauge__unit">%</span></span>
+     </div>
+
+   The conic-gradient carries TWO hard stops — a filled sector
+   and a track sector, both solid. This is a value encoding, not
+   a §12 decorative gradient; there is no blend.
+   ============================================================ */
+.gauge {
+  --value: 0;
+  --gauge-fill: var(--accent);
+  --gauge-track: var(--bg-elev-2);
+  inline-size: 124px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(
+    var(--gauge-fill) calc(var(--value) * 1%),
+    var(--gauge-track) 0);
+}
+.gauge::before {
+  content: "";
+  grid-area: 1 / 1;
+  inline-size: 68%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+}
+.gauge__value {
+  grid-area: 1 / 1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -1px;
+  color: var(--fg-1);
+}
+.gauge__unit { font-size: 13px; color: var(--fg-3); font-weight: 500; }
+.gauge--ok    { --gauge-fill: var(--ok); }
+.gauge--warn  { --gauge-fill: var(--warn); }
+.gauge--alert { --gauge-fill: var(--alert); }
+
+/* ============================================================
+   8. Meter / progress  (CSS / HTML)
+   ------------------------------------------------------------
+     <div class="meter">
+       <div class="meter__head"><span>Index rebuild</span><span>54%</span></div>
+       <div class="meter__track">
+         <div class="meter__fill" style="--v:54"></div>
+       </div>
+     </div>
+   ============================================================ */
+.meter { display: block; }
+.meter__head {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-block-end: var(--space-2);
+}
+.meter__track {
+  block-size: 8px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--rule);
+}
+.meter__fill {
+  block-size: 100%;
+  inline-size: calc(var(--v, 0) * 1%);
+  background: var(--accent);
+  transition: inline-size var(--dur-slow) var(--ease-instrument);
+}
+.meter__fill--ok    { background: var(--ok); }
+.meter__fill--warn  { background: var(--warn); }
+.meter__fill--alert { background: var(--alert); }
+
+/* ============================================================
+   9. Big-number stat  (CSS / HTML)
+   ------------------------------------------------------------
+   The dashboard readout — one instrumented figure, a label,
+   and a signed delta.
+   ============================================================ */
+.stat-row { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+
+.stat {
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--accent);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4);
+  min-inline-size: 132px;
+}
+.stat--warm  { border-inline-start-color: var(--accent-warm); }
+.stat--ok    { border-inline-start-color: var(--ok); }
+.stat--warn  { border-inline-start-color: var(--warn); }
+.stat--alert { border-inline-start-color: var(--alert); }
+
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-block-end: var(--space-3);
+}
+.stat__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--fg-1);
+}
+.stat__unit { font-size: 14px; font-weight: 500; color: var(--fg-3); }
+.stat__delta {
+  margin-block-start: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--fg-3);
+}
+.stat__delta--up   { color: var(--ok); }
+.stat__delta--down { color: var(--alert); }
+
+/* ============================================================
+   10. Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .meter__fill { transition: none; }
+}

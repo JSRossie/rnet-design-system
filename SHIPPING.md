@@ -7,6 +7,35 @@ This is the running shipping log. Each entry below is a numbered release on the 
 
 ---
 
+## v1.5 — 2026.05.17 · Data visualization
+
+The chart layer the codename always promised. Promotes candidate #1 of the v1.6 staging note: a data-visualization standard covering eleven chart types, with the discipline question — how a multi-series chart escapes the single-accent rule — answered in the spec rather than at the call site.
+
+### Added
+
+- **`charts.css`** — the data-visualization layer, a new top-level file parallel to `controls.css` and `markdown.css`. Imports `colors_and_type.css`. Styles eleven chart types (line, area, sparkline, bar / column, stacked & grouped bar, scatter, histogram, heatmap, gauge, meter, big-number stat, network diagram) across two render paths — CSS / HTML for grid-aligned charts, SVG for charts needing arbitrary geometry. No charting library, no runtime JS. Documented as `SYSTEM.md §19`.
+- **`reference/charts-showcase.html`** — every §19 chart type in both modes, the day-vs-night compare reference.
+- **`proposals/data-visualization.md`** — the promotion record: the gap, the catalog, the palette sourcing, and the open questions.
+
+### Changed
+
+- **`tokens.css` / `tokens.json`** → v1.2. Four new primitives — `terrain-deep` (`#5A6B33`), `terrain-light` (`#9DAE73`), `scope-deep` (`#2F6562`), `scope-light` (`#82AEA9`) — for the two categorical series hues the existing palette could not honestly supply. Added through the §15 palette procedure: honest source (VFR sectional terrain green; radar-scope / EFIS phosphor teal), contrast-verified, named to the `category-modifier` scheme.
+- **`colors_and_type.css`** — added the chart roles `--series-1..6` and `--seq-1..5` to both `[data-mode]` blocks. The series ramp aliases four existing tokens and the two new primitives; the sequential ramp aliases existing tokens only — it introduces no new color.
+- **`SYSTEM.md`** → v1.7. Added `§19 Data Visualization` (chart palette, the §19.2 single-accent exemption, the eleven-type inventory, render model, discipline). Added a "Chart data" block to the §4.5 contrast matrix, a §19.1 pointer to the §4 layer intro, the v1.7 row to §13, and `charts.css` / `charts-showcase.html` to the §14 file tree.
+- **`README.md`** — added bullets for `charts.css` and the charts showcase under "What's in this repository."
+- **`reference/README.md`** — added a "Charts reference" section for `charts-showcase.html`.
+
+### Discipline check
+
+- ✓ Four new primitives, no more. The categorical ramp needed two new hues — the system has no honest non-semantic green and no fifth distinguishable hue — and each was sourced the way §2 requires, not reached for off a generic chart palette. The sequential ramp added nothing.
+- ✓ Magenta stayed excluded. Its v0.8 exclusion held even under the pressure of a six-color ramp.
+- ✓ The single-accent rule was not weakened. §19.2 grants a *scoped* exemption — the ramp is legible inside a chart frame and nowhere else — mirroring how §17.3 exempts link-dense documents.
+- ✓ Semantic colors stay semantic. §19.5 forbids using `--series-*` for status or §4.4 colors for series identity.
+- ✓ No new motion, radius, or type primitives. `charts.css` reads only `--*` roles.
+- ✓ Pie, donut, 3-D, and skeuomorphic-bezel gauges are named and declined in §19.3, so they are not re-raised.
+
+---
+
 ## v1.4 — 2026.05.17 · Page chrome guidance
 
 A general account of the chrome regions every template shares — the frame the §10 content patterns were already filling without a documented vocabulary for it. No new file: the work is a restructure of two existing SYSTEM.md sections.
