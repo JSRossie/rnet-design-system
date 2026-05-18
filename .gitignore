@@ -14,3 +14,8 @@ fonts/.venv/
 
 # Staging area for incoming files before integration
 .staging/
+
+# CDN: the v1 channel CSS/tokens are generated at deploy by cdn/build.sh from
+# the canonical root files. Pinned snapshots (css/v1.N.N/) stay committed.
+cdn/charts-and-vectors/css/v1/
+cdn/charts-and-vectors/tokens/v1/
