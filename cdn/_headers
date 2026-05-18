@@ -9,22 +9,26 @@
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: font/woff2
 
-# CSS — rolling major channel. Tracks the latest v1.x; updates must propagate,
-# so cache briefly and revalidate in the background.
+# CSS — default for everything under css/: the pinned release snapshots
+# (css/v1.N.N/) are frozen at release, so cache them forever. A mid-segment
+# wildcard (css/v1.*/) is not reliably honored, so this is a plain trailing
+# splat and the rolling channel overrides it below.
+/charts-and-vectors/css/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# CSS — the rolling v1 channel. Tracks the latest v1.x in place, so updates
+# must propagate: revalidate instead of caching immutably. Listed after the
+# broad rule above, so for css/v1/ this one wins.
 /charts-and-vectors/css/v1/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
-# CSS — pinned release snapshots (v1.N.N). Frozen at release; cache forever.
-/charts-and-vectors/css/v1.*/*
+# Tokens — same default / channel split as the CSS above.
+/charts-and-vectors/tokens/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=31536000, immutable
 
-# Tokens — same channel / pinned split as the CSS above.
 /charts-and-vectors/tokens/v1/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-
-/charts-and-vectors/tokens/v1.*/*
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=31536000, immutable
