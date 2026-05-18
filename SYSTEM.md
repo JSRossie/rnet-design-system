@@ -500,7 +500,8 @@ To stay disciplined, name what it isn't:
 | 1.4 | 2026.05.17 | Added §17 (Rendered Markdown) and `markdown.css`. New prose-scoped heading-ramp tokens `--type-md-h1/h2/h3` in `colors_and_type.css` (§15 type extension, distinct from the §16 UI ramp). Added `reference/markdown-showcase.html` with a live front-matter previewer. No primitive changes. |
 | 1.5 | 2026.05.17 | Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
 | 1.6 | 2026.05.17 | Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns": added §10.1 (Chrome regions), a non-prescriptive all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, and gathered the four existing patterns under §10.2 with their header/footer terminology aligned to the §10.1 region names. §17.4 front-matter fields now map to the §10.1 region each feeds (new **Feeds** column). §10 keeps its section number; cross-references intact. Editorial only — no primitive, color, token, component, or CSS changes. |
-| **1.7** | 2026.05.17 | **Current.** Added §19 (Data Visualization) and `charts.css` — the eleven-type chart layer the system's codename always promised. Four new primitives (`terrain-deep/-light`, `scope-deep/-light`) for the categorical series ramp, sourced through the §15 palette procedure and added to the §4.5 contrast matrix; the sequential ramp introduces no new color. New chart roles `--series-1..6` and `--seq-1..5` in `colors_and_type.css`. `tokens.json` / `tokens.css` step to v1.2. §19.2 grants a scoped single-accent exemption to chart frames, mirroring §17.3. Added `reference/charts-showcase.html`. Promotes candidate #1 of the v1.6 staging note; the record is `proposals/data-visualization.md`. |
+| 1.7 | 2026.05.17 | Added §19 (Data Visualization) and `charts.css` — the eleven-type chart layer the system's codename always promised. Four new primitives (`terrain-deep/-light`, `scope-deep/-light`) for the categorical series ramp, sourced through the §15 palette procedure and added to the §4.5 contrast matrix; the sequential ramp introduces no new color. New chart roles `--series-1..6` and `--seq-1..5` in `colors_and_type.css`. `tokens.json` / `tokens.css` step to v1.2. §19.2 grants a scoped single-accent exemption to chart frames, mirroring §17.3. Added `reference/charts-showcase.html`. Promotes candidate #1 of the v1.6 staging note; the record is `proposals/data-visualization.md`. |
+| **1.8** | 2026.05.18 | **Current.** Added §17.5 (VS Code preview target). `colors_and_type.css` mode selectors now recognize VS Code's `vscode-light` / `vscode-dark` / high-contrast body classes alongside `[data-mode]`; `markdown.css` body rules widen to `:is(.md, body.vscode-body)` and gain a VS Code preview chrome section. Adds the `bierner.markdown-yaml-preamble` extension as the target's one external dependency, and a committed `.vscode/settings.json`. No primitive, token, or component changes — all additions compose from v1.2 tokens. The record is `proposals/markdown-preview-vscode-plan.md`. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -743,6 +744,28 @@ Front matter is markdown's mechanism for feeding the §10.1 chrome regions — t
 | `recipient`, contact-block fields | Footer | Ceremonial documents. |
 
 `doc-id` uses `CONTEXT` (`RNET` or `JR`), a two-letter `TYPE` (`RB` runbook, `SD` status doc, `FN` field note, `CV` cover, `LT` letter, `MD` memo), and a four-digit `SEQ`. Allocation is manual; a registry can follow without changing the format.
+
+### 17.5 VS Code preview target (v1.8)
+
+A markdown document is most often read in the editor, so the VS Code built-in markdown preview is a named rendering target, not an unsupported surface. The system reaches three targets:
+
+| Target | Mechanism | Mode trigger | Chrome |
+|--------|-----------|--------------|--------|
+| Standalone HTML | `rnet.css`; author supplies `.md` + `.doc` markup | `<html data-mode>` | Full (`.doc`) |
+| VS Code preview | `markdown.styles` points at the system CSS | Editor theme | Stripe, metadata strip, classification stripe, wordmark footer |
+
+The preview renders into `body.vscode-body` and carries its theme as a body class, never as `data-mode`. Two things make the system reach it, both already shipped and both composing from existing tokens — no primitive, token, or fork added:
+
+- `colors_and_type.css` recognizes `body.vscode-light` / `body.vscode-dark` / the high-contrast classes alongside `[data-mode]`, so the same token set activates on the editor theme.
+- `markdown.css` carries its body element rules under `:is(.md, body.vscode-body)` — one source, both scopes — and a dedicated section draws the preview chrome from the body box.
+
+The preview chrome needs per-document content in the DOM, which `markdown.styles` alone cannot inject. The free, Microsoft-authored extension `bierner.markdown-yaml-preamble` supplies it: it renders YAML front matter (§17.4) as the body's first table, which `markdown.css` restyles into the §10.1 metadata strip. The extension is the one external dependency of this target; the system itself ships only CSS.
+
+**Scope boundary — standing rule.** The CSS that renders this target carries knowledge of the design system only — type, color, the two modes, the §6 grammar, callouts. It carries no knowledge of any project that consumes the system. A consumer project's preview tooling (lanes, dashboards, data contracts) is that project's artifact, never a design-system one.
+
+**Footer text.** The footer wordmark is the one project-level knob this target exposes. `markdown.css` draws it from a `--doc-footer` custom property with the system wordmark as the fallback. A consumer project overrides it by loading a CSS file after `markdown.css` in `markdown.styles` — `body.vscode-body { --doc-footer: "ACME ◇ INTERNAL"; }`. The value is a quoted string; `none` drops the footer; per-mode footers are possible by setting the property under `body.vscode-light` / `body.vscode-dark` separately. This is project-level only — it sets one footer for the repository, not per document.
+
+**Open.** High-contrast themes route to the night token set as a placeholder; the system has no high-contrast variant yet. The metadata strip targets the body's first table positionally, so a document with no front matter whose body opens with a table will style that table as a strip — rare, since system documents carry front matter. Per-document footer metadata, front-matter `mode:` pinning, and typed `:::` callout containers are not delivered by this target. The full record is `proposals/markdown-preview-vscode-plan.md`; `reference/markdown-vscode-preview.html` shows the rendered result.
 
 ---
 

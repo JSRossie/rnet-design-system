@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VS Code markdown preview · Charts &amp; Vectors</title>
+<link rel="preconnect" href="https://cdn.rossie.net" crossorigin>
+<link rel="stylesheet" href="../markdown.css">
+<style>
+  /* ────────────────────────────────────────────────────────
+     Showcase-only chrome. The page <body> carries the real
+     `vscode-body` class, so everything below the toolbar is
+     styled by ../markdown.css exactly as the VS Code built-in
+     preview would style it — see SYSTEM.md §17.5. Only the
+     toolbar lives here.
+     ──────────────────────────────────────────────────────── */
+  .toolbar {
+    position: fixed; top: 0; right: 0; z-index: 10;
+    padding: 14px 18px; display: flex; gap: 8px;
+  }
+  .toolbar button {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    background: var(--bg); color: var(--fg-3);
+    border: 1px solid var(--rule); padding: 6px 12px; cursor: pointer;
+  }
+  .toolbar button:hover { color: var(--accent); border-color: var(--accent); }
+  .toolbar button:focus-visible {
+    outline: var(--focus-ring-w) solid var(--focus-ring); outline-offset: 2px;
+  }
+</style>
+</head>
+
+<!-- The real preview renders into <body class="vscode-body"> and carries its
+     theme as a body class. This page does the same; the toolbar toggles the
+     class so both modes are visible from one file. -->
+<body class="vscode-body vscode-dark">
+
+<!-- First child: the YAML front matter as `bierner.markdown-yaml-preamble`
+     emits it — a bare <table>. markdown.css restyles it into the metadata
+     strip. In a real document this is the `---` block at the top of the file. -->
+<table>
+  <thead><tr><th>doc-id</th><th>rev</th><th>class</th><th>created</th><th>owner</th></tr></thead>
+  <tbody><tr><td>RNET-RB-0042</td><td>1.7</td><td>INTERNAL</td><td>2026.05.18</td><td>J. Rossie</td></tr></tbody>
+</table>
+
+<h1>VS Code Markdown Preview Target</h1>
+
+<blockquote>
+<p>This page <strong>simulates</strong> the VS Code built-in preview. It carries
+the real <code>vscode-body</code> class, so the type, color, metadata strip,
+stripe, and footer are exactly what <code>markdown.css</code> contributes. The
+live editor preview also layers VS Code's own body styles on top — open a real
+<code>.md</code> file there to see the genuine result.</p>
+</blockquote>
+
+<p>A markdown document is most often read in the editor, so the VS Code preview
+is a named render target rather than an unsupported surface. It delivers correct
+type and color, both modes following the editor theme, and the chrome you see
+here: an accent stripe, the metadata strip above, a classification rule, and the
+footer below.</p>
+
+<h2>What carries the rendering</h2>
+
+<p>Two things, both shipping CSS only — no extension authored by the system:</p>
+
+<ul>
+<li><code>colors_and_type.css</code> recognizes VS Code's <code>vscode-light</code>
+and <code>vscode-dark</code> body classes, so the token set activates on the
+editor theme.</li>
+<li><code>markdown.css</code> carries its element rules under
+<code>:is(.md, body.vscode-body)</code> — one source, both scopes — and draws
+the preview chrome from the body box.</li>
+</ul>
+
+<p>The metadata strip needs front matter <em>in the page DOM</em>, which the
+Microsoft-authored <code>bierner.markdown-yaml-preamble</code> extension supplies.
+It is the one external dependency of this target.</p>
+
+<h2>Setup</h2>
+
+<p>Point the preview at the system CSS in <code>.vscode/settings.json</code>:</p>
+
+<pre><code>{
+  "markdown.styles": [
+    "https://cdn.rossie.net/charts-and-vectors/css/v1/rnet.css"
+  ]
+}</code></pre>
+
+<h3>Footer override</h3>
+
+<p>The footer wordmark is the one project-level knob. Set <code>--doc-footer</code>
+in a CSS file loaded after the bundle — a quoted string sets the text,
+<code>none</code> drops the footer, unset uses the system wordmark:</p>
+
+<pre><code>body.vscode-body { --doc-footer: "ACME ◇ INTERNAL"; }</code></pre>
+
+<h2>The three targets</h2>
+
+<table>
+<thead><tr><th>Target</th><th>Chrome</th></tr></thead>
+<tbody>
+<tr><td>Standalone HTML</td><td>Full <code>.doc</code> wrapper</td></tr>
+<tr><td>VS Code preview</td><td>Stripe, metadata strip, classification rule, footer</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<p>The full record is <code>proposals/markdown-preview-vscode-plan.md</code>;
+the spec is <code>SYSTEM.md §17.5</code>.</p>
+
+<div class="toolbar">
+  <button id="mode" type="button">Day / Night</button>
+</div>
+
+<script>
+  // Toggle the VS Code theme body class — what the editor does when the
+  // user switches color theme.
+  document.getElementById('mode').addEventListener('click', () => {
+    const b = document.body, dark = b.classList.contains('vscode-dark');
+    b.classList.toggle('vscode-dark', !dark);
+    b.classList.toggle('vscode-light', dark);
+  });
+</script>
+</body>
+</html>

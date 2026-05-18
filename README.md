@@ -74,13 +74,14 @@ Naming what the system isn't turns out to be as important as naming what it is. 
 - **`SHORT.md`** and **`STANDARD.md`** — concise versions of the spec at different fidelity, sized to drop into AI system prompts.
 - **`tokens.json`, `tokens.css`, `tailwind.config.js`** — machine-readable design tokens for use in any modern tool.
 - **`colors_and_type.css`, `controls.css`** — drop-in web layer: semantic role aliases, `@font-face` declarations, and the first cohort of UI controls (buttons, fields, navigation, feedback, tables, modal). Switch modes with `<html data-mode="day | night">`. See `SYSTEM.md §4.7` and `§16`.
-- **`markdown.css`** — drop-in styling for rendered markdown: a prose-scoped heading ramp, code, callouts, and tables, plus preview chrome. Styles bare rendered output with no class hooks. See `SYSTEM.md §17`.
+- **`markdown.css`** — drop-in styling for rendered markdown: a prose-scoped heading ramp, code, callouts, and tables, plus preview chrome. Styles bare rendered output with no class hooks, and reaches the VS Code built-in markdown preview as a named target. See `SYSTEM.md §17`.
 - **`charts.css`** — drop-in data-visualization layer: eleven chart types (line, bar, heatmap, gauge, network diagram, and more) across a CSS and an SVG render path, with a categorical series ramp and a sequential ramp. No charting library, no runtime JS. See `SYSTEM.md §19`.
 - **`/prompts`** — prompts tuned for Claude, ChatGPT, v0, and design tools. The shortest path to consistent AI output.
 - **`/components`** — the monogram in its three variants (light, dark, monochrome), plus document templates as they're built.
 - **`/reference/style-guide.html`** — an interactive visual reference that shows the system in use. Also available as a print-ready PDF.
 - **`/reference/controls-showcase.html`** — every control in both modes, plus a composed R—Net dashboard example. The fastest way to see the controls in context.
 - **`/reference/markdown-showcase.html`** — rendered markdown in both modes, with a live front-matter previewer that drives the document chrome.
+- **`/reference/markdown-vscode-preview.html`** — the VS Code preview target (`§17.5`): the metadata strip, stripe, and footer as `markdown.css` draws them under `body.vscode-body`, with a day/night toggle.
 - **`/reference/charts-showcase.html`** — every chart type in both modes, day and night side by side.
 
 If you're starting from zero: read this file, then SYSTEM.md, then open the style guide. If you're building a web UI, open the controls showcase next. That's enough to use the system competently for almost any task.
@@ -96,6 +97,8 @@ The system rewards restraint. If a design feels like it needs one more thing, tr
 When extending the system — a new component, a new role, a new tint — follow the procedures in SYSTEM.md §15 rather than improvising. The procedures exist precisely to keep extensions from accumulating into drift.
 
 When an AI is producing output in this system, give it the spec and trust it less than you trust the spec. AI tools are excellent at honoring constraints they can see and indifferent to constraints they can't. Paste the right document for the job, then verify against the rules.
+
+The system's documents read best in the system. This repository carries a `.vscode/` configuration that styles its own markdown in the VS Code preview — the same treatment is available to any project by pointing `markdown.styles` at `markdown.css` and installing the one recommended extension. See `SYSTEM.md §17.5`.
 
 ---
 
