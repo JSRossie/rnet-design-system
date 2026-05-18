@@ -12,11 +12,11 @@ runtime — fonts, CSS, and tokens are all self-hosted here.
 ```
 cdn.rossie.net/
   charts-and-vectors/
-    fonts/        woff2 — three faces, see "Fonts" below
-    css/v1/       rolling major channel — tracks the latest v1.x
-    css/v1.0.0/   pinned release snapshot — frozen, immutable
-    tokens/v1/    tokens.json — machine-readable design tokens
-    tokens/v1.0.0/
+    fonts/              woff2 — three faces, see "Fonts" below
+    css/v1/             rolling major channel — tracks the latest v1.x
+    css/pinned/1.0.0/   pinned release snapshot — frozen, immutable
+    tokens/v1/          tokens.json — machine-readable design tokens
+    tokens/pinned/1.0.0/
 ```
 
 ### Fonts — `charts-and-vectors/fonts/`
@@ -40,7 +40,12 @@ how tightly to pin:
 | Path | Cache policy | Use it when |
 |------|--------------|-------------|
 | `css/v1/` | 1 h + `stale-while-revalidate` | You want non-breaking fixes for free. Tracks the latest v1.x in place; a breaking change would mint `css/v2/`. |
-| `css/v1.0.0/` | immutable, 1 y | You need byte-for-byte reproducibility — e.g. an R—Net tooling dashboard that must not restyle itself on a push. |
+| `css/pinned/1.0.0/` | immutable, 1 y | You need byte-for-byte reproducibility — e.g. an R—Net tooling dashboard that must not restyle itself on a push. |
+
+The channel and the pinned snapshots sit under disjoint prefixes (`css/v1/`
+vs `css/pinned/`) on purpose: Cloudflare Pages concatenates the headers of
+every `_headers` rule a path matches, so overlapping rules would merge into a
+contradictory `Cache-Control`. Each path must match exactly one rule.
 
 `rnet.css` in each channel is the full bundle: `tokens` + `colors_and_type` +
 `controls` + `markdown` concatenated in dependency order, with the
@@ -74,8 +79,9 @@ web-served — the rest of the repo is cloned during the build and discarded.
 `tokens/v1/` **channel** from the canonical root files (`tokens.css`,
 `colors_and_type.css`, `controls.css`, `markdown.css`, `tokens.json`), so the
 CDN carries no hand-copied duplicates that can drift. The channel output is
-`.gitignored`. **Pinned snapshots** (`css/v1.N.N/`, `tokens/v1.N.N/`) are
-committed, frozen copies — `build.sh` never touches them.
+`.gitignored`. **Pinned snapshots** (`css/pinned/N.N.N/`,
+`tokens/pinned/N.N.N/`) are committed, frozen copies — `build.sh` never
+touches them.
 
 ## Deploying a change
 
@@ -87,9 +93,10 @@ no upload step, no `wrangler`, no API token in the deploy path.
 - **CSS / tokens (channel):** edit the canonical root file. `build.sh`
   regenerates `css/v1/` on the next deploy — nothing to commit under `cdn/`.
 - **Cutting a pinned snapshot:** at a release, copy the freshly built channel
-  into a new `css/v1.N.N/` (and `tokens/v1.N.N/`), commit those, push. Bump the
-  number per the change: patch for fixes, minor for additions, and a new major
-  channel (`css/v2/`) for anything breaking.
+  into a new `css/pinned/N.N.N/` (and `tokens/pinned/N.N.N/`), commit those,
+  push. Bump the number per the change: patch for fixes, minor for additions,
+  and a new major channel (`css/v2/`) for anything breaking. The `css/pinned/`
+  prefix means no `_headers` change is needed per release.
 
 ## Verify it worked
 
@@ -103,8 +110,9 @@ curl -sI https://cdn.rossie.net/charts-and-vectors/tokens/v1/tokens.json
 
 Expect `HTTP/2 200` and `access-control-allow-origin: *` on each. The font
 should report `cache-control: …immutable`; `css/v1/` should report
-`max-age=3600, stale-while-revalidate=86400`; a `css/v1.0.0/` path should
-report `…immutable`.
+`stale-while-revalidate=86400`; a `css/pinned/…` path should report
+`…immutable`. Append a `?cb=<timestamp>` query when checking so you read the
+fresh headers, not an edge-cached response.
 
 Then open `reference/style-guide.html` — Nerd glyphs should render (not boxes),
 and headings/body should be Outfit/Urbanist, not a system fallback.
