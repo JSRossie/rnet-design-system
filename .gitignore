@@ -19,3 +19,5 @@ fonts/.venv/
 # the canonical root files. Pinned snapshots (css/v1.N.N/) stay committed.
 cdn/charts-and-vectors/css/v1/
 cdn/charts-and-vectors/tokens/v1/
+# Personal hook config (machine-specific memory path)
+.claude/settings.local.json
