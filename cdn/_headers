@@ -9,26 +9,27 @@
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: font/woff2
 
-# CSS — default for everything under css/: the pinned release snapshots
-# (css/v1.N.N/) are frozen at release, so cache them forever. A mid-segment
-# wildcard (css/v1.*/) is not reliably honored, so this is a plain trailing
-# splat and the rolling channel overrides it below.
-/charts-and-vectors/css/*
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=31536000, immutable
+# CSS and tokens are published under two non-overlapping prefixes so each
+# request path matches exactly one rule below. (Cloudflare Pages concatenates
+# the headers of every matching rule rather than letting a later rule override
+# an earlier one — so overlapping rules would merge into a contradictory
+# Cache-Control. Keep these prefixes disjoint.)
 
-# CSS — the rolling v1 channel. Tracks the latest v1.x in place, so updates
-# must propagate: revalidate instead of caching immutably. Listed after the
-# broad rule above, so for css/v1/ this one wins.
+# Rolling v1 channel — tracks the latest v1.x in place, so updates must
+# propagate: revalidate instead of caching immutably.
 /charts-and-vectors/css/v1/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
-# Tokens — same default / channel split as the CSS above.
-/charts-and-vectors/tokens/*
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=31536000, immutable
-
 /charts-and-vectors/tokens/v1/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Pinned release snapshots — frozen at release; cache forever.
+/charts-and-vectors/css/pinned/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+/charts-and-vectors/tokens/pinned/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable

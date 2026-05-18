@@ -5,8 +5,8 @@
 # channel under /charts-and-vectors/css/v1/ and tokens/v1/ from the canonical
 # root files, so the CDN never carries hand-copied duplicates that can drift.
 #
-# Pinned snapshots (css/v1.N.N/, tokens/v1.N.N/) are committed, frozen copies
-# cut at release time — this script never writes or overwrites them.
+# Pinned snapshots (css/pinned/N.N.N/, tokens/pinned/N.N.N/) are committed,
+# frozen copies cut at release time — this script never writes them.
 #
 # Safe to run locally to preview the deploy tree; the channel output is
 # .gitignored.
