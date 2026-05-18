@@ -31,25 +31,25 @@
    ============================================================ */
 @font-face {
   font-family: 'JetBrainsMono Nerd Font';
-  src: url('https://cdn.rossie.net/fonts/jetbrains-mono-nerd-regular.woff2') format('woff2');
+  src: url('https://cdn.rossie.net/charts-and-vectors/fonts/jetbrains-mono-nerd-regular.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: 'JetBrainsMono Nerd Font';
-  src: url('https://cdn.rossie.net/fonts/jetbrains-mono-nerd-medium.woff2') format('woff2');
+  src: url('https://cdn.rossie.net/charts-and-vectors/fonts/jetbrains-mono-nerd-medium.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: 'Outfit';
-  src: url('https://cdn.rossie.net/fonts/outfit-latin-var.woff2') format('woff2');
+  src: url('https://cdn.rossie.net/charts-and-vectors/fonts/outfit-latin-var.woff2') format('woff2');
   font-weight: 200 800;
   font-display: swap;
 }
 @font-face {
   font-family: 'Urbanist';
-  src: url('https://cdn.rossie.net/fonts/urbanist-latin-var.woff2') format('woff2');
+  src: url('https://cdn.rossie.net/charts-and-vectors/fonts/urbanist-latin-var.woff2') format('woff2');
   font-weight: 200 800;
   font-display: swap;
 }

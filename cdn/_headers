@@ -1,0 +1,10 @@
+# Cloudflare Pages headers — https://developers.cloudflare.com/pages/configuration/headers/
+# cdn.rossie.net serves the JR / R—Net design system under the /charts-and-vectors/
+# namespace; the domain root is reserved for future, unrelated content.
+# Cross-origin loads (style-guide.html, R—Net) REQUIRE CORS.
+
+# Fonts — subset-stable; content never changes under a given filename.
+/charts-and-vectors/fonts/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: font/woff2

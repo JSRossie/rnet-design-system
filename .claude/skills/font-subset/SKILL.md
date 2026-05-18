@@ -80,7 +80,7 @@ Like Outfit/Urbanist: take Google's own Latin-subset variable woff2 as-is.
 ### Shared steps for any new font
 
 - Add `@font-face` rules in `reference/style-guide.html` pointing at
-  `https://cdn.rossie.net/fonts/<file>.woff2`. Use `font-display: swap`;
+  `https://cdn.rossie.net/charts-and-vectors/fonts/<file>.woff2`. Use `font-display: swap`;
   variable fonts use `font-weight: 200 800`.
 - List the file in `fonts/cloudflare-deploy/index.html`.
 - Document it in the table in `fonts/HOSTING.md`.
