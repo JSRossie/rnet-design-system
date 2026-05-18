@@ -11,10 +11,15 @@ briefing a reader who is making a hard decision.
 
 ## Canonical reference
 
-The full standard is **`VOICE.md`** at the repository root, summarized in
-`SYSTEM.md` §18. `VOICE.md` is canonical — this skill is its invokable form.
-When applying or revising voice, **read `VOICE.md` first** and work from it.
-If this skill and `VOICE.md` ever disagree, `VOICE.md` wins.
+The full standard is **`VOICE.md`** — this skill is its invokable form. It is
+canonical in the `rnet-design-system` repository (root, summarized in
+`SYSTEM.md` §18); a snapshot travels with this skill at **`reference/VOICE.md`**
+so the skill works in any project.
+
+When applying or revising voice, **read `VOICE.md` first** — the repo-root copy
+if this skill is running inside `rnet-design-system`, otherwise the bundled
+`reference/VOICE.md` — and work from it. If the skill body and `VOICE.md` ever
+disagree, `VOICE.md` wins.
 
 ## Governing principle
 
