@@ -75,6 +75,11 @@ The project is **Git-connected** to `JSRossie/rnet-design-system`:
 Because the output directory is scoped to `cdn/`, only that folder is
 web-served — the rest of the repo is cloned during the build and discarded.
 
+`cdn/404.html` makes Pages return a real `404` for not-found paths. Without
+it, Pages serves `index.html` with a `200` for any unmatched request — which
+would let a mistyped or non-existent pinned version fail silently instead of
+loudly.
+
 `cdn/build.sh` runs at deploy time: it regenerates the `css/v1/` and
 `tokens/v1/` **channel** from the canonical root files (`tokens.css`,
 `colors_and_type.css`, `controls.css`, `markdown.css`, `tokens.json`), so the
