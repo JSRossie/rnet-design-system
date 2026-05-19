@@ -15,6 +15,11 @@
      ──────────────────────────────────────────────────────── */
   html, body { scroll-behavior: smooth; }
 
+  /* Clear the fixed toolbar so it never overlaps the eyebrow on
+     initial load. The toolbar is viewer chrome, not part of the
+     .doc — it stays pinned top-right; the document starts below. */
+  .doc { padding-top: 64px; }
+
   /* Gap between the eyebrow and the rendered body. */
   .doc .md { padding-top: 34px; }
 
