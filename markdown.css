@@ -340,17 +340,37 @@ body.vscode-body::before {
   margin-bottom: var(--space-4);
 }
 
-/* Metadata strip — the front-matter table, restyled into the
-   §10.1 title + metadata block. The table's native layout already
-   sets keys in a row above their values; this styles that grid
-   rather than rebuilding it, so it holds for any front-matter key
-   order. The `ground-deep` bottom rule is the §10 classification
-   stripe. */
+/* Metadata strip — the front-matter table (§17.5)
+   ------------------------------------------------------------
+   The preamble extension emits front matter as one <table>: a
+   row of <th> keys above a row of <td> values. CSS reaches a
+   column only by position — there is no text-content selector —
+   so this target does not try to render the whole block. The
+   strip is CAPPED at the first five columns, and §17.5 names a
+   canonical key order that front-loads the flattened eyebrow:
+   doc-id, node, class, status, rev — the identity and condition
+   an editor wants at a glance.
+
+   Everything past the cap — `description`, `title`, owner, the
+   dates, any project keys — does not render here; it stays in
+   the front matter for the standalone target and the project's
+   tooling. The cap is what makes the strip safe: it cannot
+   overrun its line, `description` can never blow it out, and
+   the §17.4 "data, not chrome" boundary holds for the strip.
+
+   Column one is shrink-wrapped and ruled off as the doc-id
+   register; columns two–five are the condition readout. The
+   `ground-deep` bottom rule is the §10 classification stripe. */
 body.vscode-body > table:first-child {
   width: 100%;
   margin: 0 0 var(--space-7);
   border: 0;
   border-bottom: 3px solid var(--ground-deep);
+}
+/* The cap — only the first five columns render. */
+body.vscode-body > table:first-child th:nth-child(n+6),
+body.vscode-body > table:first-child td:nth-child(n+6) {
+  display: none;
 }
 body.vscode-body > table:first-child th,
 body.vscode-body > table:first-child td {
@@ -359,6 +379,7 @@ body.vscode-body > table:first-child td {
   letter-spacing: var(--track-meta);
   text-transform: uppercase;
   text-align: left;
+  white-space: nowrap;
   border: 0;
   background: none;
   padding: 0 var(--space-5) var(--space-1) 0;
@@ -370,6 +391,32 @@ body.vscode-body > table:first-child th {
 body.vscode-body > table:first-child td {
   color: var(--accent-warm);
   padding-bottom: var(--space-3);
+}
+
+/* Column 1 — doc-id as the register mark. The canonical order
+   leads with `doc-id` (§17.5); the column is shrink-wrapped to
+   its content, ruled off with a hairline, and the value carries
+   `--accent`, not `--accent-warm` — the same accent the
+   standalone eyebrow gives `doc-id` at its right edge (§17.4).
+   The identifier reads as a register in both targets; this rule
+   is the strip's analog of the eyebrow edge. */
+body.vscode-body > table:first-child th:first-child,
+body.vscode-body > table:first-child td:first-child {
+  width: 1%;
+  border-right: var(--bw-hair) solid var(--rule);
+}
+body.vscode-body > table:first-child th:first-child + th,
+body.vscode-body > table:first-child td:first-child + td {
+  padding-left: var(--space-5);
+}
+body.vscode-body > table:first-child td:first-child {
+  color: var(--accent);
+  font-weight: 500;
+}
+/* A strip of only doc-id has no readout to rule off from. */
+body.vscode-body > table:first-child th:first-child:last-child,
+body.vscode-body > table:first-child td:first-child:last-child {
+  border-right: 0;
 }
 
 /* Footer — hairline rule and a wordmark. The wordmark text is the

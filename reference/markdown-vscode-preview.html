@@ -38,10 +38,13 @@
 
 <!-- First child: the YAML front matter as `bierner.markdown-yaml-preamble`
      emits it — a bare <table>. markdown.css restyles it into the metadata
-     strip. In a real document this is the `---` block at the top of the file. -->
+     strip. In a real document this is the `---` block at the top of the file.
+     Keys are in the §17.5 canonical order. The strip is capped at five
+     columns: doc-id, node, class, status, rev render; owner and description
+     sort past the cap and do not show here. -->
 <table>
-  <thead><tr><th>doc-id</th><th>rev</th><th>class</th><th>created</th><th>owner</th></tr></thead>
-  <tbody><tr><td>RNET-RB-0042</td><td>1.7</td><td>INTERNAL</td><td>2026.05.18</td><td>J. Rossie</td></tr></tbody>
+  <thead><tr><th>doc-id</th><th>node</th><th>class</th><th>status</th><th>rev</th><th>owner</th><th>description</th></tr></thead>
+  <tbody><tr><td>RNET-RB-0042</td><td>cdn.rossie.net</td><td>Internal</td><td>Stable</td><td>1.7</td><td>J. Rossie</td><td>How the edge cache is invalidated after a deploy.</td></tr></tbody>
 </table>
 
 <h1>VS Code Markdown Preview Target</h1>
