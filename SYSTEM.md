@@ -412,9 +412,11 @@ The regions, from the top edge inward:
 
 - **Accent stripe.** The single mode-accent edge: `sky-deep` on light surfaces, `amber` on night (§9). It is the one place the brand accent touches the page frame, and it honors §4.6 — one stripe, one accent, never two. Nearly every template carries it; it is the system's quietest signature.
 
-- **Eyebrow.** The identification band below the stripes. Its left holds the monogram or the R—Net wordmark plus a short mono-uppercase label naming the document or its section. Its right holds the meta cluster — the few facts that identify the document at a glance: node or site, revision, status, date. The eyebrow answers *what am I looking at, and is it current* before the reader reaches the title.
+- **Eyebrow.** The identification band below the stripes. Its left holds the monogram or the R—Net wordmark plus a short mono-uppercase label naming the document or its section. Its right holds the meta cluster — the few facts that identify the document at a glance: node or site, revision, status, date, and the document identifier — the identifier settling at the right edge as a fixed register. The eyebrow answers *what am I looking at, and is it current* before the reader reaches the title.
 
-- **Title + metadata block.** The document's own name, set in Outfit, with a metadata block carrying the fuller provenance the eyebrow abbreviates — author or owner, the dates (§11), the document identifier, a copy number. On a formal cover this block is centered beneath the monogram and reads `REV · COPY · AUTHOR`; elsewhere it sits left, under the eyebrow.
+- **Title + metadata block.** The document's own name, set in Outfit, with a metadata block carrying the fuller provenance the eyebrow abbreviates — author or owner, the dates (§11), a copy number, cross-document references. The block groups its fields by concern rather than listing them flat. On a formal cover this block is centered beneath the monogram and reads `REV · COPY · AUTHOR`; elsewhere it sits left, under the eyebrow.
+
+- **Deck.** An optional one-paragraph standfirst, set below the title and above the body in the body face — a brief that orients the reader before the prose begins. Unlike the mono eyebrow and metadata block, the deck is read, not scanned; it is the one chrome region that carries a sentence rather than a token. Most documents omit it; a briefing or report that benefits from a precis carries one.
 
 - **Footer.** The closing band, and the document's record of where and when it was made. Its left tends toward place and provenance — a location tag, a site, a contact block, a signing initial. Its right tends toward time and state — a timestamp, a revision echo, a page mark. A ceremonial letter puts a contact block here; an instrumented dashboard puts a location tag and timestamp; a formal cover often omits the footer entirely.
 
@@ -501,7 +503,8 @@ To stay disciplined, name what it isn't:
 | 1.5 | 2026.05.17 | Added §18 (Editorial Voice) and `VOICE.md` — the writing-voice standard for prose deliverables, graduated from `proposals/graduated/rnet-voice.md`. Retitled §11 "Voice & Naming" → "Naming & Signing" so §18 owns the written voice (section number unchanged; cross-references intact). Added the `rnet-voice` skill as the invokable form. Editorial only — no primitive, color, token, component, or CSS changes. |
 | 1.6 | 2026.05.17 | Restructured §10 "Content Patterns" → "Page Chrome & Content Patterns": added §10.1 (Chrome regions), a non-prescriptive all-template account of the classification stripe, accent stripe, eyebrow, title + metadata block, footer, and corner brackets, and gathered the four existing patterns under §10.2 with their header/footer terminology aligned to the §10.1 region names. §17.4 front-matter fields now map to the §10.1 region each feeds (new **Feeds** column). §10 keeps its section number; cross-references intact. Editorial only — no primitive, color, token, component, or CSS changes. |
 | 1.7 | 2026.05.17 | Added §19 (Data Visualization) and `charts.css` — the eleven-type chart layer the system's codename always promised. Four new primitives (`terrain-deep/-light`, `scope-deep/-light`) for the categorical series ramp, sourced through the §15 palette procedure and added to the §4.5 contrast matrix; the sequential ramp introduces no new color. New chart roles `--series-1..6` and `--seq-1..5` in `colors_and_type.css`. `tokens.json` / `tokens.css` step to v1.2. §19.2 grants a scoped single-accent exemption to chart frames, mirroring §17.3. Added `reference/charts-showcase.html`. Promotes candidate #1 of the v1.6 staging note; the record is `proposals/graduated/data-visualization.md`. |
-| **1.8** | 2026.05.18 | **Current.** Added §17.5 (VS Code preview target). `colors_and_type.css` mode selectors now recognize VS Code's `vscode-light` / `vscode-dark` / high-contrast body classes alongside `[data-mode]`; `markdown.css` body rules widen to `:is(.md, body.vscode-body)` and gain a VS Code preview chrome section. Adds the `bierner.markdown-yaml-preamble` extension as the target's one external dependency, and a committed `.vscode/settings.json`. No primitive, token, or component changes — all additions compose from v1.2 tokens. The record is `proposals/graduated/markdown-preview-vscode-plan.md`. |
+| 1.8 | 2026.05.18 | Added §17.5 (VS Code preview target). `colors_and_type.css` mode selectors now recognize VS Code's `vscode-light` / `vscode-dark` / high-contrast body classes alongside `[data-mode]`; `markdown.css` body rules widen to `:is(.md, body.vscode-body)` and gain a VS Code preview chrome section. Adds the `bierner.markdown-yaml-preamble` extension as the target's one external dependency, and a committed `.vscode/settings.json`. No primitive, token, or component changes — all additions compose from v1.2 tokens. The record is `proposals/graduated/markdown-preview-vscode-plan.md`. |
+| **1.9** | 2026.05.18 | **Current.** Revised §17.4 (front-matter vocabulary). Rendered chrome is now drawn only from the named vocabulary — front matter remains an open superset for a project's own tooling, but an unnamed key is data, not chrome. Added the **Deck** region (§10.1) for `description`, a body-face standfirst, with `.doc-deck` in `markdown.css`. The metadata block now groups into three collapsing lines — lineage, responsibility, lifecycle; the eyebrow gains a three-zone permanence model and `doc-id` migrates to its right edge as a register mark. `title` is accepted but not rendered (the `h1` is the title); the type label derives from the `doc-id` code; `mode` is marked a conditional selector, inert in the VS Code target. §17.5 records the regionalization as standalone-target. No primitive, color, token, or component changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -724,24 +727,35 @@ Links carry meaning, so a link-dense document is exempt from §4.6's "accent in 
 
 ### 17.4 Front-matter vocabulary
 
-Front matter is markdown's mechanism for feeding the §10.1 chrome regions — the channel by which a markdown author supplies what other template types supply through template params or direct authoring. It drives chrome **content only** — never styling. It is an open *superset*, not a closed set: a previewer handles unknown keys gracefully, and an author may add a field when a document genuinely needs one (reuse before inventing, §15). The **Feeds** column names the §10.1 region each field reaches.
+Front matter is markdown's mechanism for feeding the §10.1 chrome regions — the channel by which a markdown author supplies what other template types supply through template params or direct authoring. It drives chrome **content only** — never styling (§10.1).
+
+Front matter is an open superset: a project may add any key its own tooling needs — an index, a build step, a data contract. But the **rendered chrome is drawn only from the named vocabulary below**. A key the system does not name is *data, not chrome* — a previewer carries it for the project's tooling and does not render it into a region. This boundary lets a project's front matter and the system's chrome coexist without either constraining the other, and it keeps a heavy metadata block from overrunning the head of the document. The *rendered* vocabulary can still grow, but that is a §17.4 revision — named once, with a region — not a per-document act (reuse before inventing, §15).
+
+The **Feeds** column names the §10.1 region each field reaches.
 
 | Field | Feeds | Role |
 |-------|-------|------|
-| `doc-id` | Title + metadata block | Document identifier, `CONTEXT-TYPE-SEQ` (e.g. `RNET-RB-0042`). Optional. |
-| `title` | Title + metadata block | Drives the `h1`. |
-| `context` | — | `rnet` or `personal` — selects accent + surface (§9); not chrome content. |
-| `mode` | — | Optional override of the context's default day/night; not chrome content. |
-| `eyebrow` | Eyebrow | Mono-uppercase label beside the wordmark. |
-| `node` / `site` | Eyebrow | Infrastructure identifier (rnet). |
-| `owner` / `author` | Title + metadata block | Responsible person. |
-| `rev` / `version` | Eyebrow + metadata block | Semantic version (§11). |
-| `created`, `reviewed`, `next-review`, `effective` | Title + metadata block | Dates; formatted per §11. |
-| `class` | Classification stripe | Classification — draws the `ground-deep` stripe. |
-| `status` | Eyebrow | Draft / Stable / Active / Deprecated. |
-| `supersedes` / `superseded-by` | Title + metadata block | Cross-document references. |
-| `copy` | Title + metadata block | Copy number for controlled distribution. |
+| `doc-id` | Eyebrow — right edge | Document identifier, `CONTEXT-TYPE-SEQ` (e.g. `RNET-RB-0042`). The type label derives from its `TYPE` code. |
+| `description` | Deck | One-paragraph standfirst below the title. |
+| `eyebrow` | Eyebrow — left | Free mono-uppercase label, for what `doc-id` does not already encode — a series, a project tag. |
+| `node` / `site` | Eyebrow — middle | Infrastructure identifier (rnet). |
+| `class` | Classification stripe + eyebrow | Classification — draws the `ground-deep` stripe; echoed in the eyebrow readout. |
+| `status` | Eyebrow — middle | Draft / Stable / Active / Deprecated. |
+| `rev` / `version` | Eyebrow — middle | Semantic version (§11). |
+| `supersedes` / `superseded-by` | Metadata block — lineage | Cross-document references. |
+| `owner` / `author` | Metadata block — responsibility | Responsible person. |
+| `copy` | Metadata block — responsibility | Copy number for controlled distribution. |
+| `created`, `reviewed`, `next-review`, `effective` | Metadata block — lifecycle | Dates; formatted per §11. |
 | `recipient`, contact-block fields | Footer | Ceremonial documents. |
+| `title` | — | Accepted for a project's tooling, not rendered as chrome: the document's `h1` is the title. |
+| `context` | — | `rnet` or `personal` — selects accent + surface (§9); not chrome content. |
+| `mode` | — | Optional override of the context's default day/night (§9). A *conditional* selector — honored by the standalone target, inert in the VS Code target (§17.5). |
+
+**The eyebrow — three zones by permanence.** The eyebrow reads left to right as fixed → mutable → fixed. Its **left edge** holds the wordmark and the document type — the fixed human label; the type word derives from the `doc-id` `TYPE` code, so it is not a separate field. Its **middle** holds the condition readout — `node`/`site`, `class`, `status`, `rev` — the facts that change over the document's life. Its **right edge** holds `doc-id`, the terminal token: an immutable register mark, right-aligned in the formal-document tradition, and a scannable identifier column down a stack of documents. The readout shrinks inward as optional fields are omitted; `doc-id` stays welded to the edge.
+
+**The metadata block — three lines.** Below the title and deck, the metadata block groups its fields into three labelled lines, each answering one question: **lineage** (`supersedes`, `superseded-by`), **responsibility** (`owner`/`author`, `copy`), and **lifecycle** (the four dates). A line renders only when it has content; an empty line collapses, and a document with nothing for the block shows no block at all.
+
+**The deck.** `description` feeds the Deck (§10.1) — a one-paragraph standfirst between the title and the metadata block, set in the body face. It is the one long-form chrome field; it is never folded into the mono metadata strip, where a paragraph-length value would overrun a line sized for a date.
 
 `doc-id` uses `CONTEXT` (`RNET` or `JR`), a two-letter `TYPE` (`RB` runbook, `SD` status doc, `FN` field note, `CV` cover, `LT` letter, `MD` memo), and a four-digit `SEQ`. Allocation is manual; a registry can follow without changing the format.
 
@@ -765,7 +779,7 @@ The preview chrome needs per-document content in the DOM, which `markdown.styles
 
 **Footer text.** The footer wordmark is the one project-level knob this target exposes. `markdown.css` draws it from a `--doc-footer` custom property with the system wordmark as the fallback. A consumer project overrides it by loading a CSS file after `markdown.css` in `markdown.styles` — `body.vscode-body { --doc-footer: "ACME ◇ INTERNAL"; }`. The value is a quoted string; `none` drops the footer; per-mode footers are possible by setting the property under `body.vscode-light` / `body.vscode-dark` separately. This is project-level only — it sets one footer for the repository, not per document.
 
-**Open.** High-contrast themes route to the night token set as a placeholder; the system has no high-contrast variant yet. The metadata strip targets the body's first table positionally, so a document with no front matter whose body opens with a table will style that table as a strip — rare, since system documents carry front matter. Per-document footer metadata, front-matter `mode:` pinning, and typed `:::` callout containers are not delivered by this target. The full record is `proposals/graduated/markdown-preview-vscode-plan.md`; `reference/markdown-vscode-preview.html` shows the rendered result.
+**Open.** High-contrast themes route to the night token set as a placeholder; the system has no high-contrast variant yet. The metadata strip targets the body's first table positionally, so a document with no front matter whose body opens with a table will style that table as a strip — rare, since system documents carry front matter. Per-document footer metadata, front-matter `mode:` pinning, and typed `:::` callout containers are not delivered by this target. The §17.4 chrome model — the deck, the eyebrow's three zones, the three-line metadata block — is realized by the standalone HTML target through `.doc` markup; the VS Code target renders all front matter as one positional strip, since the preamble extension emits a single table and CSS cannot regionalize it by field name. For the same reason the §17.4 rendered-vocabulary boundary is advisory in this target — every key the extension emits is shown. The full record is `proposals/graduated/markdown-preview-vscode-plan.md`; `reference/markdown-vscode-preview.html` shows the rendered result.
 
 ---
 

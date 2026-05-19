@@ -282,6 +282,18 @@
   margin: var(--space-2) 0 0 0;
 }
 
+/* Deck — the §10.1 standfirst between the h1 and the metadata
+   block. Body face, not mono: read, not scanned (§17.4). The one
+   chrome region that carries a sentence rather than a token. */
+.md .doc-deck {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 60ch;
+  margin: var(--space-3) 0 0 0;
+}
+
 /* Footer — left: wordmark / sign-off · right: locating metadata. */
 .doc-foot {
   display: flex;
