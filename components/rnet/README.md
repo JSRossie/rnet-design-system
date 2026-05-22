@@ -95,6 +95,42 @@ logos/png/<name>.png     raster — email, docs, anywhere vector won't load
 CORS-enabled and immutably cached. Content is frozen per filename: a revision
 adds a *new* name, it never mutates an existing one (same contract as fonts).
 
+Match accent to surface: `-day` on light (`paper-true`, `rgb(250,246,236)` /
+`#FAF6EC`), `-night` on dark (`night`, `rgb(28,30,28)` / `#1C1E1C`), `-mono`
+for single-ink. The SVGs are transparent, so the host background is the
+backdrop — never pair a `-day` mark with pure white.
+
+### Full URL table
+
+Every variant, ready to copy. Swap `svg` ↔ `png` in the path for the other form.
+
+| Variant | SVG URL | PNG URL |
+|---|---|---|
+| r-net-wordmark-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-day.png |
+| r-net-wordmark-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-night.png |
+| r-net-wordmark-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-mono.png |
+| r-net-wordmark-infrastructure-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-infrastructure-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-infrastructure-day.png |
+| r-net-wordmark-infrastructure-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-infrastructure-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-infrastructure-night.png |
+| r-net-wordmark-infrastructure-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-wordmark-infrastructure-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-wordmark-infrastructure-mono.png |
+| r-net-jr-horizontal-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-day.png |
+| r-net-jr-horizontal-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-night.png |
+| r-net-jr-horizontal-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-mono.png |
+| r-net-jr-horizontal-norule-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-norule-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-norule-day.png |
+| r-net-jr-horizontal-norule-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-norule-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-norule-night.png |
+| r-net-jr-horizontal-norule-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-norule-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-norule-mono.png |
+| r-net-jr-horizontal-infrastructure-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-infrastructure-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-infrastructure-day.png |
+| r-net-jr-horizontal-infrastructure-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-infrastructure-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-infrastructure-night.png |
+| r-net-jr-horizontal-infrastructure-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-horizontal-infrastructure-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-horizontal-infrastructure-mono.png |
+| r-net-jr-stacked-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-day.png |
+| r-net-jr-stacked-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-night.png |
+| r-net-jr-stacked-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-mono.png |
+| r-net-jr-stacked-infrastructure-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-infrastructure-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-infrastructure-day.png |
+| r-net-jr-stacked-infrastructure-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-infrastructure-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-infrastructure-night.png |
+| r-net-jr-stacked-infrastructure-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/r-net-jr-stacked-infrastructure-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/r-net-jr-stacked-infrastructure-mono.png |
+| fpm-mark-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-day.png |
+| fpm-mark-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-night.png |
+| fpm-mark-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-mono.png |
+
 ## Regenerating
 
 Edit `src/`, then rebuild:
