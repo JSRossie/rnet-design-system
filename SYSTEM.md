@@ -300,6 +300,14 @@ When the mark appears with the wordmark below:
 
 The em-dash in `R—Net` is intentional. It visually echoes the horizon line of the attitude indicator — the artifact from which the rest of the palette is sourced. Always an em-dash (`—`), never a hyphen (`-`).
 
+### The R—Net logo pack (v1.11)
+
+R—Net ships as a full lockup pack in `components/rnet/`, derived from the JR seal above plus the cockpit palette and Outfit / JetBrains Mono type — it introduces no new color or type primitive. Eight lockups (wordmark; wordmark + `INFRASTRUCTURE`; JR-horizontal with and without rule; JR-horizontal + subtitle; JR-stacked; JR-stacked + subtitle; and the FPM mark alone), each in **day / night / mono**. Pack-internal usage rules, clear-space, and minimum sizes live in `components/rnet/README.md`; this section governs only how the pack relates to the system.
+
+- **Two forms.** `src/` holds the editable SVGs (wordmark text is live `<text>`); `svg/` holds the **outlined** distributable (text baked to `<path>`, self-contained, renders identically as an `<img>`, CSS background, or design-tool import). `png/` rasterizes the outlined form. `build-logos.sh` regenerates `svg/` + `png/` from `src/` using the self-hosted woff2 — no third-party font CDN.
+- **On the CDN.** Served at `https://cdn.rossie.net/charts-and-vectors/logos/{svg,png}/<name>` — CORS-open, immutably cached, frozen per filename (a revision adds a new name). Prefer the outlined SVG; fall back to PNG only where vector won't load.
+- **The FPM glyph.** The wordmark renders the `R—Net` em-dash as a **flight path marker** — the velocity-vector symbol from a HUD (ring, two wings, a short vertical stub), drawn in the accent slot. It is the one piece of new geometry the pack adds, and it is **logo-only**: in prose, metadata, and any text reference, `R—Net` keeps the literal em-dash (§11). The FPM is not part of the §6 industrial-element kit and is never used inline as a mark.
+
 ---
 
 ## 6. Industrial Elements (System Grammar)
@@ -505,7 +513,8 @@ To stay disciplined, name what it isn't:
 | 1.7 | 2026.05.17 | Added §19 (Data Visualization) and `charts.css` — the eleven-type chart layer the system's codename always promised. Four new primitives (`terrain-deep/-light`, `scope-deep/-light`) for the categorical series ramp, sourced through the §15 palette procedure and added to the §4.5 contrast matrix; the sequential ramp introduces no new color. New chart roles `--series-1..6` and `--seq-1..5` in `colors_and_type.css`. `tokens.json` / `tokens.css` step to v1.2. §19.2 grants a scoped single-accent exemption to chart frames, mirroring §17.3. Added `reference/charts-showcase.html`. Promotes candidate #1 of the v1.6 staging note; the record is `proposals/graduated/data-visualization.md`. |
 | 1.8 | 2026.05.18 | Added §17.5 (VS Code preview target). `colors_and_type.css` mode selectors now recognize VS Code's `vscode-light` / `vscode-dark` / high-contrast body classes alongside `[data-mode]`; `markdown.css` body rules widen to `:is(.md, body.vscode-body)` and gain a VS Code preview chrome section. Adds the `bierner.markdown-yaml-preamble` extension as the target's one external dependency, and a committed `.vscode/settings.json`. No primitive, token, or component changes — all additions compose from v1.2 tokens. The record is `proposals/graduated/markdown-preview-vscode-plan.md`. |
 | 1.9 | 2026.05.18 | Revised §17.4 (front-matter vocabulary). Rendered chrome is now drawn only from the named vocabulary — front matter remains an open superset for a project's own tooling, but an unnamed key is data, not chrome. Added the **Deck** region (§10.1) for `description`, a body-face standfirst, with `.doc-deck` in `markdown.css`. The metadata block now groups into three collapsing lines — lineage, responsibility, lifecycle; the eyebrow gains a three-zone permanence model and `doc-id` migrates to its right edge as a register mark. `title` is accepted but not rendered (the `h1` is the title); the type label derives from the `doc-id` code; `mode` is marked a conditional selector, inert in the VS Code target. §17.5 records the regionalization as standalone-target. No primitive, color, token, or component changes. |
-| **1.10** | 2026.05.18 | **Current.** Designed the VS Code metadata strip (§17.5). The strip cannot regionalize by field name, so it is *capped at five columns* and §17.5 names a canonical front-matter order that front-loads the flattened eyebrow — `doc-id`, `node`, `class`, `status`, `rev`. `description`, `title`, `owner`, the dates, and project keys sort past the cap and do not render, so the strip cannot overrun and the §17.4 data/chrome boundary holds for it. `markdown.css` rules column one off as the `doc-id` register, carrying `--accent` to match the standalone eyebrow's right edge. CSS-only change to `markdown.css`; no primitive, color, token, or component changes. |
+| 1.10 | 2026.05.18 | Designed the VS Code metadata strip (§17.5). The strip cannot regionalize by field name, so it is *capped at five columns* and §17.5 names a canonical front-matter order that front-loads the flattened eyebrow — `doc-id`, `node`, `class`, `status`, `rev`. `description`, `title`, `owner`, the dates, and project keys sort past the cap and do not render, so the strip cannot overrun and the §17.4 data/chrome boundary holds for it. `markdown.css` rules column one off as the `doc-id` register, carrying `--accent` to match the standalone eyebrow's right edge. CSS-only change to `markdown.css`; no primitive, color, token, or component changes. |
+| **1.11** | 2026.05.22 | **Current.** Integrated the R—Net logo pack under `components/rnet/` (§5) and published it to the CDN at `charts-and-vectors/logos/`. Eight lockups × day/night/mono, derived wholly from the JR seal, the cockpit palette, and Outfit/JBM — no new primitive. Added a self-hosted build pipeline (`build-logos.sh` + `outline-text.py`) that bakes the wordmark text to `<path>` so the distributable SVGs render with no font dependency, and reworked the PNG harness off Google Fonts onto the self-hosted woff2. Recorded the logo-only **FPM glyph** (the HUD velocity-vector that stands in for the wordmark em-dash) in §5; the prose em-dash rule (§11) is unchanged. `cdn/build.sh` now publishes `logos/` from the canonical source; `cdn/_headers` gains immutable, CORS, `image/svg+xml`/`image/png` rules. No color, token, CSS, or UI-component changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -535,9 +544,16 @@ jr-design-system/
 │   ├── for-v0.md                 Optimized for v0 / Cursor / UI generation.
 │   └── for-design-tools.md       Figma / Adobe Firefly prompts.
 ├── components/
-│   ├── monogram-light.svg        Primary mark, light mode.
-│   ├── monogram-dark.svg         Primary mark, dark mode.
-│   ├── monogram-mono.svg         Monochrome mark.
+│   ├── monogram-light.svg        Primary JR mark, light mode.
+│   ├── monogram-dark.svg         Primary JR mark, dark mode.
+│   ├── monogram-mono.svg         Monochrome JR mark.
+│   ├── rnet/                     R—Net logo pack (§5). 8 lockups × day/night/mono.
+│   │   ├── src/                  Editable SVGs (wordmark is live <text>).
+│   │   ├── svg/                  Outlined, self-contained SVGs (distributable).
+│   │   ├── png/                  Rasters of the outlined SVGs.
+│   │   ├── outline-text.py       <text> → <path> outliner (self-hosted woff2).
+│   │   ├── build-logos.sh        src/ → svg/ + png/.
+│   │   └── render-pngs.html      Browser PNG fallback (self-hosted fonts).
 │   └── templates/                Stationery, document covers, dashboards.
 └── reference/
     ├── style-guide.html          Interactive brand reference.

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366.50 73.00" role="img" aria-label="R—Net">
+  <title>R—Net</title>
+  <g font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="600" font-size="100" fill="#1F1D18">
+      <text x="0" y="73">R</text>
+      <text x="146.5" y="73" letter-spacing="8.036">NET</text>
+    </g>
+    <svg x="61.000" y="21.500" width="72.5" height="50.000" viewBox="0 0 58 40" overflow="visible">
+    <g stroke="#1F1D18" stroke-width="4" fill="none" stroke-linecap="butt">
+      <circle cx="29" cy="22" r="5.2"></circle>
+      <line x1="3.2" y1="22" x2="22.2" y2="22"></line>
+      <line x1="35.8" y1="22" x2="54.8" y2="22"></line>
+      <line x1="29" y1="9.2" x2="29" y2="15.2"></line>
+    </g>
+  </svg>
+</svg>

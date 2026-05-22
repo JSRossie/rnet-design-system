@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>R—Net Pack · PNG renderer</title>
+<style>
+  body { font-family: 'Outfit', system-ui, sans-serif; background: #FAF6EC; color: #1F1D18; padding: 32px; max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.4px; margin: 0 0 8px; }
+  p  { font-size: 14px; line-height: 1.65; }
+  code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 8px 0; border-bottom: 1px solid #D4CEBC; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 1.2px; }
+  .row .name { flex: 1; }
+  .row .status { width: 80px; text-align: right; }
+  .status.ok    { color: #4A7A3A; }
+  .status.err   { color: #A8362A; }
+  button { background: #4A7A96; color: #FAF6EC; border: 0; padding: 10px 18px; font: 600 13px 'Outfit',sans-serif; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+  #status { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B675C; }
+  .note { background: #F0ECE0; border-left: 3px solid #4A7A96; padding: 10px 14px; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>R—Net Logo Pack · PNG renderer</h1>
+<p class="note"><strong>The canonical generator is <code>build-logos.sh</code></strong>
+— it outlines <code>src/</code> to <code>svg/</code> and rasterizes to
+<code>png/</code> with no browser and no font CDN. Use this page only for
+ad-hoc PNG sizes. It renders the <code>src/</code> SVGs with the
+<strong>self-hosted</strong> Outfit / JetBrains Mono woff2 from
+<code>cdn.rossie.net</code> embedded at render time — no Google Fonts.</p>
+<button id="go">Render &amp; download all PNGs</button>
+<p id="status">Ready.</p>
+<div id="log"></div>
+<script>
+// Self-hosted faces (CORS-enabled on cdn.rossie.net). Outfit is the variable
+// Latin file — the @font-face weight selects the 600 instance; JBM medium is a
+// static 500. To render from a local checkout instead, point these at
+// ../../cdn/charts-and-vectors/fonts/ and serve the folder over http://.
+const FONT_BASE = 'https://cdn.rossie.net/charts-and-vectors/fonts';
+const FACES = [
+  { fam: 'Outfit',        wt: 600, file: 'outfit-latin-var.woff2' },
+  { fam: 'JetBrains Mono', wt: 500, file: 'jetbrains-mono-nerd-medium.woff2' },
+];
+const SVG_PLAN = {
+  'r-net-wordmark-day': 1024, 'r-net-wordmark-night': 1024, 'r-net-wordmark-mono': 1024,
+  'r-net-wordmark-infrastructure-day': 1024, 'r-net-wordmark-infrastructure-night': 1024, 'r-net-wordmark-infrastructure-mono': 1024,
+  'fpm-mark-day': 512, 'fpm-mark-night': 512, 'fpm-mark-mono': 512,
+  'r-net-jr-horizontal-day': 1280, 'r-net-jr-horizontal-night': 1280, 'r-net-jr-horizontal-mono': 1280,
+  'r-net-jr-horizontal-norule-day': 1280, 'r-net-jr-horizontal-norule-night': 1280, 'r-net-jr-horizontal-norule-mono': 1280,
+  'r-net-jr-horizontal-infrastructure-day': 1280, 'r-net-jr-horizontal-infrastructure-night': 1280, 'r-net-jr-horizontal-infrastructure-mono': 1280,
+  'r-net-jr-stacked-day': 640, 'r-net-jr-stacked-night': 640, 'r-net-jr-stacked-mono': 640,
+  'r-net-jr-stacked-infrastructure-day': 640, 'r-net-jr-stacked-infrastructure-night': 640, 'r-net-jr-stacked-infrastructure-mono': 640,
+};
+const status = document.getElementById('status');
+const log    = document.getElementById('log');
+function row(name) {
+  const el = document.createElement('div');
+  el.className = 'row';
+  el.innerHTML = '<span class="name">' + name + '.png</span><span class="status">…</span>';
+  log.appendChild(el);
+  return el.querySelector('.status');
+}
+// Fetch the self-hosted woff2 faces and inline them as base64 @font-face rules,
+// so the SVG (loaded as an <img>) renders with the real type, not a fallback.
+async function loadFontPack() {
+  const out = [];
+  for (const f of FACES) {
+    const buf = await (await fetch(FONT_BASE + '/' + f.file)).arrayBuffer();
+    let bin = ''; const arr = new Uint8Array(buf);
+    for (let i = 0; i < arr.length; i += 0x8000) bin += String.fromCharCode.apply(null, arr.subarray(i, i + 0x8000));
+    out.push('@font-face{font-family:"' + f.fam + '";font-style:normal;font-weight:' + f.wt +
+             ';src:url(data:font/woff2;base64,' + btoa(bin) + ') format("woff2");}');
+  }
+  return out.join('');
+}
+async function renderOne(name, w, faces) {
+  const svg = await (await fetch('src/' + name + '.svg')).text();
+  const inj = svg.replace(/<svg([^>]*)>/, (_, a) => '<svg' + a + '><defs><style>' + faces + '</style></defs>');
+  const vb = inj.match(/viewBox="([^"]+)"/);
+  let ar = 1; if (vb) { const p = vb[1].trim().split(/\s+/).map(Number); if (p.length === 4) ar = p[2] / p[3]; }
+  const h = Math.round(w / ar);
+  const blob = new Blob([inj], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const img = new Image(); img.src = url; await img.decode();
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  cv.getContext('2d').drawImage(img, 0, 0, w, h);
+  URL.revokeObjectURL(url);
+  return new Promise(res => cv.toBlob(res, 'image/png'));
+}
+function trigger(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+document.getElementById('go').onclick = async () => {
+  status.textContent = 'Fetching self-hosted fonts…';
+  const faces = await loadFontPack();
+  status.textContent = 'Fonts loaded. Rendering 24 PNGs…';
+  for (const [name, w] of Object.entries(SVG_PLAN)) {
+    const s = row(name);
+    try {
+      const blob = await renderOne(name, w, faces);
+      trigger(blob, name + '.png');
+      s.textContent = 'OK'; s.classList.add('ok');
+    } catch (err) {
+      s.textContent = 'ERR'; s.classList.add('err');
+      console.error(err);
+    }
+  }
+  status.textContent = 'Done. Move the 24 downloaded PNGs into png/.';
+};
+</script>
+</body></html>

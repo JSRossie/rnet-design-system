@@ -9,6 +9,21 @@
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: font/woff2
 
+# Logos — outlined SVG + PNG. Like fonts, content is frozen per filename (a
+# revision adds a new name, never mutates an existing one), so cache
+# immutably. CORS so a cross-origin <img>/fetch can load them. The two
+# extensions get disjoint rules so each path matches exactly one (Cloudflare
+# Pages concatenates matching rules rather than overriding).
+/charts-and-vectors/logos/*.svg
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/svg+xml
+
+/charts-and-vectors/logos/*.png
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/png
+
 # CSS and tokens are published under two non-overlapping prefixes so each
 # request path matches exactly one rule below. (Cloudflare Pages concatenates
 # the headers of every matching rule rather than letting a later rule override

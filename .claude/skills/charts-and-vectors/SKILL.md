@@ -68,6 +68,21 @@ the stylesheet is enough; no separate font setup. Switch mode with the
 Machine-readable tokens, if a build step needs them:
 `https://cdn.rossie.net/charts-and-vectors/tokens/v1/tokens.json`.
 
+Logos — the R—Net lockups (wordmark, JR-paired, `INFRASTRUCTURE` subtitle, FPM
+mark), in day / night / mono:
+
+```
+https://cdn.rossie.net/charts-and-vectors/logos/svg/<name>.svg   outlined, self-contained — prefer this
+https://cdn.rossie.net/charts-and-vectors/logos/png/<name>.png   raster fallback
+```
+
+Names follow `r-net-wordmark-{day,night,mono}`, `r-net-jr-{horizontal,stacked}[-norule][-infrastructure]-{…}`,
+and `fpm-mark-{…}`. The SVGs are outlined, so they render without the fonts
+loaded — safe as an `<img>`, CSS background, or favicon. Match accent to
+surface: `day` on light, `night` on dark. The wordmark's em-dash is drawn as
+the flight-path-marker glyph in the logo only — in prose, `R—Net` keeps the
+literal em-dash.
+
 ## The VS Code markdown preview
 
 The built-in VS Code markdown preview is a supported render target — a

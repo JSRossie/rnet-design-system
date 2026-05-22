@@ -1,5 +1,7 @@
 # Font build toolchain — recreate with fonts/build-fonts.sh setup line
 fonts/.venv/
+# Logo build toolchain — recreate with components/rnet/build-logos.sh setup line
+components/rnet/.venv/
 # Env
 .env
 
@@ -19,5 +21,8 @@ fonts/.venv/
 # the canonical root files. Pinned snapshots (css/v1.N.N/) stay committed.
 cdn/charts-and-vectors/css/v1/
 cdn/charts-and-vectors/tokens/v1/
+# CDN: logos are copied at deploy by cdn/build.sh from components/rnet/{svg,png}.
+# The canonical source is components/rnet/; the published copy is generated.
+cdn/charts-and-vectors/logos/
 # Personal hook config (machine-specific memory path)
 .claude/settings.local.json

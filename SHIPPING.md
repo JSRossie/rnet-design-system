@@ -7,6 +7,34 @@ This is the running shipping log. Each entry below is a numbered release on the 
 
 ---
 
+## v1.6 — 2026.05.22 · R—Net logo pack
+
+The R—Net brand ships as a real lockup pack, integrated and published rather than left in staging. Eight lockups (wordmark; wordmark + `INFRASTRUCTURE`; JR-horizontal ±rule; JR-horizontal + subtitle; JR-stacked; JR-stacked + subtitle; the FPM mark alone), each in day / night / mono — every one composed from the JR seal, the cockpit palette, and Outfit / JBM. No new primitive. The integration's real work was making the marks portable: the incoming wordmarks rendered their letters as live `<text>`, which silently falls back to a system font anywhere the page isn't already loading the fonts — i.e. exactly the CDN-hotlink case — so the distributable form is outlined to `<path>`.
+
+### Added
+
+- **`components/rnet/`** — the pack. `src/` (editable, font-referenced SVGs), `svg/` (outlined, self-contained — the distributable), `png/` (rasters of the outlined form), all 24 variants each.
+- **`components/rnet/outline-text.py`** — bakes `<text>` to `<path>` using the **self-hosted** Outfit (instanced at wght 600) and JetBrains Mono 500 woff2. Resolves inherited font properties and `text-anchor`, preserves enclosing transforms.
+- **`components/rnet/build-logos.sh`** — `src/` → `svg/` + `png/` (outline, then rasterize via `rsvg-convert`). Reproducible offline; no third-party font CDN.
+- **`components/rnet/README.md`** — pack usage rules, clear-space, minimum sizes, the FPM-glyph note, and the regenerate procedure.
+- **CDN: `charts-and-vectors/logos/{svg,png}/`** — published from the canonical source by `cdn/build.sh`. CORS-open, immutably cached, `image/svg+xml` / `image/png`.
+
+### Changed
+
+- **`SYSTEM.md`** → v1.11. Extended §5 with the R—Net logo pack (the two forms, the CDN URLs) and recorded the logo-only **FPM glyph** — the HUD velocity-vector standing in for the wordmark em-dash, scoped against the §11 prose rule and excluded from the §6 element kit. Added the v1.11 row to §13 and the `components/rnet/` subtree to the §14 file tree.
+- **`components/rnet/render-pngs.html`** — reworked off Google Fonts onto the self-hosted woff2 from `cdn.rossie.net`; demoted to an ad-hoc-sizes fallback behind `build-logos.sh`.
+- **`cdn/build.sh`** — publishes `logos/` from `components/rnet/{svg,png}` at deploy. **`cdn/_headers`** — added disjoint immutable + CORS rules for `logos/*.svg` and `logos/*.png`. **`cdn/HOSTING.md`** — documented the namespace, the source-of-truth relationship, and a verify command. **`.gitignore`** — ignores the generated `cdn/.../logos/` and the logo toolchain venv.
+- **`components/README.md`** — added the `rnet/` pack to the directory's contents.
+
+### Discipline check
+
+- ✓ No new color, type, token, radius, or motion primitive. The pack composes entirely from existing roles; the §4.5 matrix is untouched.
+- ✓ The FPM glyph is the only new geometry, and it is fenced: logo-only, never inline, not added to the §6 kit. The §11 em-dash rule for prose `R—Net` is unchanged.
+- ✓ Self-hosting discipline held. The build and the reworked harness read the system's own woff2 — `fonts.googleapis.com` is gone from the pipeline, matching `HOSTING.md`.
+- ✓ No CDN duplication. `logos/` is generated from the canonical source and `.gitignored`, like the `css/v1/` channel; the immutable-per-filename contract matches the fonts.
+
+---
+
 ## v1.5 — 2026.05.17 · Data visualization
 
 The chart layer the codename always promised. Promotes candidate #1 of the v1.6 staging note: a data-visualization standard covering eleven chart types, with the discipline question — how a multi-series chart escapes the single-accent rule — answered in the spec rather than at the call site.

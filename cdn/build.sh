@@ -41,4 +41,21 @@ done
 # --- Machine-readable tokens -------------------------------------------------
 cp tokens.json "$CV/tokens/v1/tokens.json"
 
+# --- Logos -------------------------------------------------------------------
+# Published from the canonical source in components/rnet/ (outlined SVG + PNG),
+# so the CDN carries no hand-copied duplicates that can drift. Filenames are
+# stable and content is frozen per name, so these cache immutably (see
+# _headers) — a logo revision adds a new filename, never mutates an existing
+# one. If components/rnet/{svg,png} are missing, the source pack hasn't been
+# built; run components/rnet/build-logos.sh first.
+if [ -d components/rnet/svg ] && [ -d components/rnet/png ]; then
+  mkdir -p "$CV/logos/svg" "$CV/logos/png"
+  cp components/rnet/svg/*.svg "$CV/logos/svg/"
+  cp components/rnet/png/*.png "$CV/logos/png/"
+  logo_msg="$CV/logos/ ($(ls "$CV/logos/svg" | wc -l | tr -d ' ') svg + $(ls "$CV/logos/png" | wc -l | tr -d ' ') png)"
+else
+  logo_msg="logos SKIPPED (components/rnet/{svg,png} not built)"
+fi
+
 echo "built v1 channel: $CV/css/v1/ ($(ls "$CV/css/v1" | wc -l | tr -d ' ') files), $CV/tokens/v1/"
+echo "published logos: $logo_msg"
