@@ -7,6 +7,29 @@ This is the running shipping log. Each entry below is a numbered release on the 
 
 ---
 
+## v1.7 — 2026.05.24 · Table line-break polish
+
+The first adoption from a downstream repo's handoff. Sabrina-Flight-Path validated two table behaviors against 50 real data tables and asked the system to make both defaults: `text-wrap: pretty` on cells, and a content-driven auto-width algorithm. Only the first lands here — it fits the system's declarative, link-one-stylesheet model exactly. The second was declined for this pass, on the record, because it would change what kind of repo this is.
+
+### Changed
+
+- **`markdown.css`** — added `:is(.md, body.vscode-body) :is(td, th) { text-wrap: pretty; }` to the §17 table treatment. A wrapped cell's final lines rebalance so a lone word is never stranded. It changes no column geometry, no-ops on single-line and numeric cells, falls back to today's behavior where unsupported (Chromium + recent Safari yes, Firefox lagging), and is harmless on the §17.5 metadata strip (single-line cells). Propagates through the rolling `css/v1/` channel on the next deploy; pinned consumers are unaffected.
+- **`SYSTEM.md`** → v1.12. Noted `text-wrap: pretty` in the §17 tables row, added the v1.12 row to §13, and corrected the stale `Version:` header and footer (both read 1.7 while §13 was already 1.11 — the 1.8–1.11 work never refreshed them).
+
+### Declined, on the record
+
+- **The auto-width algorithm (handoff D2)** — not adopted. The system is a declarative CSS/asset/docs repo with no JS toolchain; D2 is a build-time, font-coupled JavaScript dependency that only consumers with a build step can run (the §17.5 VS Code preview target cannot), and its baked `glyph-metrics.json` goes silently stale on any font re-subset. It needs its own scoped project answering *where it runs* and *how the metrics stay in sync with the fonts* before it can be a default. The downstream repo keeps its local implementation meanwhile.
+- **The "Token / asset checklist" (handoff)** — declined as framed. It is presented as table geometry to be "replicated, not reinvented," but it describes the downstream repo's richer `tables.css` (13.5px body, 1.2px header tracking, 2px header rule, `tabular-nums`, zebra rows, a 46ch first-column cap), not this system's current treatment. Adopting it wholesale is a visual redesign of the shipped v1 table — it would retroactively restyle every existing v1 document on the rolling channel — not a replication. `tabular-nums` on numeric columns may be lifted later on its own merit; zebra and the first-column cap are on hold pending a deliberate discipline check.
+
+### Discipline check
+
+- ✓ CSS-only, no new primitive, color, token, or component. The rule reads no new role and adds no geometry.
+- ✓ Negative-space discipline intact. The orphan fix removes a visual blemish; it adds no mark. The decorative parts of the downstream checklist (zebra striping) were *not* adopted by reflex — they were set aside for a discipline check, which is the §0 "when adding and removing are even, remove" instinct working as intended.
+- ✓ Honest about scope. D2 and the geometry checklist are recorded as declined with reasons, not silently dropped — a downstream repo reading this manifest learns the system does **not** yet compute column widths, so it won't propagate that claim onward.
+- ✓ Pinned consumers are stable; only the rolling channel moves, as the channel contract intends.
+
+---
+
 ## v1.6 — 2026.05.22 · R—Net logo pack
 
 The R—Net brand ships as a real lockup pack, integrated and published rather than left in staging. Eight lockups (wordmark; wordmark + `INFRASTRUCTURE`; JR-horizontal ±rule; JR-horizontal + subtitle; JR-stacked; JR-stacked + subtitle; the FPM mark alone), each in day / night / mono — every one composed from the JR seal, the cockpit palette, and Outfit / JBM. No new primitive. The integration's real work was making the marks portable: the incoming wordmarks rendered their letters as live `<text>`, which silently falls back to a system font anywhere the page isn't already loading the fonts — i.e. exactly the CDN-hotlink case — so the distributable form is outlined to `<path>`.

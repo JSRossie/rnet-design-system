@@ -1,10 +1,10 @@
 # JR / R—Net Design System
 
-**Version:** 1.7
+**Version:** 1.12
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
-**Last updated:** 2026.05.17
+**Last updated:** 2026.05.24
 
 ---
 
@@ -514,7 +514,8 @@ To stay disciplined, name what it isn't:
 | 1.8 | 2026.05.18 | Added §17.5 (VS Code preview target). `colors_and_type.css` mode selectors now recognize VS Code's `vscode-light` / `vscode-dark` / high-contrast body classes alongside `[data-mode]`; `markdown.css` body rules widen to `:is(.md, body.vscode-body)` and gain a VS Code preview chrome section. Adds the `bierner.markdown-yaml-preamble` extension as the target's one external dependency, and a committed `.vscode/settings.json`. No primitive, token, or component changes — all additions compose from v1.2 tokens. The record is `proposals/graduated/markdown-preview-vscode-plan.md`. |
 | 1.9 | 2026.05.18 | Revised §17.4 (front-matter vocabulary). Rendered chrome is now drawn only from the named vocabulary — front matter remains an open superset for a project's own tooling, but an unnamed key is data, not chrome. Added the **Deck** region (§10.1) for `description`, a body-face standfirst, with `.doc-deck` in `markdown.css`. The metadata block now groups into three collapsing lines — lineage, responsibility, lifecycle; the eyebrow gains a three-zone permanence model and `doc-id` migrates to its right edge as a register mark. `title` is accepted but not rendered (the `h1` is the title); the type label derives from the `doc-id` code; `mode` is marked a conditional selector, inert in the VS Code target. §17.5 records the regionalization as standalone-target. No primitive, color, token, or component changes. |
 | 1.10 | 2026.05.18 | Designed the VS Code metadata strip (§17.5). The strip cannot regionalize by field name, so it is *capped at five columns* and §17.5 names a canonical front-matter order that front-loads the flattened eyebrow — `doc-id`, `node`, `class`, `status`, `rev`. `description`, `title`, `owner`, the dates, and project keys sort past the cap and do not render, so the strip cannot overrun and the §17.4 data/chrome boundary holds for it. `markdown.css` rules column one off as the `doc-id` register, carrying `--accent` to match the standalone eyebrow's right edge. CSS-only change to `markdown.css`; no primitive, color, token, or component changes. |
-| **1.11** | 2026.05.22 | **Current.** Integrated the R—Net logo pack under `components/rnet/` (§5) and published it to the CDN at `charts-and-vectors/logos/`. Eight lockups × day/night/mono, derived wholly from the JR seal, the cockpit palette, and Outfit/JBM — no new primitive. Added a self-hosted build pipeline (`build-logos.sh` + `outline-text.py`) that bakes the wordmark text to `<path>` so the distributable SVGs render with no font dependency, and reworked the PNG harness off Google Fonts onto the self-hosted woff2. Recorded the logo-only **FPM glyph** (the HUD velocity-vector that stands in for the wordmark em-dash) in §5; the prose em-dash rule (§11) is unchanged. `cdn/build.sh` now publishes `logos/` from the canonical source; `cdn/_headers` gains immutable, CORS, `image/svg+xml`/`image/png` rules. No color, token, CSS, or UI-component changes. |
+| 1.11 | 2026.05.22 | Integrated the R—Net logo pack under `components/rnet/` (§5) and published it to the CDN at `charts-and-vectors/logos/`. Eight lockups × day/night/mono, derived wholly from the JR seal, the cockpit palette, and Outfit/JBM — no new primitive. Added a self-hosted build pipeline (`build-logos.sh` + `outline-text.py`) that bakes the wordmark text to `<path>` so the distributable SVGs render with no font dependency, and reworked the PNG harness off Google Fonts onto the self-hosted woff2. Recorded the logo-only **FPM glyph** (the HUD velocity-vector that stands in for the wordmark em-dash) in §5; the prose em-dash rule (§11) is unchanged. `cdn/build.sh` now publishes `logos/` from the canonical source; `cdn/_headers` gains immutable, CORS, `image/svg+xml`/`image/png` rules. No color, token, CSS, or UI-component changes. |
+| **1.12** | 2026.05.24 | **Current.** Added `text-wrap: pretty` to the §17 table treatment (`markdown.css`) so a wrapped cell never strands a lone word on its final line. Pure line-break polish: it changes no column geometry, no-ops on single-line and numeric cells, degrades silently where unsupported, and leaves the §17.5 metadata strip untouched (its cells are single-line). CSS-only change to `markdown.css`; no primitive, color, token, or component changes. Adopts Deliverable 1 of the Sabrina-Flight-Path table-defaults handoff; the content-driven auto-width algorithm (D2) and the table-geometry "checklist" were declined as out of scope — the former a build-time font-coupled JS dependency that does not fit a declarative CSS system, the latter a visual redesign rather than the replication it was framed as. Corrected the stale `Version:` header and footer (both read 1.7; §13 was already 1.11). |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -737,7 +738,7 @@ Every markdown element maps onto an existing primitive — no new ones:
 | `> ` with `.ok`/`.warn`/`.alert` | The §4.4 semantic layer; status only, separate from the brand accent |
 | `` `inline code` `` | Inline-accent role on a subtle `bg-elev-2` chip |
 | Fenced code block | The `.codeblock` surface — `bg-elev-2`, hairline border, `--radius-3` |
-| Tables | The R—Net sites-table pattern — mono uppercase headers, hairline rules |
+| Tables | The R—Net sites-table pattern — mono uppercase headers, hairline rules; cells carry `text-wrap: pretty` so a wrapped cell never strands a lone word |
 | `---` | Hair rule (`--bw-hair`) |
 
 Links carry meaning, so a link-dense document is exempt from §4.6's "accent in at most three places" — resolved as §7 exempts functional glyphs.
@@ -897,4 +898,4 @@ Charts inherit §12 and §4.6 and add:
 
 ---
 
-*End of SYSTEM.md · v1.7 · 2026.05.17*
+*End of SYSTEM.md · v1.12 · 2026.05.24*

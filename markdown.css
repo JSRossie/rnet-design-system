@@ -221,6 +221,13 @@
   border-bottom: 1px solid var(--rule);
 }
 :is(.md, body.vscode-body) tbody tr:last-child td { border-bottom: 0; }
+/* Rebalance the final lines of a wrapped cell so a lone word is never
+   stranded on its own line. Pure polish: never changes column widths,
+   never affects single-line or numeric cells, ignored harmlessly where
+   unsupported (Chromium + recent Safari yes, Firefox lagging — fallback
+   is today's behavior). Harmless on the §17.5 strip: its cells are
+   single-line tokens, which pretty leaves untouched. */
+:is(.md, body.vscode-body) :is(td, th) { text-wrap: pretty; }
 
 /* ─── Images ──────────────────────────────────────────────── */
 :is(.md, body.vscode-body) img {
