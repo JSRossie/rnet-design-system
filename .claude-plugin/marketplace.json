@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "rnet-design-system",
+  "description": "JR / R—Net \"Charts & Vectors\" design system, distributed as a Claude Code plugin.",
+  "owner": {
+    "name": "James Rossie"
+  },
+  "plugins": [
+    {
+      "name": "rnet-design-system",
+      "description": "Apply the JR / R—Net \"Charts & Vectors\" design system when generating visual output (charts-and-vectors) or prose (rnet-voice), plus webfont subsetting (font-subset).",
+      "version": "1.0.0",
+      "author": {
+        "name": "James Rossie"
+      },
+      "source": "./",
+      "category": "design",
+      "homepage": "https://github.com/JSRossie/rnet-design-system"
+    }
+  ]
+}

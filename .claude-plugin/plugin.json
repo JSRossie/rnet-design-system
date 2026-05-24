@@ -1,0 +1,12 @@
+{
+  "name": "rnet-design-system",
+  "version": "1.0.0",
+  "description": "JR / R—Net \"Charts & Vectors\" design system: visual standard (charts-and-vectors), editorial voice (rnet-voice), and webfont tooling (font-subset) as portable, auto-applying skills. Assets self-hosted at cdn.rossie.net.",
+  "author": {
+    "name": "James Rossie"
+  },
+  "homepage": "https://github.com/JSRossie/rnet-design-system",
+  "skills": [
+    "./.claude/skills/"
+  ]
+}
