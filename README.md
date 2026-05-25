@@ -69,11 +69,12 @@ Naming what the system isn't turns out to be as important as naming what it is. 
 ## What's in this repository
 
 - **`SYSTEM.md`** — the complete specification. Read this when you need the rules: type roles, color tokens with verified contrast ratios, content patterns, the discipline rules, the procedure for extending the system.
-- **`GLYPHS.md`** — the curated icon vocabulary. Role-based registry of 83 sanctioned glyphs across 9 categories from JetBrainsMono Nerd Font, with confidence tags and an audit procedure for keeping codepoints accurate across font versions.
+- **`GLYPHS.md`** — the curated icon vocabulary. Role-based registry of 90 sanctioned glyphs across 9 categories from JetBrainsMono Nerd Font, with confidence tags and an audit procedure for keeping codepoints accurate across font versions. The `content-*` class (§5) marks typed content in a layered document corpus.
 - **`VOICE.md`** — the editorial-voice standard. How prose deliverables read: a researcher-briefer voice across eight dimensions, a banned-pattern reference for the default-LLM tells, and a revision checklist. The written counterpart to the visual spec. See `SYSTEM.md §18`.
 - **`SHORT.md`** and **`STANDARD.md`** — concise versions of the spec at different fidelity, sized to drop into AI system prompts.
 - **`tokens.json`, `tokens.css`, `tailwind.config.js`** — machine-readable design tokens for use in any modern tool.
 - **`colors_and_type.css`, `controls.css`** — drop-in web layer: semantic role aliases, `@font-face` declarations, and the first cohort of UI controls (buttons, fields, navigation, feedback, tables, modal). Switch modes with `<html data-mode="day | night">`. See `SYSTEM.md §4.7` and `§16`.
+- **`glyphs.css`** — generated name-based glyph classes (`<span class="glyph glyph-content-briefing">`), one per `GLYPHS.md` role. Reference a glyph by role name instead of pasting a raw PUA codepoint; rebuilt from `GLYPHS.md` by `fonts/build-fonts.sh`.
 - **`markdown.css`** — drop-in styling for rendered markdown: a prose-scoped heading ramp, code, callouts, and tables, plus preview chrome. Styles bare rendered output with no class hooks, and reaches the VS Code built-in markdown preview as a named target. See `SYSTEM.md §17`.
 - **`charts.css`** — drop-in data-visualization layer: eleven chart types (line, bar, heatmap, gauge, network diagram, and more) across a CSS and an SVG render path, with a categorical series ramp and a sequential ramp. No charting library, no runtime JS. See `SYSTEM.md §19`.
 - **`/prompts`** — prompts tuned for Claude, ChatGPT, v0, and design tools. The shortest path to consistent AI output.

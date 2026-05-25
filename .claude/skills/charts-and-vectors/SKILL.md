@@ -173,12 +173,18 @@ than all of it.
 - **`reference/STANDARD.md`** — the working spec. Type roles, the four color
   layers with hex values, the two modes, the six industrial-grammar primitives,
   layout metrics, the disciplines. Read this for almost any visual task.
-- **`reference/GLYPHS.md`** — the role-based glyph registry: 83 sanctioned
+- **`reference/GLYPHS.md`** — the role-based glyph registry: 90 sanctioned
   roles across 9 categories from JetBrainsMono Nerd Font, each with a codepoint
-  and a confidence tag. Consult it whenever output uses a glyph — reference a
-  role by name, do not pick a glyph freely. Prefer Font Awesome codepoints over
-  Material Design Icons (MDI codepoints shift between Nerd Font releases); if a
-  role's codepoint is uncertain, surface that rather than using it silently.
+  and a confidence tag (includes the §5 `content-*` content-type class). Consult
+  it whenever output uses a glyph — reference a role by name, do not pick a glyph
+  freely, do not load a third-party icon font, and do not repurpose an unrelated
+  role. Prefer Font Awesome codepoints over Material Design Icons (MDI codepoints
+  shift between Nerd Font releases); if a role's codepoint is uncertain, surface
+  that rather than using it silently. In HTML/CSS output, consume glyphs through
+  the generated name-based classes in `glyphs.css`
+  (`<span class="glyph glyph-content-briefing" aria-hidden="true"></span>`) —
+  never paste raw PUA codepoints into source, which editors and copy-paste
+  mangle. The class is decorative; pair it with an accessible text label.
 - **`reference/tokens.json`** — machine-readable tokens, for generating code or
   a build config. Cite tokens by name (`sky-deep`, `night-2`), not by hex.
 

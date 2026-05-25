@@ -62,7 +62,7 @@ Default kit for most documents: accent stripe + numbered section headers + occas
 
 ## Glyphs (Nerd Font Vocabulary)
 
-JetBrainsMono Nerd Font provides ~9,000 glyphs. The system sanctions 83 roles across 9 categories in a role-based registry (`GLYPHS.md`). Each role has one assigned glyph with a confidence tag. Prefer Font Awesome codepoints (stable across versions) over Material Design Icons (codepoints shift between major Nerd Fonts releases).
+JetBrainsMono Nerd Font provides ~9,000 glyphs. The system sanctions 90 roles across 9 categories in a role-based registry (`GLYPHS.md`). Each role has one assigned glyph with a confidence tag. Prefer Font Awesome codepoints (stable across versions) over Material Design Icons (codepoints shift between major Nerd Fonts releases).
 
 Common roles: `status-ok` (U+F00C), `status-fail` (U+F00D), `status-warn` (U+F071), `infra-server` (U+F233), `infra-database` (U+F1C0), `loc-home-primary` (U+F015), `loc-aviation` (U+F072, the JR signature glyph), `comms-mail` (U+F0E0), `dev-terminal` (U+F120).
 

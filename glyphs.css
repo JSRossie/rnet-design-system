@@ -1,0 +1,136 @@
+/* glyphs.css — JR / R—Net design system · name-based glyph classes.
+   GENERATED from GLYPHS.md by fonts/build-fonts.sh — do not edit by hand.
+   Rerun the build whenever GLYPHS.md changes (see fonts/UNICODE-RANGE.css).
+
+   Reference a sanctioned glyph by ROLE NAME, never by raw PUA codepoint:
+
+       <span class="glyph glyph-content-briefing" aria-hidden="true"></span>
+
+   The mark is decorative — always pair it with an accessible text label.
+   Color follows function (GLYPHS.md §11): set `color` on the element and the
+   glyph inherits it. Requires the 'JetBrainsMono Nerd Font' @font-face
+   declared in colors_and_type.css. */
+
+.glyph,
+[class^="glyph-"],
+[class*=" glyph-"] {
+  font-family: 'JetBrainsMono Nerd Font', monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Status & Indicators */
+.glyph-status-ok::before { content: "\f00c"; }
+.glyph-status-fail::before { content: "\f00d"; }
+.glyph-status-warn::before { content: "\f071"; }
+.glyph-status-info::before { content: "\f129"; }
+.glyph-status-online::before { content: "\f111"; }
+.glyph-status-offline::before { content: "\f10c"; }
+.glyph-status-syncing::before { content: "\f021"; }
+.glyph-status-time::before { content: "\f017"; }
+
+/* Infrastructure & Network */
+.glyph-infra-server::before { content: "\f233"; }
+.glyph-infra-database::before { content: "\f1c0"; }
+.glyph-infra-cloud::before { content: "\f0c2"; }
+.glyph-infra-network::before { content: "\f0e8"; }
+.glyph-infra-router::before { content: "\f1087"; }
+.glyph-infra-wifi::before { content: "\f1eb"; }
+.glyph-infra-throughput::before { content: "\f0e7"; }
+.glyph-infra-device-mobile::before { content: "\f10b"; }
+.glyph-infra-switch::before { content: "\f0317"; }
+.glyph-infra-ups::before { content: "\f0079"; }
+.glyph-infra-vm::before { content: "\ea7a"; }
+.glyph-infra-container::before { content: "\f4b7"; }
+.glyph-infra-cluster::before { content: "\f06e1"; }
+.glyph-infra-cpu::before { content: "\f0ee0"; }
+.glyph-infra-memory::before { content: "\f035b"; }
+.glyph-infra-storage::before { content: "\f02ca"; }
+.glyph-infra-firewall::before { content: "\f1a11"; }
+.glyph-infra-vpn::before { content: "\f0582"; }
+.glyph-infra-temperature::before { content: "\f050f"; }
+.glyph-infra-fan::before { content: "\f0210"; }
+.glyph-infra-load::before { content: "\f029a"; }
+.glyph-infra-monitor::before { content: "\f0a07"; }
+.glyph-infra-backup::before { content: "\f006f"; }
+.glyph-infra-camera::before { content: "\f07ae"; }
+
+/* Location & Geography */
+.glyph-loc-home-primary::before { content: "\f015"; }
+.glyph-loc-home-secondary::before { content: "\f1ad"; }
+.glyph-loc-pin::before { content: "\f041"; }
+.glyph-loc-compass::before { content: "\f14e"; }
+.glyph-loc-aviation::before { content: "\f072"; }
+
+/* Security & System Health */
+.glyph-sec-lock::before { content: "\f023"; }
+.glyph-sec-shield::before { content: "\f132"; }
+.glyph-sec-key::before { content: "\f084"; }
+
+/* Document, Comms, Contact */
+.glyph-doc-file::before { content: "\f15b"; }
+.glyph-doc-folder::before { content: "\f07b"; }
+.glyph-comms-mail::before { content: "\f0e0"; }
+.glyph-comms-phone::before { content: "\f095"; }
+.glyph-comms-calendar::before { content: "\f073"; }
+
+/* Content-Type Indicators */
+.glyph-content-briefing::before { content: "\f0f6"; }
+.glyph-content-deep-dive::before { content: "\f02d"; }
+.glyph-content-note::before { content: "\f249"; }
+.glyph-content-source::before { content: "\f187"; }
+.glyph-content-guide::before { content: "\f518"; }
+.glyph-content-chronicle::before { content: "\f1ea"; }
+.glyph-content-gallery::before { content: "\f302"; }
+
+/* Development & Code */
+.glyph-dev-git::before { content: "\f1d3"; }
+.glyph-dev-branch::before { content: "\f126"; }
+.glyph-dev-terminal::before { content: "\f120"; }
+.glyph-dev-code::before { content: "\f121"; }
+.glyph-dev-github::before { content: "\f09b"; }
+.glyph-dev-linux::before { content: "\f17c"; }
+
+/* Drafting & Navigation (Signature Category) */
+.glyph-nav-arrow-up-right::before { content: "\f08e"; }
+.glyph-nav-crosshair::before { content: "\f05b"; }
+.glyph-nav-target::before { content: "\f140"; }
+.glyph-nav-direction::before { content: "\f124"; }
+.glyph-nav-grid::before { content: "\f00a"; }
+
+/* Platform & Stack */
+.glyph-stack-docker::before { content: "\f21f"; }
+.glyph-stack-kubernetes::before { content: "\f10fe"; }
+.glyph-stack-ubuntu::before { content: "\f31b"; }
+.glyph-stack-debian::before { content: "\f306"; }
+.glyph-stack-nixos::before { content: "\f313"; }
+.glyph-stack-cloudflare::before { content: "\e792"; }
+
+/* Home Automation */
+.glyph-home-assistant::before { content: "\f07d0"; }
+.glyph-home-apple::before { content: "\f0035"; }
+.glyph-home-zigbee::before { content: "\f0d41"; }
+.glyph-home-zwave::before { content: "\f0aea"; }
+.glyph-home-bluetooth::before { content: "\f00af"; }
+.glyph-home-matter::before { content: "\f0563"; }
+.glyph-home-light::before { content: "\f0335"; }
+.glyph-home-thermostat::before { content: "\f0393"; }
+.glyph-home-lock::before { content: "\f08b2"; }
+.glyph-home-door::before { content: "\f081a"; }
+.glyph-home-window::before { content: "\f05ae"; }
+.glyph-home-motion::before { content: "\f0d91"; }
+.glyph-home-presence::before { content: "\f0826"; }
+.glyph-home-blinds::before { content: "\f00ac"; }
+.glyph-home-garage::before { content: "\f06d9"; }
+.glyph-home-doorbell::before { content: "\f12e6"; }
+.glyph-home-smoke::before { content: "\f0392"; }
+.glyph-home-speaker::before { content: "\f04c3"; }
+.glyph-home-tv::before { content: "\f0502"; }
+.glyph-home-energy::before { content: "\f1903"; }
+.glyph-home-automation::before { content: "\f07d1"; }

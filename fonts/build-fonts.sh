@@ -60,4 +60,57 @@ done
 } > UNICODE-RANGE.css
 echo "wrote UNICODE-RANGE.css ($(grep -oE 'U\+[0-9A-Fa-f]{4,6}' ../GLYPHS.md | sort -u | wc -l | tr -d ' ') catalog codepoints)"
 
+# --- Emit glyphs.css: name-based glyph classes -------------------------------
+# Maps every sanctioned role to a `.glyph-<role>` class whose ::before renders
+# the role's codepoint, so consumers reference role NAMES, never raw PUA chars
+# (which don't survive editors/copy-paste reliably). Generated from GLYPHS.md;
+# rerun this script whenever GLYPHS.md changes. Output is the canonical root
+# glyphs.css; cdn/build.sh publishes it to the v1 channel + rnet.css bundle.
+/usr/bin/python3 - ../GLYPHS.md ../glyphs.css <<'PY'
+import re, sys
+src = open(sys.argv[1], encoding="utf-8").read()
+CATS = {"Status & Indicators","Infrastructure & Network","Location & Geography",
+        "Security & System Health","Document, Comms, Contact","Content-Type Indicators",
+        "Development & Code","Drafting & Navigation (Signature Category)",
+        "Platform & Stack","Home Automation"}
+out = ['''/* glyphs.css — JR / R—Net design system · name-based glyph classes.
+   GENERATED from GLYPHS.md by fonts/build-fonts.sh — do not edit by hand.
+   Rerun the build whenever GLYPHS.md changes (see fonts/UNICODE-RANGE.css).
+
+   Reference a sanctioned glyph by ROLE NAME, never by raw PUA codepoint:
+
+       <span class="glyph glyph-content-briefing" aria-hidden="true"></span>
+
+   The mark is decorative — always pair it with an accessible text label.
+   Color follows function (GLYPHS.md §11): set `color` on the element and the
+   glyph inherits it. Requires the 'JetBrainsMono Nerd Font' @font-face
+   declared in colors_and_type.css. */
+
+.glyph,
+[class^="glyph-"],
+[class*=" glyph-"] {
+  font-family: 'JetBrainsMono Nerd Font', monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}''']
+row = re.compile(r"^\| `([a-z][a-z0-9-]+)` \| `U\+([0-9A-Fa-f]{4,6})` \|")
+sec = re.compile(r"^#{2,3} +(?:[0-9]+\. +)?(.+?)\s*$")
+n = 0
+for line in src.splitlines():
+    m = row.match(line)
+    if m:
+        out.append(f'.glyph-{m.group(1)}::before {{ content: "\\{m.group(2).lower()}"; }}'); n += 1; continue
+    sm = sec.match(line)
+    if sm and sm.group(1) in CATS:
+        out.append(f"\n/* {sm.group(1)} */")
+open(sys.argv[2], "w", encoding="utf-8").write("\n".join(out) + "\n")
+sys.stderr.write(f"wrote glyphs.css ({n} role classes)\n")
+PY
+
 ls -la "$OUT"

@@ -1,9 +1,9 @@
 # GLYPHS.md — Curated Glyph Reference
 
 **Companion to:** `SYSTEM.md` v1.6
-**Document version:** 2.2
-**Last updated:** 2026.05.15
-**Authored against Nerd Fonts:** v3.4.0 (cmap-verified 2026.05.15)
+**Document version:** 2.3
+**Last updated:** 2026.05.24
+**Authored against Nerd Fonts:** v3.4.0 (cmap-verified 2026.05.24)
 **Font required:** JetBrainsMono Nerd Font ([install](https://www.nerdfonts.com/font-downloads))
 
 ---
@@ -134,6 +134,24 @@ For headers, metadata blocks, contact information.
 | `comms-mail` | `U+F0E0` |  | FA (envelope) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
 | `comms-phone` | `U+F095` |  | FA (phone) | `[FA-stable]` | `sky-deep`, `amber` |
 | `comms-calendar` | `U+F073` |  | FA (calendar) | `[FA-stable]` | `sky-deep`, `amber` |
+
+
+### Content-Type Indicators
+
+A distinct role class for **typed content in a layered document corpus** — the mark that tells a reader which *kind* of artifact they are looking at when a project ships several related document classes under one roof (a briefing and its supporting annexes, sources, primers, and timelines). Added v2.3.
+
+These are **not** a repurposing of the document roles above. `doc-file` and `doc-folder` denote files and folders as objects; the `content-*` roles denote a document's *editorial class*. Reach for them only in projects that actually run a multi-class corpus — a single-document page does not need them (§0 inclusion bar). Names generalize past any one project's vocabulary: an "addendum" is a `content-deep-dive`; an "aviation primer" is a `content-guide`.
+
+| Role | Codepoint | Glyph | Source | Tag | Sanctioned colors |
+|------|-----------|------:|--------|-----|-------------------|
+| `content-briefing` | `U+F0F6` |  | FA (file-lines) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-deep-dive` | `U+F02D` |  | FA (book) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-note` | `U+F249` |  | FA (sticky-note) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-source` | `U+F187` |  | FA (archive) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-guide` | `U+F518` |  | FA (book-open) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-chronicle` | `U+F1EA` |  | FA (newspaper) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+| `content-gallery` | `U+F302` |  | FA (images) | `[FA-stable]` | `sky-deep` (light), `amber` (dark) |
+
 
 ---
 
@@ -280,6 +298,15 @@ DOCUMENT / COMMS
   comms-phone         [telephone]         
   comms-calendar      [calendar]          
 
+CONTENT TYPES
+  content-briefing    [document, lines]   
+  content-deep-dive   [book]              
+  content-note        [sticky note]       
+  content-source      [archive box]       
+  content-guide       [open book]         
+  content-chronicle   [newspaper]         
+  content-gallery     [image gallery]    
+
 DEV
   dev-git             [git logo]          
   dev-branch          [code fork]         
@@ -384,6 +411,7 @@ Track verifications, updates, and additions over time. New entries on top.
 
 | Date | Action | Role(s) | Notes |
 |------|--------|---------|-------|
+| 2026.05.24 | Added | §5 content-type (7): content-briefing, content-deep-dive, content-note, content-source, content-guide, content-chronicle, content-gallery | New "Content-Type Indicators" role class under §5 for typed content in a layered document corpus (per the sabrina-flight-path §12 RFC). All seven are Font Awesome, codepoints cmap-verified present in JetBrainsMono Nerd Font v3.4.0 on 2026.05.24; tagged `[FA-stable]`. Operator visual confirmation pending via §10 harness. All seven map to real surfaces in the requesting consumer (briefings, addenda, notes, sources, primer, dated pages, photo gallery), so none were deferred. Resolves a downstream workaround that repurposed `nav-target`/`doc-file`/`dev-terminal`/`sec-lock`/`loc-compass`/`comms-calendar` for content classes and loaded Font Awesome via cdnjs. Paired with the new name-based CSS class layer (`glyphs.css`) so consumers reference role names, not raw PUA codepoints. |
 | 2026.05.15 | Added | §2 infra (16) · §8 stack (6) · §9 home (21) | 43 roles added — home-lab + home-automation expansion. All codepoints cmap-verified against JetBrainsMono Nerd Font v3.4.0 and operator-confirmed via the candidate preview pages; tagged `[verified-2026.05]`. New categories §8 Platform & Stack and §9 Home Automation; meta sections renumbered §10–§15. Charter §0 gained explicit inclusion criteria. `stack-proxmox` rejected (no brand glyph — Proxmox uses `infra-server`); `infra-uptime` rejected (redundant with `status-online`). |
 | 2026.05.15 | Verified | All §1–§7 (40 roles) | cmap audit against JetBrainsMono Nerd Font v3.4.0 — all 40 codepoints present in font. 36 entries confirmed glyph-name-correct; 4 mismatches corrected (rows below). |
 | 2026.05.15 | Updated | infra-server | Was U+F0A0 (rendered `fa-hdd_o`, a hard-drive). Now U+F233 (`fa-server`). |
@@ -421,7 +449,8 @@ When you verify, update, or add entries, append a row like:
 |---------|------|-------|
 | 1.0 | 2026.05.14 | Initial draft. Codepoints later found to be partially unreliable (some MDI entries from stale training data). |
 | 2.1 | 2026.05.15 | cmap-verified against JetBrainsMono Nerd Font v3.4.0. Four codepoint corrections (`infra-server`, `infra-router`, `status-online`, `status-offline`); the two status-circle roles moved MDI→FA. Font self-hosted at `cdn.rossie.net`; @font-face in style-guide.html updated. No `[MDI-v3.x-claim]` entries remain. |
-| **2.2** | 2026.05.15 | **Current.** Home-lab + home-automation expansion: +16 infrastructure roles, new §8 Platform & Stack (6 roles) and §9 Home Automation (21 roles) — 43 added, all cmap-verified `[verified-2026.05]`. Charter §0 adds explicit inclusion criteria (technical usability + consistency; pre-curation over ad-hoc). Distro logos unified to the `linux-` set. Meta sections renumbered §10–§15. |
+| **2.3** | 2026.05.24 | **Current.** New "Content-Type Indicators" role class under §5: +7 `content-*` roles (briefing, deep-dive, note, source, guide, chronicle, gallery) for typed content in a layered document corpus — all Font Awesome, cmap-verified against JetBrainsMono Nerd Font v3.4.0, `[FA-stable]`. Adds a name-based CSS class layer (`glyphs.css`, generated from this file) so consumers reference role names rather than raw PUA codepoints; resolves a downstream consumer's role-repurposing + Font-Awesome-via-cdnjs workaround. Subset font + `UNICODE-RANGE.css` rebuilt for the new codepoints. |
+| 2.2 | 2026.05.15 | Home-lab + home-automation expansion: +16 infrastructure roles, new §8 Platform & Stack (6 roles) and §9 Home Automation (21 roles) — 43 added, all cmap-verified `[verified-2026.05]`. Charter §0 adds explicit inclusion criteria (technical usability + consistency; pre-curation over ad-hoc). Distro logos unified to the `linux-` set. Meta sections renumbered §10–§15. |
 | 2.0 | 2026.05.14 | Restructured as role-based with confidence tags. FA bias established. Audit procedure formalized. ~30 roles defined across 7 categories. All MDI entries pending verification pass. |
 
 ---
