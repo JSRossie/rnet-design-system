@@ -10,16 +10,20 @@ the cockpit palette and Outfit / JetBrains Mono type. See **§5** for the spec.
 components/rnet/
 ├── src/              24 editable source SVGs — wordmark text is live <text>
 │                     (Outfit 600 / JetBrains Mono 500). Edit these.
-├── svg/              24 outlined SVGs — text baked to <path>. Self-contained;
-│                     render identically anywhere. The distributable form.
-├── png/              24 rasters of the outlined SVGs.
+├── svg/              27 distributable SVGs — the 24 outlined lockups (text baked
+│                     to <path>) plus the 3 published JR monograms. Self-contained;
+│                     render identically anywhere.
+├── png/              27 rasters of the svg/ set.
 ├── outline-text.py   <text> → <path> outliner (uses the self-hosted woff2).
 ├── build-logos.sh    src/ → svg/ + png/. Run after editing src/.
 └── render-pngs.html  Browser PNG renderer (fallback; see "Regenerating").
 ```
 
-`svg/` and `png/` are generated from `src/` — don't hand-edit them. They are
-also what `cdn/build.sh` copies to `cdn.rossie.net/charts-and-vectors/logos/`.
+`svg/` and `png/` are generated — don't hand-edit them. The 24 lockups come from
+`src/`; the 3 `jr-monogram-*` files are published from the parent seal at
+`../monogram-{light,dark,mono}.svg` (its canonical home, `SYSTEM.md §5`). Both
+flow through `build-logos.sh`, and `cdn/build.sh` copies the result to
+`cdn.rossie.net/charts-and-vectors/logos/`.
 
 ## At a glance
 
@@ -33,6 +37,7 @@ also what `cdn/build.sh` copies to `cdn.rossie.net/charts-and-vectors/logos/`.
 | `r-net-jr-stacked-{…}` | JR above R—Net, centered | Ceremonial: auth pages, covers, signatures |
 | `r-net-jr-stacked-infrastructure-{…}` | Stacked + subtitle | Full ceremonial form |
 | `fpm-mark-{…}` | The velocity-vector glyph alone | Favicon, status indicator, splash |
+| `jr-monogram-{…}` | The parent JR seal alone (not a lockup) | James's personal mark, standalone — favicon, signature, letterhead |
 
 Each lockup ships in three modes:
 - **day** — sky-deep accent (`#4A7A96`) on `paper-true`. Ink `#1F1D18`.
@@ -130,13 +135,16 @@ Every variant, ready to copy. Swap `svg` ↔ `png` in the path for the other for
 | fpm-mark-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-day.png |
 | fpm-mark-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-night.png |
 | fpm-mark-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/fpm-mark-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/fpm-mark-mono.png |
+| jr-monogram-day | https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-day.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/jr-monogram-day.png |
+| jr-monogram-night | https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-night.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/jr-monogram-night.png |
+| jr-monogram-mono | https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-mono.svg | https://cdn.rossie.net/charts-and-vectors/logos/png/jr-monogram-mono.png |
 
 ## Regenerating
 
-Edit `src/`, then rebuild:
+Edit `src/` (lockups) or `../monogram-*.svg` (the JR seal), then rebuild:
 
 ```bash
-components/rnet/build-logos.sh        # src/ → svg/ + png/
+components/rnet/build-logos.sh        # src/ + ../monogram-* → svg/ + png/
 ```
 
 One-time toolchain setup (the venv is git-ignored, like `fonts/.venv`):
@@ -157,6 +165,10 @@ browser fallback for ad-hoc PNG sizes; it now loads the same self-hosted fonts.
 - **v1.0** — initial pack (font-referenced SVGs + PNGs).
 - **v1.1** — integrated: text outlined to `<path>`, self-hosted build pipeline,
   CDN publication. Locked proportions unchanged.
+- **v1.2** — `build-logos.sh` now also publishes the parent JR monogram from
+  `../monogram-{light,dark,mono}.svg` as `jr-monogram-{day,night,mono}` (path-only,
+  no outlining). Pack grows 24 → 27 distributables; no lockup changed
+  (`SYSTEM.md` v1.13).
 
 Future revisions extend; they don't replace. A new lockup adds a new file
 pattern; existing files stay byte-identical under their name.

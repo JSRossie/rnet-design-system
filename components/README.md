@@ -10,6 +10,8 @@ This directory holds the production monogram SVGs, the R—Net logo pack, and do
 
 The SVG is the spec for each variant — color choices (per-letter palette, arrow color, construction-line treatment) are defined by the asset, not by `SYSTEM.md §5`. To produce updated variants, refine the source SVG in Illustrator and overwrite the file; do not parameterise the colors via CSS.
 
+These three files are the canonical source, and they are **also published to the CDN** (since `SYSTEM.md` v1.13) as `jr-monogram-{day,night,mono}` — `light`→`day`, `dark`→`night`. `rnet/build-logos.sh` copies and rasterizes them from here (they are path-only, so nothing is outlined), and `cdn/build.sh` serves them at `cdn.rossie.net/charts-and-vectors/logos/`. Editing a file here and rebuilding republishes the matching CDN asset.
+
 ## R—Net logo pack (shipped v1.6)
 
 `rnet/` holds the R—Net brand lockups — wordmark, JR-paired horizontal and stacked forms, the `INFRASTRUCTURE` subtitle variants, and the FPM mark — in day / night / mono. They derive from the JR monogram above plus the cockpit palette and Outfit / JBM type; see `SYSTEM.md §5` and `rnet/README.md`.

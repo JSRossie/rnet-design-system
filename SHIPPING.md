@@ -7,6 +7,32 @@ This is the running shipping log. Each entry below is a numbered release on the 
 
 ---
 
+## v1.8 — 2026.06.02 · JR monogram on the CDN
+
+The R—Net pack (release v1.6) published every lockup to the CDN but left the parent JR seal — the mark the whole pack derives from — reachable only as a repo file. This closes that gap: the three monograms now have stable, CORS-open, immutably-cached URLs alongside the lockups. No new asset was drawn; the existing `components/monogram-{light,dark,mono}.svg` are published as-is. They are path-only (no live `<text>`), so unlike the wordmarks there is nothing to outline — the build copies and rasterizes them straight from source.
+
+The naming follows the wordmark's `day/night/mono` surface convention (`light`→`day`, `dark`→`night`) and drops the `r-net-` prefix, since the seal is not an R—Net lockup — exactly as `fpm-mark` stands alone. Canonical name: `jr-monogram-{day,night,mono}`.
+
+### Added
+
+- **CDN: `charts-and-vectors/logos/{svg,png}/jr-monogram-{day,night,mono}`** — the JR seal, published from its canonical `components/monogram-*.svg` source. SVG (path-only, self-contained) + PNG (1024px square). Same immutable + CORS contract as the lockups; `_headers` already matches by glob, so no header rule was added.
+
+### Changed
+
+- **`components/rnet/build-logos.sh`** — after building the 24 lockups from `src/`, it now also publishes the parent monogram from `../monogram-{light,dark,mono}.svg` into `svg/`+`png/` under the `jr-monogram-*` names (path-only, so copied not outlined; rasterized at 1024px). The residual-`<text>` guard still passes. `cdn/build.sh` is unchanged — it already copies the whole `svg/`+`png/` set, so the pack growing 24 → 27 needs no deploy-script edit.
+- **`SYSTEM.md`** → v1.13. Extended §5 with the monogram's CDN names and URL table, noted the publication in the §14 file tree, and added the v1.13 row to §13.
+- **`components/rnet/README.md`** → pack v1.2. Updated the layout counts (24 → 27), the at-a-glance table, the full URL table, and the regenerate procedure.
+- **`components/README.md`**, **`cdn/HOSTING.md`** — recorded that the monograms are now CDN-published and that `build-logos.sh` is their publish path; added a monogram verify command.
+
+### Discipline check
+
+- ✓ No new asset, primitive, color, token, or component. An existing mark gained a URL; nothing was drawn or restyled.
+- ✓ No CDN duplication. The published copy is generated from the single canonical source and `.gitignored`, like the `css/v1/` channel and the lockups; the immutable-per-filename contract holds.
+- ✓ Naming stays inside the established grammar — `day/night/mono` surface words, `r-net-`-prefix reserved for lockups — so the seal reads as the pack's parent, not a sibling lockup.
+- ✓ The source-of-truth relationship is honest: the seal's home stays at `components/monogram-*.svg` (§5), and the docs point there, not at the generated CDN copy.
+
+---
+
 ## v1.7 — 2026.05.24 · Table line-break polish
 
 The first adoption from a downstream repo's handoff. Sabrina-Flight-Path validated two table behaviors against 50 real data tables and asked the system to make both defaults: `text-wrap: pretty` on cells, and a content-driven auto-width algorithm. Only the first lands here — it fits the system's declarative, link-one-stylesheet model exactly. The second was declined for this pass, on the record, because it would change what kind of repo this is.

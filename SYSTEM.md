@@ -1,10 +1,10 @@
 # JR / R—Net Design System
 
-**Version:** 1.12
+**Version:** 1.13
 **Codename:** Charts & Vectors
 **Owner:** James Rossie
 **Status:** Stable
-**Last updated:** 2026.05.24
+**Last updated:** 2026.06.02
 
 ---
 
@@ -291,6 +291,16 @@ The JR mark is a **heraldic seal**, not a wordmark. Its construction, letterform
 
 The light and dark variants use brand-palette colors appropriate to their context. The monochrome version uses ink only. **The SVG is the spec** — visual choices like color-per-letter, arrow color, and construction-line treatment are defined by the asset, not this document.
 
+**On the CDN.** The three variants are also published to `charts-and-vectors/logos/` as `jr-monogram-{day,night,mono}` (`light`→`day`, `dark`→`night`), riding the same CORS-open, immutably-cached, frozen-per-filename contract as the R—Net pack below. They are already path-only — no font dependency, nothing to outline — so the build copies and rasterizes them straight from this canonical source. The seal carries no `r-net-` prefix because it is not an R—Net lockup; it is the mark the pack derives from.
+
+| Variant | CDN name | SVG URL |
+|---------|----------|---------|
+| light | `jr-monogram-day` | `https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-day.svg` |
+| dark | `jr-monogram-night` | `https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-night.svg` |
+| mono | `jr-monogram-mono` | `https://cdn.rossie.net/charts-and-vectors/logos/svg/jr-monogram-mono.svg` |
+
+Swap `svg`→`png` in the path for the raster (1024px square).
+
 ### Wordmark accompaniment
 
 When the mark appears with the wordmark below:
@@ -515,7 +525,8 @@ To stay disciplined, name what it isn't:
 | 1.9 | 2026.05.18 | Revised §17.4 (front-matter vocabulary). Rendered chrome is now drawn only from the named vocabulary — front matter remains an open superset for a project's own tooling, but an unnamed key is data, not chrome. Added the **Deck** region (§10.1) for `description`, a body-face standfirst, with `.doc-deck` in `markdown.css`. The metadata block now groups into three collapsing lines — lineage, responsibility, lifecycle; the eyebrow gains a three-zone permanence model and `doc-id` migrates to its right edge as a register mark. `title` is accepted but not rendered (the `h1` is the title); the type label derives from the `doc-id` code; `mode` is marked a conditional selector, inert in the VS Code target. §17.5 records the regionalization as standalone-target. No primitive, color, token, or component changes. |
 | 1.10 | 2026.05.18 | Designed the VS Code metadata strip (§17.5). The strip cannot regionalize by field name, so it is *capped at five columns* and §17.5 names a canonical front-matter order that front-loads the flattened eyebrow — `doc-id`, `node`, `class`, `status`, `rev`. `description`, `title`, `owner`, the dates, and project keys sort past the cap and do not render, so the strip cannot overrun and the §17.4 data/chrome boundary holds for it. `markdown.css` rules column one off as the `doc-id` register, carrying `--accent` to match the standalone eyebrow's right edge. CSS-only change to `markdown.css`; no primitive, color, token, or component changes. |
 | 1.11 | 2026.05.22 | Integrated the R—Net logo pack under `components/rnet/` (§5) and published it to the CDN at `charts-and-vectors/logos/`. Eight lockups × day/night/mono, derived wholly from the JR seal, the cockpit palette, and Outfit/JBM — no new primitive. Added a self-hosted build pipeline (`build-logos.sh` + `outline-text.py`) that bakes the wordmark text to `<path>` so the distributable SVGs render with no font dependency, and reworked the PNG harness off Google Fonts onto the self-hosted woff2. Recorded the logo-only **FPM glyph** (the HUD velocity-vector that stands in for the wordmark em-dash) in §5; the prose em-dash rule (§11) is unchanged. `cdn/build.sh` now publishes `logos/` from the canonical source; `cdn/_headers` gains immutable, CORS, `image/svg+xml`/`image/png` rules. No color, token, CSS, or UI-component changes. |
-| **1.12** | 2026.05.24 | **Current.** Added `text-wrap: pretty` to the §17 table treatment (`markdown.css`) so a wrapped cell never strands a lone word on its final line. Pure line-break polish: it changes no column geometry, no-ops on single-line and numeric cells, degrades silently where unsupported, and leaves the §17.5 metadata strip untouched (its cells are single-line). CSS-only change to `markdown.css`; no primitive, color, token, or component changes. Adopts Deliverable 1 of the Sabrina-Flight-Path table-defaults handoff; the content-driven auto-width algorithm (D2) and the table-geometry "checklist" were declined as out of scope — the former a build-time font-coupled JS dependency that does not fit a declarative CSS system, the latter a visual redesign rather than the replication it was framed as. Corrected the stale `Version:` header and footer (both read 1.7; §13 was already 1.11). |
+| 1.12 | 2026.05.24 | Added `text-wrap: pretty` to the §17 table treatment (`markdown.css`) so a wrapped cell never strands a lone word on its final line. Pure line-break polish: it changes no column geometry, no-ops on single-line and numeric cells, degrades silently where unsupported, and leaves the §17.5 metadata strip untouched (its cells are single-line). CSS-only change to `markdown.css`; no primitive, color, token, or component changes. Adopts Deliverable 1 of the Sabrina-Flight-Path table-defaults handoff; the content-driven auto-width algorithm (D2) and the table-geometry "checklist" were declined as out of scope — the former a build-time font-coupled JS dependency that does not fit a declarative CSS system, the latter a visual redesign rather than the replication it was framed as. Corrected the stale `Version:` header and footer (both read 1.7; §13 was already 1.11). |
+| **1.13** | 2026.06.02 | **Current.** Published the parent JR monogram to the CDN at `charts-and-vectors/logos/` as `jr-monogram-{day,night,mono}` (§5), closing the gap where the seal — unlike every R—Net lockup — had no CDN URL. Its canonical source stays at `components/monogram-{light,dark,mono}.svg`; `build-logos.sh` now copies and rasterizes it from there into the pack's `svg/`+`png/` (it is path-only, so nothing to outline), and `cdn/build.sh` publishes it unchanged. The seal drops the `r-net-` prefix — it is the mark the pack derives from, not a lockup — mirroring how `fpm-mark` stands alone. `_headers` already matches by glob, so no header change. No primitive, color, token, CSS, or UI-component changes. |
 
 Future versions extend; they don't replace. Anything added must justify itself against §10–§12 discipline rules.
 
@@ -545,13 +556,13 @@ jr-design-system/
 │   ├── for-v0.md                 Optimized for v0 / Cursor / UI generation.
 │   └── for-design-tools.md       Figma / Adobe Firefly prompts.
 ├── components/
-│   ├── monogram-light.svg        Primary JR mark, light mode.
-│   ├── monogram-dark.svg         Primary JR mark, dark mode.
-│   ├── monogram-mono.svg         Monochrome JR mark.
+│   ├── monogram-light.svg        Primary JR mark, light mode. CDN: jr-monogram-day.
+│   ├── monogram-dark.svg         Primary JR mark, dark mode. CDN: jr-monogram-night.
+│   ├── monogram-mono.svg         Monochrome JR mark. CDN: jr-monogram-mono.
 │   ├── rnet/                     R—Net logo pack (§5). 8 lockups × day/night/mono.
 │   │   ├── src/                  Editable SVGs (wordmark is live <text>).
-│   │   ├── svg/                  Outlined, self-contained SVGs (distributable).
-│   │   ├── png/                  Rasters of the outlined SVGs.
+│   │   ├── svg/                  Outlined, self-contained SVGs + published JR monogram (distributable).
+│   │   ├── png/                  Rasters of the svg/ set.
 │   │   ├── outline-text.py       <text> → <path> outliner (self-hosted woff2).
 │   │   ├── build-logos.sh        src/ → svg/ + png/.
 │   │   └── render-pngs.html      Browser PNG fallback (self-hosted fonts).
@@ -898,4 +909,4 @@ Charts inherit §12 and §4.6 and add:
 
 ---
 
-*End of SYSTEM.md · v1.12 · 2026.05.24*
+*End of SYSTEM.md · v1.13 · 2026.06.02*
